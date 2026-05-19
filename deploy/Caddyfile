@@ -1,0 +1,58 @@
+# Pure Soft Restoration — Caddy reverse proxy config
+#
+# Install on the server at /etc/caddy/Caddyfile (or symlink to this file)
+# and reload with: sudo systemctl reload caddy
+#
+# Caddy will automatically provision Let's Encrypt TLS certificates for
+# the domains below the first time it starts after DNS resolves.
+
+{
+	# Email used for Let's Encrypt account registration and expiration notices.
+	email admin@puresoftrestoration.com
+
+	# Reasonable defaults; tune as needed.
+	servers {
+		protocols h1 h2 h2c
+	}
+}
+
+# Apex + www. www redirects to apex.
+puresoftrestoration.com, www.puresoftrestoration.com {
+	# Redirect www to apex with a 308 (permanent, method-preserving).
+	@www host www.puresoftrestoration.com
+	redir @www https://puresoftrestoration.com{uri} 308
+
+	encode zstd gzip
+
+	# Security headers.
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# Remove the Server banner.
+		-Server
+	}
+
+	# Cache static Next.js assets aggressively (they're content-hashed).
+	@nextStatic path /_next/static/*
+	header @nextStatic Cache-Control "public, max-age=31536000, immutable"
+
+	# Cache the public/ folder assets for a day.
+	@publicStatic path /favicon.ico /robots.txt /sitemap.xml /opengraph-image* /*.svg /*.png /*.jpg /*.webp
+	header @publicStatic Cache-Control "public, max-age=86400, must-revalidate"
+
+	reverse_proxy 127.0.0.1:3000 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	log {
+		output file /var/log/caddy/puresoft.access.log {
+			roll_size 50mb
+			roll_keep 10
+		}
+		format json
+	}
+}

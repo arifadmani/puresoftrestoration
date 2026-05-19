@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # Pure Soft Restoration — Persistent Claude Context
 
 ## Company

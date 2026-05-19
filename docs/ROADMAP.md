@@ -14,15 +14,23 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 
 ## Phase 1 — Site scaffold & deploy
 
-- Next.js 15 + TS + Tailwind + shadcn/ui at repo root
-- Brand tokens (navy / slate / white / muted accent) wired into Tailwind config
-- Layout shell: header with prominent **Submit a Claim** CTA, footer with NAP (name/address/phone) for local SEO
-- Eight pages stubbed with real H1s and metadata (copy filled in iteratively):
+**Status:** code complete; deployment to live server pending AWS prerequisites.
+
+- [x] Next.js 16 + TS + Tailwind v4 at repo root (16, not 15 — see DECISIONS amendments)
+- [x] shadcn/ui-style primitives (hand-crafted Button + Card with `cva`, `clsx + tailwind-merge`, `lucide-react`)
+- [x] Brand tokens (ink / navy / paper / slate / muted brass accent / restrained emergency oxblood) wired into `app/globals.css` via `@theme`
+- [x] Layout shell: top utility bar with CAT line, sticky header with primary nav and **Submit a Claim** CTA, mobile drawer nav, footer with NAP and service-area list
+- [x] Eight pages built with real H1s, copy stubs, metadata, and per-page `Service` JSON-LD where applicable:
   - Home, Insurance Professionals, Soft Contents Restoration, Fire & Smoke Odor Restoration, Water & Mold Textile Recovery, CAT / Emergency Response, About, Contact / Submit a Claim
-- JSON-LD `LocalBusiness` + `Service` schema on relevant pages
-- `robots.txt`, `sitemap.xml`, favicons, OG images
-- Caddy reverse proxy + systemd service deployed on this EC2 box
-- HTTPS live on `puresoftrestoration.com` and `www`
+- [x] Root layout emits a site-wide `LocalBusiness` JSON-LD blob
+- [x] `app/sitemap.ts`, `app/robots.ts`, dynamic OG image at `app/opengraph-image.tsx`
+- [x] `next.config.ts` set to `output: "standalone"` for systemd deployment
+- [x] `deploy/Caddyfile`, `deploy/systemd/puresoft.service`, `deploy/README.md` (first-time setup + deploy recipe), `.env.example`
+- [x] `npm run build` passes; smoke-tested the standalone server locally (all 14 routes return 200)
+- [ ] Caddy reverse proxy + systemd service deployed on this EC2 box (blocked on Elastic IP + DNS)
+- [ ] HTTPS live on `puresoftrestoration.com` and `www` (blocked on DNS)
+
+Real phone numbers and street address still need to be plugged into `lib/site.ts` (currently placeholders).
 
 ## Phase 2 — Claim intake form
 

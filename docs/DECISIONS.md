@@ -114,3 +114,71 @@ Pure Soft Restoration should become:
 > the North Texas textile restoration authority for insurance claims.
 
 Every architectural choice should be evaluated against whether it accelerates that positioning, or whether it would dilute it.
+
+---
+
+## Phase 1 execution amendments (2026-05-19)
+
+These supersede or refine prior decisions where noted. All other decisions above stand.
+
+### Next.js version: 16, not 15
+
+`create-next-app@latest` installed Next.js **16.2.6** (latest stable as of 2026-05-19). We accepted the upgrade rather than pinning to 15 — the migration cost is zero on a greenfield app, and 16 ships:
+
+- Bundled version-matched documentation at `node_modules/next/dist/docs/` (Next.js 16's AI-agent docs feature)
+- Turbopack production build by default
+- Tailwind v4 integration as the scaffold default
+
+Supersedes the "Next.js 15" line in the Website Stack section.
+
+### Tailwind v4
+
+The scaffold ships **Tailwind v4** with the `@tailwindcss/postcss` plugin. v4 does not use a `tailwind.config.{js,ts}` file by default — brand tokens are declared in CSS via the `@theme` directive (see `app/globals.css`). No JS config file exists.
+
+### shadcn/ui: hand-crafted, not CLI-initialized
+
+We honored the shadcn/ui convention (copy-paste primitives, `cva` for variants, `clsx + tailwind-merge`, `lucide-react`) but **did not run the shadcn CLI**. Reasons:
+
+- The CLI's `init` flow is interactive and bakes in brand-token assumptions that conflict with ours.
+- Phase 1 only needs Button and Card. Hand-writing them keeps the dependency surface minimal and the styling fully under our control.
+- All conventions remain compatible with `npx shadcn add <component>` later for more complex primitives (Dialog, Sheet, Command palette, etc.).
+
+### AGENTS.md alongside CLAUDE.md
+
+Next.js 16 generates an `AGENTS.md` at the project root pointing AI agents to the bundled docs. We retained it and prepended `@AGENTS.md` (Claude Code's import syntax) to the top of `CLAUDE.md` so the project memory and the Next.js agent rules compose cleanly.
+
+### Repository layout
+
+Adopted the flat layout described in `docs/ARCHITECTURE.md`:
+
+- `app/` for App Router routes (each of the eight pages has its own folder + `page.tsx`)
+- `components/` for shared components; `components/ui/` for shadcn-style primitives
+- `lib/` for `site.ts`, `seo.ts`, `schema.ts`, `utils.ts`
+- `deploy/` for `Caddyfile`, `systemd/puresoft.service`, deployment README
+- `docs/`, `handoff/` retained at root
+
+### Visual identity locked
+
+Placeholder palette committed in `app/globals.css`:
+
+- **Ink:** `#08182E` — near-black navy
+- **Navy (primary):** `#0F2545`
+- **Navy deep (hover):** `#0A1A38`
+- **Paper:** `#FCFCFC` / `--color-paper-muted: #F6F7F9`
+- **Accent (muted brass):** `#B68A4E`, deep `#8F6B36`
+- **Emergency (restrained oxblood, used only on CAT panels):** `#9F3B2E`
+
+**Typography:** Inter (variable, via `next/font/google`) for body and display. No second face. Weight variation for hierarchy.
+
+### CAT response treatment
+
+The CAT / Emergency Response page uses the `--color-emergency` palette in a single restrained way: a dark-oxblood hero banner with a paper-white CTA. No bright reds; no consumer "emergency" aesthetic. The CAT line phone number is the only element repeated across the header strip, footer, and dedicated page — all sourced from `lib/site.ts`.
+
+### Placeholders awaiting real values
+
+The following values in `lib/site.ts` are placeholders and must be replaced before launch:
+
+- `contact.phone` and `contact.catLine` (currently `(XXX) XXX-XXXX`)
+- `address.street` and `address.postalCode`
+
+Single edit in `lib/site.ts` propagates everywhere the values appear.

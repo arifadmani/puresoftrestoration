@@ -24,10 +24,13 @@ This document describes the technical architecture of the Pure Soft Restoration 
 ## Components
 
 ### Next.js application
-- **Runtime:** Node.js 22.x, Next.js 15 (App Router), TypeScript.
-- **Build:** standalone output (`next.config.js` → `output: 'standalone'`). Produces a self-contained `.next/standalone/server.js` and a `.next/static` directory.
+- **Runtime:** Node.js 22.x, Next.js 16 (App Router), TypeScript.
+- **Build:** standalone output (`next.config.ts` → `output: "standalone"`). Produces a self-contained `.next/standalone/server.js` and a `.next/static` directory.
 - **Process model:** single Node process, bound to `127.0.0.1:3000` (not exposed publicly).
 - **Bundle size:** standalone build keeps node_modules to only what's needed at runtime (~80 MB).
+- **Styling:** Tailwind v4 via `@tailwindcss/postcss`. Brand tokens declared in CSS using the `@theme` directive — no `tailwind.config.{ts,js}` file.
+- **UI primitives:** shadcn/ui style (cva + clsx + tailwind-merge + lucide-react), hand-crafted rather than scaffolded from the shadcn CLI.
+- **AI agent docs:** `node_modules/next/dist/docs/` is the source of truth for Next.js APIs in this project (Next.js 16 feature). `AGENTS.md` at the repo root points coding agents at it; `CLAUDE.md` imports it via `@AGENTS.md`.
 
 ### Caddy reverse proxy
 - **Role:** terminates TLS, handles HTTP/2, redirects HTTP → HTTPS, applies security headers, gzips responses.
@@ -79,24 +82,52 @@ This document describes the technical architecture of the Pure Soft Restoration 
 
 If SES fails: the row is still persisted; an admin retry job re-sends notifications. The user always gets their claim reference.
 
-## Repository layout (target)
+## Repository layout (as built in Phase 1)
 
 ```
 puresoft-restoration/
 ├── app/                       # Next.js App Router routes
-│   ├── (marketing)/           # Public pages
-│   ├── claim/                 # Claim intake flow
-│   └── api/                   # API routes (S3 sign, Turnstile verify)
-├── components/                # Reusable UI
-├── content/                   # MDX for service pages
-├── lib/                       # Server utilities (db, ses, s3, validation)
-├── db/                        # Schema, migrations
-├── public/                    # Static assets
-├── deploy/                    # Caddyfile, systemd unit, docker-compose, deploy scripts
-├── docs/                      # DECISIONS, ROADMAP, ARCHITECTURE
+│   ├── layout.tsx             # Root layout + LocalBusiness JSON-LD
+│   ├── page.tsx               # Homepage
+│   ├── about/
+│   ├── insurance-professionals/
+│   ├── soft-contents-restoration/
+│   ├── fire-smoke-odor-restoration/
+│   ├── water-mold-textile-recovery/
+│   ├── cat-emergency-response/
+│   ├── contact/               # Submit a Claim (form arrives in Phase 2)
+│   ├── globals.css            # Tailwind v4 + brand tokens via @theme
+│   ├── sitemap.ts             # sitemap.xml generator
+│   ├── robots.ts              # robots.txt generator
+│   └── opengraph-image.tsx    # Site-wide OG image (1200x630)
+├── components/
+│   ├── header.tsx             # Sticky header + utility bar + mobile drawer
+│   ├── footer.tsx             # NAP, services, service-area, legal
+│   ├── section.tsx            # <Section>, <Eyebrow>, <SectionHeading>, <SectionLead>
+│   ├── json-ld.tsx            # JSON-LD <script> emitter
+│   └── ui/
+│       ├── button.tsx         # cva-based Button (variant + size)
+│       └── card.tsx           # Card, CardBody, CardTitle, CardDescription
+├── lib/
+│   ├── site.ts                # Single source of truth: name, contact, NAP, service area
+│   ├── seo.ts                 # buildMetadata() helper for per-page Metadata
+│   ├── schema.ts              # LocalBusiness + Service JSON-LD builders
+│   └── utils.ts               # cn() class-name composer
+├── deploy/
+│   ├── Caddyfile              # Caddy 2 reverse-proxy config
+│   ├── systemd/puresoft.service
+│   └── README.md              # First-time setup + deploy recipe
+├── public/                    # Static assets (favicon, etc.)
+├── docs/                      # DECISIONS, ROADMAP, ARCHITECTURE, PROJECT_CONTEXT
 ├── handoff/                   # NEXT_STEPS
+├── AGENTS.md                  # Next.js 16 AI-agent docs hint
+├── CLAUDE.md                  # Project memory (imports AGENTS.md)
+├── .env.example               # All required runtime env vars
+├── next.config.ts             # output: "standalone"
 └── ...
 ```
+
+Reserved for Phase 2: `app/api/`, `app/claim/`, `content/` (MDX), `db/` (schema + migrations), `lib/db.ts`, `lib/ses.ts`, `lib/s3.ts`, `lib/turnstile.ts`.
 
 ## Environments
 

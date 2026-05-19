@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #08182E;
+  --color-navy: #0F2545;
+  --color-navy-deep: #0A1A38;
+  --color-navy-700: #173258;
+  --color-navy-600: #1E406E;
+  --color-navy-100: #DCE3EE;
+  --color-navy-50: #EEF2F8;
+
+  --color-slate-50: #F8FAFC;
+  --color-slate-100: #F1F5F9;
+  --color-slate-150: #E8ECF2;
+  --color-slate-200: #E2E8F0;
+  --color-slate-300: #CBD5E1;
+  --color-slate-400: #94A3B8;
+  --color-slate-500: #64748B;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1F2A44;
+  --color-slate-900: #0F172A;
+
+  --color-paper: #FCFCFC;
+  --color-paper-muted: #F6F7F9;
+
+  --color-accent: #B68A4E;
+  --color-accent-deep: #8F6B36;
+  --color-accent-soft: #EFE4D2;
+
+  --color-emergency: #9F3B2E;
+  --color-emergency-deep: #7F2D22;
+  --color-emergency-soft: #F4DCD8;
+
+  --color-success: #2F6B4F;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+  ::selection {
+    background: var(--color-navy);
+    color: var(--color-paper);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  h1 { letter-spacing: -0.02em; }
+}
+
+@utility container-prose {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility container-narrow {
+  max-width: 56rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}

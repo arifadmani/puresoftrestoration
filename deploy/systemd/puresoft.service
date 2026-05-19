@@ -1,0 +1,63 @@
+# Pure Soft Restoration — Next.js standalone systemd unit
+#
+# Install:
+#   sudo cp deploy/systemd/puresoft.service /etc/systemd/system/puresoft.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now puresoft
+#
+# Logs:
+#   sudo journalctl -u puresoft -f
+#
+# Assumes the build has been deployed to /var/www/puresoft/current
+# (which is a symlink to a timestamped release directory containing
+# the Next.js standalone output).
+
+[Unit]
+Description=Pure Soft Restoration — Next.js
+Documentation=https://github.com/arifadmani/puresoftrestoration
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=puresoft
+Group=puresoft
+WorkingDirectory=/var/www/puresoft/current
+
+EnvironmentFile=/etc/puresoft.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+
+ExecStart=/usr/bin/node server.js
+
+Restart=on-failure
+RestartSec=2
+StartLimitBurst=10
+StartLimitIntervalSec=60
+
+# Sandboxing.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/puresoft
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+# Modest resource limits.
+LimitNOFILE=65536
+MemoryHigh=1G
+MemoryMax=1500M
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=puresoft
+
+[Install]
+WantedBy=multi-user.target

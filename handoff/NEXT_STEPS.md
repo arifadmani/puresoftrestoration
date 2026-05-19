@@ -81,26 +81,30 @@ Once the Elastic IP is assigned:
 
 (Full detail in `docs/ROADMAP.md`. This is the short version.)
 
-### Infrastructure (in progress)
+### Infrastructure
 - [x] Install Claude Code on Ubuntu AWS server
 - [x] Configure GitHub repo connection locally
 - [x] Configure Node.js runtime (v22.22.3)
-- [ ] Configure Caddy
-- [ ] Configure systemd service
-- [ ] Configure AWS SES integration
-- [ ] Configure AWS S3 integration
-- [ ] Configure deployment workflow
+- [x] Author Caddy reverse-proxy config (`deploy/Caddyfile`)
+- [x] Author systemd unit (`deploy/systemd/puresoft.service`)
+- [x] Author env template (`.env.example`) with SES, S3, Turnstile, DB keys
+- [ ] Install Caddy on the server and copy `deploy/Caddyfile` to `/etc/caddy/Caddyfile`
+- [ ] Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`
+- [ ] Install systemd unit and enable the service (after first release deploy)
+- [ ] Wire AWS SES integration (Phase 2)
+- [ ] Wire AWS S3 integration (Phase 2)
+- [ ] CI/CD deployment workflow (Phase 4)
 
 ### Website build phase
-- Homepage
-- Insurance Professionals page
-- CAT / Emergency Response page
-- Service pages (Soft Contents, Fire & Smoke, Water & Mold)
-- About page
-- Contact / Submit a Claim page (with photo upload)
-- SEO foundation (metadata, JSON-LD schema, sitemap, robots)
-- Responsive layout
-- Shared design system (navy/slate/white + accent)
+- [x] Homepage
+- [x] Insurance Professionals page
+- [x] CAT / Emergency Response page
+- [x] Service pages (Soft Contents, Fire & Smoke, Water & Mold)
+- [x] About page
+- [x] Contact / Submit a Claim page (intake placeholder — full form with photo upload arrives in Phase 2)
+- [x] SEO foundation (per-page metadata, LocalBusiness + Service JSON-LD, sitemap, robots, OG image)
+- [x] Responsive layout (mobile drawer nav)
+- [x] Shared design system (ink/navy/paper/slate/brass accent, Inter typeface, restrained CAT oxblood)
 
 ### Intake architecture
 - Photo uploads to S3
