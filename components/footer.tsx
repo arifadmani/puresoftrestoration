@@ -1,109 +1,97 @@
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { BrandMark } from "@/components/brand-mark";
 import { site } from "@/lib/site";
 
-const services = [
-  { href: "/soft-contents-restoration", label: "Soft Contents Restoration" },
-  { href: "/fire-smoke-odor-restoration", label: "Fire & Smoke Odor" },
-  { href: "/water-mold-textile-recovery", label: "Water & Mold Recovery" },
-  { href: "/cat-emergency-response", label: "CAT / Emergency Response" },
-];
-
-const company = [
-  { href: "/insurance-professionals", label: "Insurance Professionals" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Submit a Claim" },
+const cols = [
+  {
+    h: "Capabilities",
+    links: [
+      { label: "Smoke & soot", href: "/fire-smoke-odor-restoration" },
+      { label: "Water & flood", href: "/water-mold-textile-recovery" },
+      { label: "Mold & biohazard", href: "/water-mold-textile-recovery" },
+      { label: "Document recovery", href: "/soft-contents-restoration" },
+      { label: "Art & heirloom", href: "/soft-contents-restoration" },
+    ],
+  },
+  {
+    h: "Operations",
+    links: [
+      { label: "Process", href: "/#process" },
+      { label: "Chain of custody", href: "/#process" },
+      { label: "CAT response", href: "/cat-emergency-response" },
+      { label: "Mutual aid", href: "/cat-emergency-response" },
+      { label: "Facility tour", href: "/about" },
+    ],
+  },
+  {
+    h: "For partners",
+    links: [
+      { label: "Carrier portal", href: "/insurance-professionals" },
+      { label: "Adjuster portal", href: "/insurance-professionals" },
+      { label: "GC partnership", href: "/insurance-professionals" },
+      { label: "PM agreement", href: "/insurance-professionals" },
+      { label: "Vendor onboarding", href: "/contact" },
+    ],
+  },
+  {
+    h: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Leadership", href: "/about" },
+      { label: "Certifications", href: "/about" },
+      { label: "Press", href: "/about" },
+      { label: "Careers", href: "/about" },
+    ],
+  },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-paper">
-      <div className="container-prose py-16">
-        <div className="grid gap-12 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-paper text-navy text-sm font-semibold">
-                PS
-              </div>
-              <div className="leading-tight">
-                <div className="text-sm font-semibold tracking-[0.04em] uppercase">
-                  Pure Soft Restoration
-                </div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                  Insurance-grade textile restoration
-                </div>
-              </div>
-            </div>
-            <p className="mt-5 max-w-md text-sm leading-6 text-slate-300">
-              {site.tagline} Documentation, chain of custody, and severity
-              reduction for adjusters, carriers, and contents companies across
-              the DFW metroplex.
-            </p>
-
-            <div className="mt-6 flex flex-col gap-2 text-sm">
-              <a
-                href={`tel:${site.contact.catLineTel}`}
-                className="inline-flex items-center gap-2 hover:text-accent transition-colors"
-              >
-                <Phone size={14} aria-hidden />
-                <span>24/7 CAT Response: {site.contact.catLine}</span>
-              </a>
-              <a
-                href={`mailto:${site.contact.email}`}
-                className="inline-flex items-center gap-2 hover:text-accent transition-colors"
-              >
-                <Mail size={14} aria-hidden />
-                <span>{site.contact.email}</span>
-              </a>
+    <footer className="bg-ink-900 text-ink-300">
+      <div className="doc-shell gutter pt-16 pb-7 text-[13.5px]">
+        <div className="grid gap-9 md:grid-cols-12 pb-12 border-b border-[rgb(255_251_242/0.10)]">
+          <div className="md:col-span-4">
+            <BrandMark tone="paper" />
+            <div className="mono text-[11px] tracking-[0.08em] leading-[1.7] text-ink-300 mt-5">
+              {site.address.street}
+              <br />
+              {site.address.locality}, {site.address.region} {site.address.postalCode}
+              <br />
+              <br />
+              Carrier line · <a href={`tel:${site.contact.carrierLineTel}`} className="text-paper hover:text-signal-hi">{site.contact.carrierLineLabel}</a>
+              <br />
+              Intake · <a href={`mailto:${site.contact.intakeEmail}`} className="text-paper hover:text-signal-hi">{site.contact.intakeEmail}</a>
+              <br />
+              {site.hours.dispatch}
             </div>
           </div>
 
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Services
-            </h4>
-            <ul className="mt-4 space-y-2 text-sm">
-              {services.map((s) => (
-                <li key={s.href}>
-                  <Link className="text-slate-200 hover:text-accent" href={s.href}>
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Company
-            </h4>
-            <ul className="mt-4 space-y-2 text-sm">
-              {company.map((s) => (
-                <li key={s.href}>
-                  <Link className="text-slate-200 hover:text-accent" href={s.href}>
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <h4 className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Service Area
-            </h4>
-            <p className="mt-4 text-sm text-slate-300 leading-6">
-              {site.serviceArea.join(" · ")}
-            </p>
-          </div>
+          {cols.map((c) => (
+            <div key={c.h} className="md:col-span-2">
+              <h5 className="mono text-[11px] tracking-[0.18em] uppercase text-ink-200 font-medium">
+                {c.h}
+              </h5>
+              <ul className="mt-4 space-y-1">
+                {c.links.map((l) => (
+                  <li key={`${c.h}-${l.label}`}>
+                    <Link
+                      href={l.href}
+                      className="block py-1 text-ink-300 hover:text-paper transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-slate-700/60 pt-6 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+        <div className="pt-6 flex flex-col md:flex-row md:justify-between gap-3 mono text-[10.5px] tracking-[0.14em] uppercase text-ink-400">
           <span>
-            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
+            © {new Date().getFullYear()} {site.legalName} · IICRC {site.certifications.iicrc} · Texas DPS {site.certifications.texasDps}
           </span>
-          <span>
-            {site.address.locality}, {site.address.region} · Insurance-grade
-            textile restoration
-          </span>
+          <span>Privacy · Terms · Vendor compliance</span>
         </div>
       </div>
     </footer>

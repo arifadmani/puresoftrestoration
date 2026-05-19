@@ -182,3 +182,129 @@ The following values in `lib/site.ts` are placeholders and must be replaced befo
 - `address.street` and `address.postalCode`
 
 Single edit in `lib/site.ts` propagates everywhere the values appear.
+
+---
+
+## Operating Theatre design execution (2026-05-19, later)
+
+This block supersedes the visual identity choices made earlier today. **Design source:** the Pure Soft — Design Direction handoff bundle (`pure-soft/project/design_handoff_homepage/`) generated from claude.ai/design. See the bundle's README for the canonical specification.
+
+### Aesthetic codename: "Operating Theatre"
+
+Warm paper canvas, near-black ink, one signal-amber accent reserved for live state, editorial Instrument Serif used sparingly. Target reads as enterprise SaaS / logistics ops / catastrophe-response infrastructure — explicitly *not* dry-cleaner / franchise / coupon-local restoration.
+
+### Five design principles (govern every decision)
+
+1. **Documented, not decorated.** Every metric, ID and timestamp earns its place.
+2. **Operational, not promotional.** The page reads like a live ops console.
+3. **Calm under pressure.** One signal accent, reserved exclusively for active CAT response.
+4. **Editorial gravity.** A single serif voice for declarative moments.
+5. **Regional, not retail.** North Texas authority shown through maps, response radii, fleet counts — never through coupons or specials.
+
+### Palette (replaces prior navy/slate/brass tokens entirely)
+
+- **Paper:** `#F4F1EA` · bright `#FAF8F2` · shadow `#EAE6DC` · rule `#D8D3C5` — the default surface
+- **Ink (9-step scale):** `#0B0D0C` (900) → `#E3E2DA` (100) — warmer-than-neutral text & dark surfaces
+- **Signal:** `#D9691F` · hi `#E8842F` · soft `#F7E2CB` — **restricted** to live CAT state, in-motion ops, pulse animations only
+- **Verified:** `#2E5C44` · soft `#DEE9DF` — only on items that have *passed* a stage (sealed, audited)
+- **Data:** `#264960` · soft `#D8E3EC` — neutral operational metadata accent
+- **Caution soft:** `#F4EAD7` — intake / pending review, inside badges only
+
+Token usage rules (non-negotiable):
+- **One signal per page.** Amber appears only where state is genuinely live.
+- **Paper above ink.** Dark sections (CAT block, footer) are deliberate "moments of gravity," not the default skin.
+- **Verified green is a verb.** Only appears on items that have passed a stage.
+
+### Typography (replaces Inter)
+
+- **Sans (body, UI):** Geist (via `next/font/google`, exposed as `--font-geist-sans`)
+- **Mono (IDs, timestamps, labels, badges):** Geist Mono (`--font-geist-mono`)
+- **Serif (display, hero, declarative moments):** Instrument Serif, normal + italic (`--font-instrument-serif`)
+
+**Voice rule:** Instrument Serif italic appears at most once per scroll-screen — the brand's exhale. Geist Mono is the voice of every ID, timestamp, label, badge, address, claim number.
+
+### Type scale
+
+| Role | Family | Size / line-height | Notes |
+| --- | --- | --- | --- |
+| Display D1 | Serif | 96 / 96 | Hero only. One italic allowed. |
+| Display D2 | Serif | 64 / 64 | Section opens. |
+| Headline H1 | Serif | 40 / 44 | Card / exhibit titles. |
+| Sub S1 | Sans 500 | 20 / 28 | Lede paragraphs. |
+| Body B1 | Sans 400 | 15 / 24 | Body copy, max 60ch. |
+| Mono M1 | Mono 500 | 11 / 16, +14%, UC | Section labels, badges. |
+| Mono M2 | Mono 400 | 12 / 20, +6% | IDs, timestamps. |
+
+### Component primitives built
+
+- **`Button`** — primary (ink-900), ghost (hairlined), signal (amber, reserved for CAT hotline only), link, ghostInk. 4px radius, no shadow.
+- **`Badge`** — pill, mono text + 6px colored dot. Variants: active (signal-soft, pulses), audit (data-soft), sealed (verified-soft), pending (paper-shadow), caution, intake.
+- **`Field` / `Input` / `FramedInput`** — mono label prefix + value. Focus: signal border + 3px signal-15% ring. No floating labels.
+- **`Card` / `CardBody` / `CardTitle` / `CardDescription`** — hairlined (ink-900/10), never shadowed.
+- **`CatStrip`** — state-driven persistent operational band (active = signal pulse, standby = ink-700, no pulse). Six segments: live dot · CAT code · event · region · mobilization elapsed · property/lot counts · carrier hotline.
+- **`LotTile`** — atom underpinning the hero ops panel, dashboard, and carrier portal. Mono ID + sentence-case title + mono metadata + status `Badge`.
+- **`Metric`** — serif numeral + mono unit superscript + mono label below. The brand's primary regional-authority device.
+- **`ProcessStep`** — `data-state="done|active|pending"`; node states branch via Tailwind variants. Pure CSS — no JS animation.
+- **`BrandMark`** — circular PS glyph + Geist wordmark; tone="ink" on paper, tone="paper" on ink.
+- **`Section` / `SectionTag` / `Eyebrow` / `Display` / `Lede`** — section scaffolding helpers.
+
+`SectionHeading` and `SectionLead` remain exported as thin back-compat aliases for the seven service pages.
+
+### Motion primitives (three, no more)
+
+| Name | Use | Animation |
+| --- | --- | --- |
+| Pulse | Live status dots | 1.8s box-shadow expansion |
+| Tick | Auto-refreshing counters | 3s subtle vertical flip |
+| Sweep | Throughput shimmer on progress bars | 2.4s single light pass |
+
+Plus quiet utilities: scroll reveal (fade-in 16px up, 240ms ease-out), hover (120ms, 2px max travel). All respect `prefers-reduced-motion`. **Forbidden:** background video, soft-glow on text, neon traces, particles, gradient buttons, scaling on hover.
+
+### Homepage composition (built section-by-section to spec)
+
+§ Hero (elevated panel, `shadow-op`) — eyebrow pill · serif headline with single signal-amber highlight on "first." · deck · primary + ghost CTAs · three-metric strip · right-rail Live Operations panel with 4 LotTiles + throughput bar · carrier strip below the panel.
+
+§ 04 — Capabilities triptych — Smoke & soot (warm tint) / Water & flood (cool) / Mold & biohazard (earth).
+
+§ 05 — Process / chain-of-custody — six-stage horizontal rail with signal-amber progress line + Manifest exhibit with rotated `VERIFIED · SEALED` stamp.
+
+§ 06 — CAT response (dark, with warm/cool radial gradients) — stylized North Texas coverage map (HQ pin, dashed 60-min radius, county pills with job counts) + four operational stat blocks.
+
+§ 07 — Who we work with — four-card row: Insurance carriers / Public adjusters / Large-loss GCs / Property managers.
+
+§ 08 — Intake CTA — editorial 88px serif headline with italic emphasis + elevated form card.
+
+### Repository copy (placeholders introduced by the design)
+
+Design copy is treated as approved per the handoff README. Mocked operational details in `lib/site.ts` that need verification before launch:
+
+- Address: `4400 W Royal Lane, Irving, TX 75063`
+- Carrier line: `(817) 555-PURE`
+- Intake email: `intake@puresoftrestoration.com`
+- Certifications: `IICRC #214418`, `Texas DPS #B19234`
+- Active CAT mock: `CAT-2026-04 · North Texas Hailstorm Event · 41 properties · 1,847 lots`
+
+The CAT operational data should be wired to a real source (`/api/ops/current`) in a future phase.
+
+### Carrier strip + map: known placeholder content
+
+- The carrier strip uses `Carrier · A` through `Carrier · G` mono wordmark placeholders per spec — full-color carrier logos are **forbidden**.
+- The CAT map is a CSS-only stylized region map — not a real GeoJSON. Suitable for v1; replace with a per-county SVG if/when documentary photography lands per § 14.
+
+### Imagery direction (deferred — § 14)
+
+Documentary, not stock. Cool, slightly desaturated palette — never warming filters. Subjects: crews in PPE, lot-tagged textile racks, RFID readers, manifest tablets on-site, branded transit vans, before/after pairs in identical lighting/crop. Captions are mono and **always** include a lot ID or timestamp.
+
+Photography pipeline: `next/image` with `quality=85`, `placeholder="blur"`. Color-grade server-side via a Sharp pipeline before upload; never rely on CSS filters.
+
+### Forbidden checklist (in addition to prior items)
+
+- ❌ Default shadcn `rounded-2xl`
+- ❌ Glassmorphism / backdrop-blur as decoration (allowed only on the live ops legend, where it has functional grounding)
+- ❌ Gradient buttons
+- ❌ Emoji
+- ❌ Full-color carrier logos — directory wordmarks only
+- ❌ "Trusted by" stars / rating widgets
+- ❌ Hero background video loops
+- ❌ Marketing-style spacing (< 48px between sections)
+- ❌ Multiple signal-amber elements on the same screen

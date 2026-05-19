@@ -16,11 +16,11 @@ export default function AboutPage() {
   return (
     <>
       <Section tone="ink">
-        <Eyebrow className="text-accent">About</Eyebrow>
+        <Eyebrow className="text-signal">About</Eyebrow>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
           A laundry operation built for the claim file.
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 md:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
           Pure Soft Restoration sits at the intersection of real dry-cleaning
           and laundry infrastructure and the documentation discipline insurance
           claims require. We do not chase consumer business — we work the soft
@@ -45,7 +45,7 @@ export default function AboutPage() {
               <Button href="/insurance-professionals" variant="primary" size="lg">
                 How we work with adjusters <ArrowRight size={16} aria-hidden />
               </Button>
-              <Button href="/contact" variant="outline" size="lg">
+              <Button href="/contact" variant="ghost" size="lg">
                 Submit a claim
               </Button>
             </div>
@@ -53,7 +53,7 @@ export default function AboutPage() {
           <div className="md:col-span-5 grid gap-4">
             <Card>
               <CardBody>
-                <Building2 className="text-navy" aria-hidden />
+                <Building2 className="text-ink-900" aria-hidden />
                 <CardTitle className="mt-4">Real operating infrastructure</CardTitle>
                 <CardDescription>
                   Dry-cleaning and laundry capacity already in place — not a
@@ -63,7 +63,7 @@ export default function AboutPage() {
             </Card>
             <Card>
               <CardBody>
-                <ShieldCheck className="text-navy" aria-hidden />
+                <ShieldCheck className="text-ink-900" aria-hidden />
                 <CardTitle className="mt-4">Documentation-first</CardTitle>
                 <CardDescription>
                   Chain of custody, salvage reporting, and treatment logs are
@@ -73,7 +73,7 @@ export default function AboutPage() {
             </Card>
             <Card>
               <CardBody>
-                <MapPin className="text-navy" aria-hidden />
+                <MapPin className="text-ink-900" aria-hidden />
                 <CardTitle className="mt-4">North Texas focus</CardTitle>
                 <CardDescription>
                   Same-day pickup across the DFW metroplex and surrounding
@@ -85,7 +85,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section tone="muted">
+      <Section tone="paper-shadow">
         <Eyebrow>Positioning</Eyebrow>
         <SectionHeading>Not a dry cleaner. A textile restoration partner.</SectionHeading>
         <SectionLead>
@@ -95,18 +95,18 @@ export default function AboutPage() {
         </SectionLead>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <div className="rounded-sm border border-slate-200 bg-paper p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-deep">We are</p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+          <div className="rounded-sm border border-ink-900/10 bg-paper p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">We are</p>
+            <ul className="mt-3 space-y-2 text-sm text-ink-700">
               <li>Operational and documentation-heavy</li>
               <li>Insurance-industry oriented</li>
               <li>CAT-ready and surge-capable</li>
               <li>Focused on textile salvage as severity reduction</li>
             </ul>
           </div>
-          <div className="rounded-sm border border-slate-200 bg-paper p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-deep">We are not</p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+          <div className="rounded-sm border border-ink-900/10 bg-paper p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">We are not</p>
+            <ul className="mt-3 space-y-2 text-sm text-ink-700">
               <li>A consumer dry cleaner with a website</li>
               <li>A marketing-led restoration franchise</li>
               <li>A general contents pack-out company</li>
@@ -120,8 +120,8 @@ export default function AboutPage() {
         <Eyebrow>Service area</Eyebrow>
         <SectionHeading>{site.address.locality} and surrounding North Texas markets.</SectionHeading>
         <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 text-sm">
-          {site.serviceArea.map((city) => (
-            <li key={city} className="rounded-sm border border-slate-200 bg-paper-muted px-4 py-3">
+          {site.citiesServed.map((city) => (
+            <li key={city} className="rounded-sm border border-ink-900/10 bg-paper-shadow px-4 py-3">
               {city}
             </li>
           ))}

@@ -96,15 +96,23 @@ Once the Elastic IP is assigned:
 - [ ] CI/CD deployment workflow (Phase 4)
 
 ### Website build phase
-- [x] Homepage
-- [x] Insurance Professionals page
-- [x] CAT / Emergency Response page
-- [x] Service pages (Soft Contents, Fire & Smoke, Water & Mold)
-- [x] About page
-- [x] Contact / Submit a Claim page (intake placeholder — full form with photo upload arrives in Phase 2)
+- [x] Homepage — full Operating Theatre design implementation (eight design sections, live ops panel, CAT map, manifest exhibit)
+- [x] Insurance Professionals page (token migration; full design treatment Phase 3)
+- [x] CAT / Emergency Response page (token migration; full design treatment Phase 3)
+- [x] Service pages — Soft Contents, Fire & Smoke, Water & Mold (token migration; full design treatment Phase 3)
+- [x] About page (token migration; full design treatment Phase 3)
+- [x] Contact / Submit a Claim page (intake placeholder — full intake form with photo upload arrives in Phase 2)
 - [x] SEO foundation (per-page metadata, LocalBusiness + Service JSON-LD, sitemap, robots, OG image)
 - [x] Responsive layout (mobile drawer nav)
-- [x] Shared design system (ink/navy/paper/slate/brass accent, Inter typeface, restrained CAT oxblood)
+- [x] Shared design system (Operating Theatre — paper / ink / signal / verified / data tokens, Geist + Geist Mono + Instrument Serif, three motion primitives)
+- [x] Persistent CAT operational strip across every page
+- [x] Domain component vocabulary built (CatStrip, LotTile, Metric, ProcessStep, BrandMark)
+
+### Design polish (Phase 3 — after AWS prereqs)
+- [ ] Section-by-section redesign of the seven non-home pages to match the homepage's Operating Theatre fidelity
+- [ ] Documentary photography pipeline per § 14 of the design spec — replace mono placeholder wordmarks on the carrier strip with the agreed vendor directory
+- [ ] Wire `/api/ops/current` to a real lot / CAT data source (the CAT strip, live ops panel, and stat blocks currently read from `lib/site.ts.activeCat`)
+- [ ] Fill placeholder copy in `lib/site.ts`: real phone numbers, real address, real IICRC / Texas DPS numbers (currently design-spec placeholders)
 
 ### Intake architecture
 - Photo uploads to S3

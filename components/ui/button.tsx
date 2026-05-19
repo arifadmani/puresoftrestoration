@@ -3,29 +3,32 @@ import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+/*
+ * Operating Theatre button.
+ * Rectangular, 4px radius, no shadow. Mono arrow glyph translates 2px on hover.
+ * `signal` variant is reserved for CAT-hotline use only (per design spec).
+ */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium tracking-tight transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy disabled:pointer-events-none disabled:opacity-50",
+  "group inline-flex items-center gap-2.5 rounded-sm font-medium leading-none tracking-[-0.005em] border transition-[transform,background-color,border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-signal/30 focus-visible:border-signal disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         primary:
-          "bg-navy text-paper hover:bg-navy-deep shadow-[inset_0_-2px_0_rgba(0,0,0,0.12)]",
-        emergency:
-          "bg-emergency text-paper hover:bg-emergency-deep shadow-[inset_0_-2px_0_rgba(0,0,0,0.12)]",
-        accent:
-          "bg-accent text-ink hover:bg-accent-deep hover:text-paper",
-        secondary:
-          "bg-slate-100 text-ink hover:bg-slate-200 border border-slate-200",
-        outline:
-          "border border-navy text-navy hover:bg-navy hover:text-paper",
-        ghost: "text-navy hover:bg-navy-50",
-        link: "text-navy underline-offset-4 hover:underline px-0",
+          "bg-ink-900 text-paper-bright border-ink-900 hover:bg-black",
+        ghost:
+          "bg-transparent text-ink-900 border-ink-900/20 hover:bg-ink-900/[0.04] hover:border-ink-900/30",
+        signal:
+          "bg-signal text-ink-900 border-signal hover:bg-signal-hi hover:border-signal-hi",
+        link:
+          "bg-transparent text-ink-900 border-transparent px-0 hover:text-ink-700 underline-offset-4 hover:underline",
+        ghostInk:
+          "bg-transparent text-paper border-paper/20 hover:bg-paper/[0.06] hover:border-paper/40",
       },
       size: {
-        sm: "h-9 px-3 text-xs",
-        md: "h-11 px-5",
-        lg: "h-12 px-6 text-base",
-        xl: "h-14 px-8 text-base",
+        sm: "h-9 px-3 text-[12.5px]",
+        md: "h-10 px-4 text-[13.5px]",
+        lg: "h-11 px-5 text-[14px]",
+        xl: "h-12 px-6 text-[14.5px]",
       },
     },
     defaultVariants: {
@@ -58,7 +61,7 @@ export function Button(props: ButtonProps) {
 
   if ("href" in props && props.href !== undefined) {
     const { href, ...rest } = props as ButtonAsLink;
-    const isExternal = /^https?:\/\//.test(href);
+    const isExternal = /^https?:\/\/|^mailto:|^tel:/.test(href);
     if (isExternal) {
       return (
         <a className={classes} href={href} {...rest}>
@@ -72,12 +75,32 @@ export function Button(props: ButtonProps) {
       </Link>
     );
   }
-
   const { ...rest } = props as ButtonAsButton;
   return (
     <button className={classes} {...rest}>
       {children}
     </button>
+  );
+}
+
+/* Arrow glyph used inside buttons. Mono, translates 2px on hover. */
+export function BtnArrow({
+  glyph = "→",
+  className,
+}: {
+  glyph?: "→" | "↗";
+  className?: string;
+}) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "mono font-medium leading-none transition-transform duration-150 group-hover:translate-x-[2px]",
+        className
+      )}
+    >
+      {glyph}
+    </span>
   );
 }
 

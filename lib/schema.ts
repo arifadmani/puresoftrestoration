@@ -8,9 +8,10 @@ export function localBusinessSchema() {
     name: site.legalName,
     description: site.description,
     url: site.url,
-    email: site.contact.email,
-    telephone: site.contact.phone,
-    areaServed: site.serviceArea.map((city) => ({
+    email: site.contact.intakeEmail,
+    telephone: site.contact.carrierLineLabel,
+    foundingDate: String(site.estYear),
+    areaServed: site.citiesServed.map((city) => ({
       "@type": "City",
       name: city,
       containedInPlace: { "@type": "AdministrativeArea", name: "Texas" },
@@ -26,21 +27,24 @@ export function localBusinessSchema() {
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
+        description: "24-hour CAT response line for active losses",
         dayOfWeek: [
           "Monday",
           "Tuesday",
           "Wednesday",
           "Thursday",
           "Friday",
+          "Saturday",
+          "Sunday",
         ],
-        opens: "08:00",
-        closes: "17:00",
+        opens: "00:00",
+        closes: "23:59",
       },
     ],
-    specialOpeningHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      description: "24/7 catastrophe response line for active losses",
-    },
+    hasCredential: [
+      { "@type": "EducationalOccupationalCredential", name: `IICRC ${site.certifications.iicrc}` },
+      { "@type": "EducationalOccupationalCredential", name: `Texas DPS ${site.certifications.texasDps}` },
+    ],
   };
 }
 
@@ -56,7 +60,7 @@ export function serviceSchema(args: {
     name: args.name,
     description: args.description,
     provider: { "@id": `${site.url}#business` },
-    areaServed: site.serviceArea.map((city) => ({
+    areaServed: site.citiesServed.map((city) => ({
       "@type": "City",
       name: city,
     })),

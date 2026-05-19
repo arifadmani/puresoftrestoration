@@ -32,6 +32,35 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 
 Real phone numbers and street address still need to be plugged into `lib/site.ts` (currently placeholders).
 
+### Phase 1.5 — Operating Theatre design execution (2026-05-19)
+
+**Status:** complete; deployed to preview at `18.225.211.99:3000`.
+
+- [x] Fonts: Geist + Geist Mono + Instrument Serif via `next/font/google`
+- [x] Token palette replaced entirely (paper / ink / signal / verified / data / caution)
+- [x] Homepage rebuilt section-by-section to the design HTML reference:
+  - Elevated hero panel with three stacked bands (op bar — persistent in Header, site nav, hero body)
+  - Live operations right rail (4 `LotTile`s + throughput bar)
+  - Carrier strip placeholder row (wordmarks only, never full-color)
+  - Capabilities triptych (smoke / water / mold tints)
+  - Six-stage chain-of-custody rail + Manifest exhibit (with rotated `VERIFIED · SEALED` stamp)
+  - Dark CAT response section with stylized NTX map (HQ pin, 60-min response radius, county labels with job counts) + four operational stat blocks
+  - Who-we-work-with four-card row
+  - Editorial intake CTA card
+- [x] Persistent `CatStrip` at the top of every page
+- [x] Five-column dark `Footer` with brand block + Capabilities + Operations + For partners + Company + mono legal strip with IICRC + Texas DPS numbers
+- [x] Component primitives built: `Button` (primary/ghost/signal/link/ghostInk), `Badge`, `Field`/`Input`/`FramedInput`, `Card`, `BrandMark`, `CatStrip`, `LotTile`, `Metric`, `ProcessStep`, `SectionTag`, `Eyebrow`, `Display`, `Lede`
+- [x] Motion primitives wired (pulse, tick, sweep) — respect `prefers-reduced-motion`
+- [x] Seven non-home pages re-skinned to the new tokens (token swap only — full section-by-section redesigns are Phase 3 work)
+- [x] OG image repainted with the new palette
+- [x] `npm run build` passes (14 routes, all static-rendered)
+
+Outstanding for Phase 3 polish (separately tracked):
+- [ ] Section-by-section redesign of the seven non-home pages to match Operating Theatre fidelity
+- [ ] Replace placeholder imagery with documentary photography per § 14
+- [ ] Wire `/api/ops/current` to a real lot/CAT data source (currently mocked in `lib/site.ts`)
+- [ ] Replace mono wordmark placeholders with real carrier directory once vendor list is finalized
+
 ## Phase 2 — Claim intake form
 
 - PostgreSQL via Docker Compose, persisted volume, scheduled backups

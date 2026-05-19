@@ -16,11 +16,11 @@ export default function ContactPage() {
   return (
     <>
       <Section tone="ink">
-        <Eyebrow className="text-accent">Submit a claim</Eyebrow>
+        <Eyebrow className="text-signal">Submit a claim</Eyebrow>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
           Route a soft contents loss to our intake team.
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 md:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
           The full intake form — claim and carrier fields, loss type, property
           details, contents description, and photo upload — goes live with
           Phase 2 of the build. While that is in flight, route active claims
@@ -40,18 +40,18 @@ export default function ContactPage() {
             <div className="mt-8 grid gap-4">
               <Card>
                 <CardBody className="flex items-start gap-4">
-                  <Phone className="mt-1 text-navy" aria-hidden />
+                  <Phone className="mt-1 text-ink-900" aria-hidden />
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-deep">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
                       24/7 CAT response
                     </p>
                     <a
                       href={`tel:${site.contact.catLineTel}`}
-                      className="mt-2 inline-block text-2xl font-semibold text-ink hover:text-navy"
+                      className="mt-2 inline-block text-2xl font-semibold text-ink hover:text-ink-900"
                     >
-                      {site.contact.catLine}
+                      {site.contact.catLineLabel}
                     </a>
-                    <p className="mt-1 text-sm text-slate-600">
+                    <p className="mt-1 text-sm text-ink-600">
                       For active losses, large-loss events, and after-hours
                       intake.
                     </p>
@@ -61,18 +61,18 @@ export default function ContactPage() {
 
               <Card>
                 <CardBody className="flex items-start gap-4">
-                  <Mail className="mt-1 text-navy" aria-hidden />
+                  <Mail className="mt-1 text-ink-900" aria-hidden />
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-deep">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
                       Claim email
                     </p>
                     <a
-                      href={`mailto:${site.contact.email}?subject=New%20soft%20contents%20claim`}
-                      className="mt-2 inline-block text-lg font-medium text-ink hover:text-navy"
+                      href={`mailto:${site.contact.intakeEmail}?subject=New%20soft%20contents%20claim`}
+                      className="mt-2 inline-block text-lg font-medium text-ink hover:text-ink-900"
                     >
-                      {site.contact.email}
+                      {site.contact.intakeEmail}
                     </a>
-                    <p className="mt-1 text-sm text-slate-600">
+                    <p className="mt-1 text-sm text-ink-600">
                       Send claim number, carrier, loss type, property address,
                       contact details, and any photos. We confirm receipt and a
                       claim reference inside one business hour.
@@ -82,14 +82,14 @@ export default function ContactPage() {
               </Card>
             </div>
 
-            <div className="mt-8 rounded-sm border border-emergency/30 bg-emergency-soft/40 p-5">
+            <div className="mt-8 rounded-sm border border-signal/30 bg-signal-soft/40 p-5">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="mt-0.5 text-emergency" aria-hidden />
+                <AlertTriangle className="mt-0.5 text-signal" aria-hidden />
                 <div>
-                  <p className="text-sm font-semibold text-emergency-deep">
+                  <p className="text-sm font-semibold text-signal">
                     Active loss in progress?
                   </p>
-                  <p className="mt-1 text-sm text-slate-700">
+                  <p className="mt-1 text-sm text-ink-700">
                     Call the CAT response line directly. Email is for
                     non-emergency intake.
                   </p>
@@ -99,43 +99,43 @@ export default function ContactPage() {
           </div>
 
           <aside className="md:col-span-5">
-            <div className="rounded-sm border border-slate-200 bg-paper-muted p-6">
+            <div className="rounded-sm border border-ink-900/10 bg-paper-shadow p-6">
               <Eyebrow>Coming with Phase 2</Eyebrow>
               <SectionHeading className="mt-3 text-xl md:text-2xl">
                 Structured intake with photo upload.
               </SectionHeading>
-              <ul className="mt-5 space-y-3 text-sm text-slate-700">
+              <ul className="mt-5 space-y-3 text-sm text-ink-700">
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Adjuster, carrier, and claim-number fields
                 </li>
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Loss type, date of loss, peril classification
                 </li>
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Property address, site contact, access notes
                 </li>
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Contents description and urgency
                 </li>
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Photo upload to a secured intake bucket
                 </li>
                 <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
                   Claim reference + chain-of-custody seed
                 </li>
               </ul>
-              <p className="mt-5 text-xs text-slate-500">
+              <p className="mt-5 text-xs text-ink-500">
                 Structured fields are chain-of-custody-ready from the first
                 submission — the schema does not change when the portal ships.
               </p>
               <div className="mt-6">
-                <Button href="/insurance-professionals" variant="outline" size="md">
+                <Button href="/insurance-professionals" variant="ghost" size="md">
                   How we work with adjusters <ArrowRight size={14} aria-hidden />
                 </Button>
               </div>

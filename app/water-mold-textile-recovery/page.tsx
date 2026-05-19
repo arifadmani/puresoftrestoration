@@ -23,20 +23,20 @@ export default function WaterMoldPage() {
       <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
 
       <Section tone="ink">
-        <Eyebrow className="text-accent">Service</Eyebrow>
+        <Eyebrow className="text-signal">Service</Eyebrow>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
           Water and mold textile recovery.
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 md:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
           Category-driven water recovery and controlled antimicrobial treatment
           for mold-affected soft contents. Every load is contained, processed,
           and reported in line with the loss classification.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="accent" size="lg">
+          <Button href="/contact" variant="primary" size="lg">
             Submit a claim <ArrowRight size={16} aria-hidden />
           </Button>
-          <Button href="/insurance-professionals" variant="outline" size="lg" className="border-slate-400 text-paper hover:bg-paper hover:text-navy">
+          <Button href="/insurance-professionals" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
             For adjusters
           </Button>
         </div>
@@ -70,7 +70,7 @@ export default function WaterMoldPage() {
           ].map((c) => (
             <Card key={c.tag}>
               <CardBody>
-                <p className="text-xs font-semibold tracking-[0.22em] text-accent-deep">{c.tag}</p>
+                <p className="text-xs font-semibold tracking-[0.22em] text-ink-500">{c.tag}</p>
                 <CardTitle className="mt-2">{c.title}</CardTitle>
                 <CardDescription>{c.body}</CardDescription>
               </CardBody>
@@ -79,7 +79,7 @@ export default function WaterMoldPage() {
         </div>
       </Section>
 
-      <Section tone="muted">
+      <Section tone="paper-shadow">
         <Eyebrow>Mold-affected textiles</Eyebrow>
         <SectionHeading>Controlled treatment, defensible call.</SectionHeading>
         <SectionLead>
@@ -91,7 +91,7 @@ export default function WaterMoldPage() {
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card>
             <CardBody>
-              <Droplets className="text-navy" aria-hidden />
+              <Droplets className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Containment</CardTitle>
               <CardDescription>
                 HEPA-filtered handling and isolated processing to prevent
@@ -101,7 +101,7 @@ export default function WaterMoldPage() {
           </Card>
           <Card>
             <CardBody>
-              <Microscope className="text-navy" aria-hidden />
+              <Microscope className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Assessment</CardTitle>
               <CardDescription>
                 Per-item evaluation against substrate, growth extent, and
@@ -111,7 +111,7 @@ export default function WaterMoldPage() {
           </Card>
           <Card>
             <CardBody>
-              <ShieldCheck className="text-navy" aria-hidden />
+              <ShieldCheck className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Treatment & verification</CardTitle>
               <CardDescription>
                 Approved antimicrobial chemistry, full drying cycle, and
@@ -122,19 +122,19 @@ export default function WaterMoldPage() {
         </div>
       </Section>
 
-      <Section tone="navy">
+      <Section tone="ink">
         <div className="grid items-center gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
             <h2 className="text-2xl font-semibold md:text-3xl">
               Water or mold loss with soft contents?
             </h2>
-            <p className="mt-3 max-w-2xl text-slate-300">
+            <p className="mt-3 max-w-2xl text-ink-300">
               Same-day intake reduces secondary damage and microbial growth on
               affected textiles. Submit the claim now.
             </p>
           </div>
           <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="accent" size="xl">
+            <Button href="/contact" variant="primary" size="xl">
               Submit a claim
             </Button>
           </div>

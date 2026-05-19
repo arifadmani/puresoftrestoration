@@ -1,8 +1,16 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Pure Soft Restoration — North Texas soft contents and textile restoration for insurance claims";
+export const alt =
+  "Pure Soft Restoration — The textile recovery operation insurance carriers call first.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const PAPER = "#F4F1EA";
+const PAPER_BRIGHT = "#FAF8F2";
+const INK_900 = "#0B0D0C";
+const INK_500 = "#5A5F5B";
+const SIGNAL = "#D9691F";
+const SIGNAL_SOFT = "#F7E2CB";
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -11,107 +19,127 @@ export default function OpengraphImage() {
         style={{
           width: "100%",
           height: "100%",
-          background:
-            "linear-gradient(135deg, #0F2545 0%, #08182E 60%, #0A1A38 100%)",
-          color: "#FCFCFC",
+          background: `linear-gradient(180deg, ${PAPER_BRIGHT} 0%, ${PAPER} 100%)`,
+          color: INK_900,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "72px",
-          fontFamily: "Inter, system-ui, sans-serif",
+          padding: 72,
+          fontFamily: "Geist, system-ui, sans-serif",
+          position: "relative",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        {/* Top operational bar */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "10px 16px",
+            background: INK_900,
+            color: PAPER,
+            borderRadius: 4,
+            alignSelf: "flex-start",
+            fontFamily: "ui-monospace, monospace",
+            fontSize: 13,
+            letterSpacing: 2.5,
+            textTransform: "uppercase",
+          }}
+        >
           <div
             style={{
-              width: 56,
-              height: 56,
-              background: "#FCFCFC",
-              color: "#0F2545",
+              width: 8,
+              height: 8,
               borderRadius: 4,
+              background: SIGNAL,
+            }}
+          />
+          <span style={{ color: SIGNAL }}>CAT-2026-04 · Active</span>
+          <span style={{ color: INK_500 }}>·</span>
+          <span>North Texas · 41 properties</span>
+        </div>
+
+        {/* Editorial headline */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 30 }}>
+          <div
+            style={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 26,
-              fontWeight: 700,
+              fontSize: 76,
+              lineHeight: 1.02,
+              letterSpacing: -2.4,
+              fontFamily: "Georgia, serif",
+              maxWidth: 1020,
             }}
           >
-            PS
+            The textile recovery operation
           </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 18,
+              fontSize: 76,
+              lineHeight: 1.02,
+              letterSpacing: -2.4,
+              fontFamily: "Georgia, serif",
+              maxWidth: 1020,
+            }}
+          >
+            <span style={{ display: "flex" }}>insurance carriers call</span>
+            <span
               style={{
-                fontSize: 16,
-                letterSpacing: 4,
-                textTransform: "uppercase",
-                fontWeight: 600,
+                position: "relative",
+                display: "flex",
+                paddingInline: 6,
               }}
             >
-              Pure Soft Restoration
-            </div>
-            <div
-              style={{
-                fontSize: 12,
-                letterSpacing: 6,
-                textTransform: "uppercase",
-                color: "#B68A4E",
-              }}
-            >
-              Insurance-grade textile restoration
-            </div>
+              <span
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 6,
+                  height: 16,
+                  background: SIGNAL_SOFT,
+                  zIndex: 0,
+                  borderRadius: 2,
+                  display: "flex",
+                }}
+              />
+              <span style={{ position: "relative", zIndex: 1, display: "flex" }}>
+                first.
+              </span>
+            </span>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 22,
-              color: "#B68A4E",
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              fontWeight: 600,
-            }}
-          >
-            North Texas
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 64,
-              lineHeight: 1.05,
-              fontWeight: 600,
-              letterSpacing: -1,
-              maxWidth: 980,
-            }}
-          >
-            Soft contents and textile restoration.
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 64,
-              lineHeight: 1.05,
-              fontWeight: 600,
-              letterSpacing: -1,
-              color: "#B68A4E",
-            }}
-          >
-            For insurance claims.
-          </div>
-        </div>
-
+        {/* Bottom rail */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            color: "#94A3B8",
+            color: INK_500,
             fontSize: 18,
+            paddingTop: 32,
+            borderTop: `1px solid rgba(11, 13, 12, 0.10)`,
+            fontFamily: "ui-monospace, monospace",
+            letterSpacing: 2,
+            textTransform: "uppercase",
           }}
         >
-          <div style={{ display: "flex" }}>Documentation · Chain of custody · Severity reduction</div>
-          <div style={{ display: "flex" }}>puresoftrestoration.com</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ display: "flex", color: INK_900, fontSize: 18, letterSpacing: 3 }}>
+              PURE SOFT RESTORATION
+            </div>
+            <div style={{ display: "flex", fontSize: 13 }}>
+              Documentation · Chain of custody · CAT response
+            </div>
+          </div>
+          <div style={{ display: "flex", fontSize: 14 }}>
+            puresoftrestoration.com
+          </div>
         </div>
       </div>
     ),

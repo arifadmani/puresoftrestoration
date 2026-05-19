@@ -28,8 +28,10 @@ This document describes the technical architecture of the Pure Soft Restoration 
 - **Build:** standalone output (`next.config.ts` → `output: "standalone"`). Produces a self-contained `.next/standalone/server.js` and a `.next/static` directory.
 - **Process model:** single Node process, bound to `127.0.0.1:3000` (not exposed publicly).
 - **Bundle size:** standalone build keeps node_modules to only what's needed at runtime (~80 MB).
-- **Styling:** Tailwind v4 via `@tailwindcss/postcss`. Brand tokens declared in CSS using the `@theme` directive — no `tailwind.config.{ts,js}` file.
+- **Styling:** Tailwind v4 via `@tailwindcss/postcss`. Brand tokens declared in CSS using the `@theme` directive — no `tailwind.config.{ts,js}` file. The palette is the Operating Theatre system: paper / ink / signal / verified / data / caution (see `docs/DECISIONS.md`).
+- **Typography:** Geist (sans), Geist Mono (mono — IDs, timestamps, labels), Instrument Serif (display — hero, section opens, declarative moments). All three via `next/font/google` and exposed as CSS variables (`--font-geist-sans`, `--font-geist-mono`, `--font-instrument-serif`).
 - **UI primitives:** shadcn/ui style (cva + clsx + tailwind-merge + lucide-react), hand-crafted rather than scaffolded from the shadcn CLI.
+- **Domain components:** `CatStrip`, `LotTile`, `Metric`, `ProcessStep`, `BrandMark` — the atomic vocabulary of the design system, shared between the homepage, the future operations dashboard, and the future carrier portal.
 - **AI agent docs:** `node_modules/next/dist/docs/` is the source of truth for Next.js APIs in this project (Next.js 16 feature). `AGENTS.md` at the repo root points coding agents at it; `CLAUDE.md` imports it via `@AGENTS.md`.
 
 ### Caddy reverse proxy
@@ -101,12 +103,20 @@ puresoft-restoration/
 │   ├── robots.ts              # robots.txt generator
 │   └── opengraph-image.tsx    # Site-wide OG image (1200x630)
 ├── components/
-│   ├── header.tsx             # Sticky header + utility bar + mobile drawer
-│   ├── footer.tsx             # NAP, services, service-area, legal
-│   ├── section.tsx            # <Section>, <Eyebrow>, <SectionHeading>, <SectionLead>
+│   ├── header.tsx             # Sticky header — persistent CatStrip + site nav + mobile drawer
+│   ├── footer.tsx             # 5-col dark footer + IICRC + Texas DPS legal strip
+│   ├── brand-mark.tsx         # Circular PS glyph + wordmark
+│   ├── section.tsx            # <Section>, <SectionTag>, <Eyebrow>, <Display>, <Lede>
 │   ├── json-ld.tsx            # JSON-LD <script> emitter
+│   ├── ops/
+│   │   ├── cat-strip.tsx      # State-driven persistent operational band
+│   │   ├── lot-tile.tsx       # Mono ID + body + status Badge — used everywhere lots appear
+│   │   ├── metric.tsx         # Serif numeral + mono unit + mono label
+│   │   └── process-step.tsx   # data-state done|active|pending node + serif name + dashed meta
 │   └── ui/
-│       ├── button.tsx         # cva-based Button (variant + size)
+│       ├── button.tsx         # cva Button: primary | ghost | signal | link | ghostInk
+│       ├── badge.tsx          # Pill: active | audit | sealed | pending | caution | intake
+│       ├── input.tsx          # Field, Input, FramedInput
 │       └── card.tsx           # Card, CardBody, CardTitle, CardDescription
 ├── lib/
 │   ├── site.ts                # Single source of truth: name, contact, NAP, service area

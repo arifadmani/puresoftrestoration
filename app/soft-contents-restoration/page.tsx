@@ -23,21 +23,21 @@ export default function SoftContentsPage() {
       <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
 
       <Section tone="ink">
-        <Eyebrow className="text-accent">Service</Eyebrow>
+        <Eyebrow className="text-signal">Service</Eyebrow>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
           Soft contents restoration, documented to the item.
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 md:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
           Garments, linens, bedding, area rugs, drapes, window treatments,
           upholstered items, and luxury textiles. Every piece is intake-logged,
           photographed, condition-coded, and routed through a documented
           restoration workflow.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="accent" size="lg">
+          <Button href="/contact" variant="primary" size="lg">
             Submit a claim <ArrowRight size={16} aria-hidden />
           </Button>
-          <Button href="/insurance-professionals" variant="outline" size="lg" className="border-slate-400 text-paper hover:bg-paper hover:text-navy">
+          <Button href="/insurance-professionals" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
             For adjusters
           </Button>
         </div>
@@ -65,7 +65,7 @@ export default function SoftContentsPage() {
           ].map((line) => (
             <Card key={line}>
               <CardBody>
-                <Shirt className="text-navy" aria-hidden />
+                <Shirt className="text-ink-900" aria-hidden />
                 <CardTitle className="mt-4">{line}</CardTitle>
               </CardBody>
             </Card>
@@ -73,7 +73,7 @@ export default function SoftContentsPage() {
         </div>
       </Section>
 
-      <Section tone="muted">
+      <Section tone="paper-shadow">
         <Eyebrow>How it works</Eyebrow>
         <SectionHeading>One workflow. Documented at every step.</SectionHeading>
 
@@ -86,7 +86,7 @@ export default function SoftContentsPage() {
           ].map((s) => (
             <Card key={s.title}>
               <CardBody>
-                <div className="text-navy">{s.icon}</div>
+                <div className="text-ink-900">{s.icon}</div>
                 <CardTitle className="mt-4">{s.title}</CardTitle>
                 <CardDescription>{s.body}</CardDescription>
               </CardBody>
@@ -95,19 +95,19 @@ export default function SoftContentsPage() {
         </div>
       </Section>
 
-      <Section tone="navy">
+      <Section tone="ink">
         <div className="grid items-center gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
             <h2 className="text-2xl font-semibold md:text-3xl">
               Have a claim with soft contents in scope?
             </h2>
-            <p className="mt-3 max-w-2xl text-slate-300">
+            <p className="mt-3 max-w-2xl text-ink-300">
               Submit the claim and upload contents photos. Same-day pickup is
               standard across the DFW metroplex.
             </p>
           </div>
           <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="accent" size="xl">
+            <Button href="/contact" variant="primary" size="xl">
               Submit a claim
             </Button>
           </div>

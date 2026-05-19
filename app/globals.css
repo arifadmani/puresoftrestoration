@@ -1,41 +1,52 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #08182E;
-  --color-navy: #0F2545;
-  --color-navy-deep: #0A1A38;
-  --color-navy-700: #173258;
-  --color-navy-600: #1E406E;
-  --color-navy-100: #DCE3EE;
-  --color-navy-50: #EEF2F8;
+  /* INK — primary text & dark surfaces */
+  --color-ink-900: #0B0D0C;
+  --color-ink-800: #141816;
+  --color-ink-700: #1F2422;
+  --color-ink-600: #363B38;
+  --color-ink-500: #5A5F5B;
+  --color-ink-400: #828783;
+  --color-ink-300: #A8ACA6;
+  --color-ink-200: #C9CBC4;
+  --color-ink-100: #E3E2DA;
 
-  --color-slate-50: #F8FAFC;
-  --color-slate-100: #F1F5F9;
-  --color-slate-150: #E8ECF2;
-  --color-slate-200: #E2E8F0;
-  --color-slate-300: #CBD5E1;
-  --color-slate-400: #94A3B8;
-  --color-slate-500: #64748B;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1F2A44;
-  --color-slate-900: #0F172A;
+  /* PAPER — primary surfaces */
+  --color-paper: #F4F1EA;
+  --color-paper-bright: #FAF8F2;
+  --color-paper-shadow: #EAE6DC;
+  --color-paper-rule: #D8D3C5;
 
-  --color-paper: #FCFCFC;
-  --color-paper-muted: #F6F7F9;
+  /* SIGNAL — restricted: CAT-active, in-motion, alerts */
+  --color-signal: #D9691F;
+  --color-signal-hi: #E8842F;
+  --color-signal-soft: #F7E2CB;
 
-  --color-accent: #B68A4E;
-  --color-accent-deep: #8F6B36;
-  --color-accent-soft: #EFE4D2;
+  /* VERIFIED — restored, audited, sealed */
+  --color-verified: #2E5C44;
+  --color-verified-soft: #DEE9DF;
 
-  --color-emergency: #9F3B2E;
-  --color-emergency-deep: #7F2D22;
-  --color-emergency-soft: #F4DCD8;
+  /* DATA — neutral operational accent */
+  --color-data: #264960;
+  --color-data-soft: #D8E3EC;
 
-  --color-success: #2F6B4F;
+  /* CAUTION — intake / pending review */
+  --color-caution-soft: #F4EAD7;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Type families */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "JetBrains Mono", monospace;
+  --font-serif: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Shadows */
+  --shadow-op: 0 1px 0 rgba(11,13,12,0.04), 0 8px 24px -10px rgba(11,13,12,0.18);
+  --shadow-op-flat: 0 1px 0 rgba(11,13,12,0.04), 0 1px 2px rgba(11,13,12,0.05);
 }
 
 @layer base {
@@ -45,29 +56,108 @@
   }
   body {
     background: var(--color-paper);
-    color: var(--color-ink);
+    color: var(--color-ink-900);
     font-family: var(--font-sans);
-    font-feature-settings: "cv11", "ss01", "ss03";
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 1.5;
   }
   ::selection {
-    background: var(--color-navy);
-    color: var(--color-paper);
+    background: var(--color-ink-900);
+    color: var(--color-paper-bright);
   }
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    letter-spacing: -0.01em;
+  a {
+    color: inherit;
+    text-decoration: none;
   }
-  h1 { letter-spacing: -0.02em; }
 }
 
-@utility container-prose {
-  max-width: 72rem;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
+/* Type primitives — match design HTML 1:1 */
+@utility mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "ss01", "zero", "cv01";
+}
+@utility serif-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-500);
+}
+@utility hairline-b {
+  border-bottom: 1px solid rgb(11 13 12 / 0.10);
+}
+@utility hairline-t {
+  border-top: 1px solid rgb(11 13 12 / 0.10);
+}
+@utility hairline-r {
+  border-right: 1px solid rgb(11 13 12 / 0.10);
+}
+@utility hairline-on-ink-b {
+  border-bottom: 1px solid rgb(255 251 242 / 0.10);
 }
 
-@utility container-narrow {
-  max-width: 56rem;
+/* Layout primitives */
+@utility doc-shell {
+  max-width: 1440px;
   margin-inline: auto;
-  padding-inline: 1.25rem;
+}
+@utility gutter {
+  padding-inline: 56px;
+}
+
+/* Motion — three approved primitives per design spec */
+@keyframes signal-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(217,105,31,0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(217,105,31,0); }
+  100% { box-shadow: 0 0 0 0 rgba(217,105,31,0); }
+}
+@keyframes signal-pulse-hi {
+  0% { box-shadow: 0 0 0 0 rgba(232,132,47,0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(232,132,47,0); }
+  100% { box-shadow: 0 0 0 0 rgba(232,132,47,0); }
+}
+@keyframes signal-pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217,105,31,0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(217,105,31,0); }
+}
+@keyframes throughput-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@utility motion-pulse {
+  animation: signal-pulse 2s ease-out infinite;
+}
+@utility motion-pulse-hi {
+  animation: signal-pulse-hi 2s ease-out infinite;
+}
+@utility motion-pulse-dot {
+  animation: signal-pulse-soft 1.8s infinite;
+}
+
+/* motion-sweep is a class — pseudo-element selectors can't live inside @utility */
+.motion-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.motion-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0, transparent 30%, rgba(217,105,31,0.45) 50%, transparent 70%, transparent 100%);
+  animation: throughput-sweep 2.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

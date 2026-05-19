@@ -23,7 +23,7 @@ export default function CatResponsePage() {
     <>
       <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
 
-      <section className="bg-emergency text-paper">
+      <section className="bg-signal text-paper">
         <div className="container-prose py-16 md:py-20">
           <div className="inline-flex items-center gap-2 rounded-sm bg-paper/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
             <AlertTriangle size={12} aria-hidden /> 24/7 CAT response line
@@ -31,7 +31,7 @@ export default function CatResponsePage() {
           <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
             When the event is bigger than the plan.
           </h1>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-100 md:text-lg">
+          <p className="mt-5 max-w-3xl text-base leading-7 text-ink-100 md:text-lg">
             Storm, fire, flood, and multi-property events all share a problem:
             soft contents stack up faster than a normal pipeline can handle.
             Pure Soft Restoration runs in event mode — on-scene intake,
@@ -41,11 +41,11 @@ export default function CatResponsePage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`tel:${site.contact.catLineTel}`}
-              className="inline-flex h-14 items-center gap-2 rounded-sm bg-paper px-7 text-base font-semibold text-emergency-deep hover:bg-paper-muted"
+              className="inline-flex h-14 items-center gap-2 rounded-sm bg-paper px-7 text-base font-semibold text-signal hover:bg-paper-shadow"
             >
-              <Phone size={16} aria-hidden /> Call CAT line: {site.contact.catLine}
+              <Phone size={16} aria-hidden /> Call CAT line: {site.contact.catLineLabel}
             </a>
-            <Button href="/contact" variant="outline" size="xl" className="border-paper text-paper hover:bg-paper hover:text-emergency-deep">
+            <Button href="/contact" variant="ghost" size="xl" className="border-paper text-paper hover:bg-paper hover:text-signal">
               Submit a claim
             </Button>
           </div>
@@ -64,7 +64,7 @@ export default function CatResponsePage() {
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card>
             <CardBody>
-              <Truck className="text-navy" aria-hidden />
+              <Truck className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">On-scene intake</CardTitle>
               <CardDescription>
                 Mobile crews log, photograph, and bag textiles directly at the
@@ -74,7 +74,7 @@ export default function CatResponsePage() {
           </Card>
           <Card>
             <CardBody>
-              <Clock className="text-navy" aria-hidden />
+              <Clock className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Surge throughput</CardTitle>
               <CardDescription>
                 Capacity scales with the event. We sequence loads to keep the
@@ -84,7 +84,7 @@ export default function CatResponsePage() {
           </Card>
           <Card>
             <CardBody>
-              <AlertTriangle className="text-navy" aria-hidden />
+              <AlertTriangle className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Risk-prioritized</CardTitle>
               <CardDescription>
                 Smoke, sewage, and mold-risk loads are isolated and
@@ -96,12 +96,12 @@ export default function CatResponsePage() {
         </div>
       </Section>
 
-      <Section tone="navy">
-        <Eyebrow className="text-accent">Engagement</Eyebrow>
+      <Section tone="ink">
+        <Eyebrow className="text-signal">Engagement</Eyebrow>
         <SectionHeading className="text-paper">
           Who calls the CAT line.
         </SectionHeading>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2 text-sm text-slate-200">
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2 text-sm text-ink-200">
           {[
             "Carrier CAT desks coordinating large-scale response",
             "Independent adjuster firms standing up event-mode teams",
@@ -112,19 +112,19 @@ export default function CatResponsePage() {
           ].map((line) => (
             <li
               key={line}
-              className="rounded-sm border border-slate-700/60 bg-ink/60 px-4 py-3"
+              className="rounded-sm border border-ink-700/60 bg-ink/60 px-4 py-3"
             >
               {line}
             </li>
           ))}
         </ul>
-        <p className="mt-10 text-sm text-slate-300">
+        <p className="mt-10 text-sm text-ink-300">
           Direct line for active events:{" "}
           <a
             href={`tel:${site.contact.catLineTel}`}
-            className="font-semibold text-accent hover:text-paper"
+            className="font-semibold text-signal hover:text-paper"
           >
-            {site.contact.catLine}
+            {site.contact.catLineLabel}
           </a>
         </p>
       </Section>

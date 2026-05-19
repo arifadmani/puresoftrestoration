@@ -23,20 +23,20 @@ export default function FireSmokePage() {
       <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
 
       <Section tone="ink">
-        <Eyebrow className="text-accent">Service</Eyebrow>
+        <Eyebrow className="text-signal">Service</Eyebrow>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
           Fire and smoke odor textile restoration.
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 md:text-lg">
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
           Smoke contamination, soot, and odor are textile problems before they
           are anything else. We isolate, treat, and verify — and report exactly
           what was restored, what was not, and why.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="accent" size="lg">
+          <Button href="/contact" variant="primary" size="lg">
             Submit a claim <ArrowRight size={16} aria-hidden />
           </Button>
-          <Button href="/cat-emergency-response" variant="outline" size="lg" className="border-slate-400 text-paper hover:bg-paper hover:text-navy">
+          <Button href="/cat-emergency-response" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
             CAT response
           </Button>
         </div>
@@ -54,7 +54,7 @@ export default function FireSmokePage() {
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           <Card>
             <CardBody>
-              <FlameKindling className="text-navy" aria-hidden />
+              <FlameKindling className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Soot extraction</CardTitle>
               <CardDescription>
                 Pre-cleaning, dry-soot removal, and isolation before any wet
@@ -64,7 +64,7 @@ export default function FireSmokePage() {
           </Card>
           <Card>
             <CardBody>
-              <Sparkles className="text-navy" aria-hidden />
+              <Sparkles className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Odor neutralization</CardTitle>
               <CardDescription>
                 Process selection — ozone, hydroxyl, thermal fog, or
@@ -75,7 +75,7 @@ export default function FireSmokePage() {
           </Card>
           <Card>
             <CardBody>
-              <Wind className="text-navy" aria-hidden />
+              <Wind className="text-ink-900" aria-hidden />
               <CardTitle className="mt-4">Post-treatment verification</CardTitle>
               <CardDescription>
                 Sensory verification and where appropriate air-quality checks
@@ -86,10 +86,10 @@ export default function FireSmokePage() {
         </div>
       </Section>
 
-      <Section tone="muted">
+      <Section tone="paper-shadow">
         <Eyebrow>For the claim file</Eyebrow>
         <SectionHeading>Documentation that defends the salvage decision.</SectionHeading>
-        <ul className="mt-8 grid gap-3 md:grid-cols-2 text-sm text-slate-700">
+        <ul className="mt-8 grid gap-3 md:grid-cols-2 text-sm text-ink-700">
           {[
             "Per-item intake with photos and damage notes at the loss site",
             "Treatment log with process, dwell time, and operator",
@@ -98,26 +98,26 @@ export default function FireSmokePage() {
             "Chain of custody from pickup through return",
             "Reinspection-ready record retention",
           ].map((line) => (
-            <li key={line} className="rounded-sm border border-slate-200 bg-paper px-4 py-3">
+            <li key={line} className="rounded-sm border border-ink-900/10 bg-paper px-4 py-3">
               {line}
             </li>
           ))}
         </ul>
       </Section>
 
-      <Section tone="navy">
+      <Section tone="ink">
         <div className="grid items-center gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
             <h2 className="text-2xl font-semibold md:text-3xl">
               Active fire loss?
             </h2>
-            <p className="mt-3 max-w-2xl text-slate-300">
+            <p className="mt-3 max-w-2xl text-ink-300">
               The CAT line is staffed 24/7 for active losses. Submit the claim
               online for non-emergency intake.
             </p>
           </div>
           <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="accent" size="xl">
+            <Button href="/contact" variant="primary" size="xl">
               Submit a claim
             </Button>
           </div>
