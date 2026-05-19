@@ -37,10 +37,10 @@ This document describes the technical architecture of the Pure Soft Restoration 
 ### Caddy reverse proxy
 - **Role:** terminates TLS, handles HTTP/2, redirects HTTP → HTTPS, applies security headers, gzips responses.
 - **Certificates:** automatic Let's Encrypt issuance and renewal.
-- **Config:** `/etc/caddy/Caddyfile`, version-controlled via a symlink from this repo's `deploy/Caddyfile`.
+- **Config:** `/etc/caddy/Caddyfile`, version-controlled via a symlink from this repo's `deployment/Caddyfile.example`.
 
 ### systemd unit
-- **Unit file:** `/etc/systemd/system/puresoft.service` (sourced from `deploy/systemd/puresoft.service`).
+- **Unit file:** `/etc/systemd/system/puresoft.service` (sourced from `deployment/puresoft.service.example`).
 - **User:** dedicated `puresoft` system user (no shell, owns the deploy directory).
 - **Working dir:** `/var/www/puresoft/current` (symlink to a release directory).
 - **Environment:** loaded from `/etc/puresoft.env` (chmod 600, owned by `puresoft` user).
@@ -48,7 +48,7 @@ This document describes the technical architecture of the Pure Soft Restoration 
 - **Logging:** stdout/stderr → journald → `journalctl -u puresoft`.
 
 ### PostgreSQL
-- **Deployment:** Docker Compose at `deploy/docker-compose.yml`.
+- **Deployment:** Docker Compose at `deployment/docker-compose.yml`.
 - **Image:** official `postgres:16`.
 - **Storage:** named volume `puresoft_pgdata`, backed up via EBS snapshots.
 - **Exposure:** bound to `127.0.0.1:5432` only — never public.
@@ -123,10 +123,12 @@ puresoft-restoration/
 │   ├── seo.ts                 # buildMetadata() helper for per-page Metadata
 │   ├── schema.ts              # LocalBusiness + Service JSON-LD builders
 │   └── utils.ts               # cn() class-name composer
-├── deploy/
-│   ├── Caddyfile              # Caddy 2 reverse-proxy config
-│   ├── systemd/puresoft.service
-│   └── README.md              # First-time setup + deploy recipe
+├── deployment/
+│   ├── Caddyfile.example          # Caddy 2 reverse-proxy template
+│   ├── puresoft.service.example   # systemd unit template
+│   └── README.md                  # First-time setup + deploy recipe
+├── scripts/
+│   └── copy-standalone-assets.mjs # postbuild — stages .next/static + public
 ├── public/                    # Static assets (favicon, etc.)
 ├── docs/                      # DECISIONS, ROADMAP, ARCHITECTURE, PROJECT_CONTEXT
 ├── handoff/                   # NEXT_STEPS

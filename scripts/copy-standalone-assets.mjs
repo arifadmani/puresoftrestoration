@@ -7,7 +7,7 @@
  * and woff2 — the page renders as unstyled markup.
  *
  * Wired as the `postbuild` script so `npm run build` is self-contained.
- * The production deploy recipe in deploy/README.md uses rsync for the same
+ * The production deploy recipe in deployment/README.md uses rsync for the same
  * purpose and is unaffected by this script.
  */
 import { rmSync, cpSync, existsSync, statSync } from "node:fs";

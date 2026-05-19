@@ -25,7 +25,7 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 - [x] Root layout emits a site-wide `LocalBusiness` JSON-LD blob
 - [x] `app/sitemap.ts`, `app/robots.ts`, dynamic OG image at `app/opengraph-image.tsx`
 - [x] `next.config.ts` set to `output: "standalone"` for systemd deployment
-- [x] `deploy/Caddyfile`, `deploy/systemd/puresoft.service`, `deploy/README.md` (first-time setup + deploy recipe), `.env.example`
+- [x] `deployment/Caddyfile.example`, `deployment/puresoft.service.example`, `deployment/README.md` (first-time setup + deploy recipe), `.env.example`
 - [x] `npm run build` passes; smoke-tested the standalone server locally (all 14 routes return 200)
 - [ ] Caddy reverse proxy + systemd service deployed on this EC2 box (blocked on Elastic IP + DNS)
 - [ ] HTTPS live on `puresoftrestoration.com` and `www` (blocked on DNS)
@@ -60,6 +60,18 @@ Outstanding for Phase 3 polish (separately tracked):
 - [ ] Replace placeholder imagery with documentary photography per § 14
 - [ ] Wire `/api/ops/current` to a real lot/CAT data source (currently mocked in `lib/site.ts`)
 - [ ] Replace mono wordmark placeholders with real carrier directory once vendor list is finalized
+
+### Phase 1.6 — Review, polish, deployment prep (2026-05-19)
+
+**Status:** complete; site is ready for deploy as soon as Phase 0 AWS prereqs land.
+
+- [x] Verified all 8 routes return HTTP 200, anchor IDs (`#capabilities`, `#process`) exist, footer hrefs resolve, every page has a unique meta description, no `.env` files tracked (only `.env.example`)
+- [x] Tightened hero deck: dense single paragraph swapped for a short lead + 4-item bullet list (24-hour CAT · chain of custody · item-level salvage · carrier-audited reporting)
+- [x] Added a six-item "Operational Posture" strip between the hero and § 04 covering: same-day response, NTX coverage, item-level intake, chain of custody, salvage-focused, CAT capacity. Marked `Indicative · pending vendor configuration` so the values are clearly stated as placeholders
+- [x] Expanded the four Who-We-Work-With cards to cover all six requested audiences — card A/02 now reads "Adjusters · independent & public", card A/03 now reads "Contents companies & restoration GCs". Added a mono `Operators we work alongside` line below the cards listing all six
+- [x] Renamed `deploy/` → `deployment/`, suffixed templates with `.example` (`Caddyfile.example`, `puresoft.service.example`), updated every reference in docs and scripts
+- [x] Validation: `npm install` clean, `npm run lint` 0 errors / 0 warnings, `npm run build` 14 routes prerender as static, postbuild stages assets
+- [x] Smoke test: all routes HTTP 200; CSS bundle (47 KB), woff2 fonts, and JS chunks all reach the wire
 
 ## Phase 2 — Claim intake form
 

@@ -154,7 +154,7 @@ Adopted the flat layout described in `docs/ARCHITECTURE.md`:
 - `app/` for App Router routes (each of the eight pages has its own folder + `page.tsx`)
 - `components/` for shared components; `components/ui/` for shadcn-style primitives
 - `lib/` for `site.ts`, `seo.ts`, `schema.ts`, `utils.ts`
-- `deploy/` for `Caddyfile`, `systemd/puresoft.service`, deployment README
+- `deployment/` for `Caddyfile`, `systemd/puresoft.service`, deployment README
 - `docs/`, `handoff/` retained at root
 
 ### Visual identity locked
@@ -319,6 +319,20 @@ Photography pipeline: `next/image` with `quality=85`, `placeholder="blur"`. Colo
 
 The omission cost us a misread of the Phase 1 smoke test, where "all routes return 200" was technically true but referred only to the HTML body. The reason it took a user-visible regression to surface: the smoke test never followed CSS or font URLs. Future smoke tests should `curl` at least one CSS asset.
 
-The production deploy recipe in `deploy/README.md` already used `rsync` to populate both directories on the server — that path is unaffected. This change is for the local-preview / CI workflow.
+The production deploy recipe in `deployment/README.md` already used `rsync` to populate both directories on the server — that path is unaffected. This change is for the local-preview / CI workflow.
 
 **`npm start`** also retargeted from `next start` (which expects the full `.next/` build) to `node .next/standalone/server.js` so it matches what runs in production.
+
+---
+
+## Phase 1.6 polish + deployment-prep amendments (2026-05-19)
+
+**No reversals of prior decisions.** Two structural notes:
+
+### Deployment directory: `deployment/` (renamed from `deploy/`)
+
+Phase 1.6 renamed `deploy/` → `deployment/` and added the `.example` suffix to the Caddy and systemd templates (`Caddyfile.example`, `puresoft.service.example`). The intent is to match the convention used elsewhere in the project's instruction prompts and to make it visually obvious which files are templates copied to system paths versus files used in-place. All internal references in docs and `scripts/copy-standalone-assets.mjs` were updated.
+
+### Operational-posture strip
+
+A new six-item mono strip sits between the hero panel and § 04 on the homepage. It covers same-day response, North Texas coverage, item-level intake, chain of custody, salvage focus, and CAT/event capacity. The strip is labeled `Indicative · pending vendor configuration` so the placeholder nature of the values is explicit until real metrics replace them. This is the documented landing pad for the proof claims that adjusters scan for; placing it above the design's existing capabilities triptych is intentional — it answers the "what is this place" question before the page presents the loss-type pillars.

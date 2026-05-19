@@ -85,10 +85,10 @@ Once the Elastic IP is assigned:
 - [x] Install Claude Code on Ubuntu AWS server
 - [x] Configure GitHub repo connection locally
 - [x] Configure Node.js runtime (v22.22.3)
-- [x] Author Caddy reverse-proxy config (`deploy/Caddyfile`)
-- [x] Author systemd unit (`deploy/systemd/puresoft.service`)
+- [x] Author Caddy reverse-proxy config (`deployment/Caddyfile.example`)
+- [x] Author systemd unit (`deployment/puresoft.service.example`)
 - [x] Author env template (`.env.example`) with SES, S3, Turnstile, DB keys
-- [ ] Install Caddy on the server and copy `deploy/Caddyfile` to `/etc/caddy/Caddyfile`
+- [ ] Install Caddy on the server and copy `deployment/Caddyfile.example` to `/etc/caddy/Caddyfile`
 - [ ] Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`
 - [ ] Install systemd unit and enable the service (after first release deploy)
 - [ ] Wire AWS SES integration (Phase 2)
@@ -117,7 +117,22 @@ Once the Elastic IP is assigned:
 ### Build pipeline fix (resolved 2026-05-19)
 - [x] `npm run build` now runs a `postbuild` step that copies `.next/static/` and `public/` into `.next/standalone/` so the standalone server can serve CSS, JS, and fonts (Next.js does not copy them automatically).
 - [x] `npm start` retargeted from `next start` to `node .next/standalone/server.js` so local-preview matches production.
-- [x] Deploy README documents a CSS-fetch sanity check so future smoke tests catch un-styled releases.
+- [x] `deployment/README.md` documents a CSS-fetch sanity check so future smoke tests catch un-styled releases.
+
+### Phase 1.6 polish complete (resolved 2026-05-19)
+- [x] Hero deck tightened — short lead + 4 bullets, scannable for adjusters
+- [x] Operational Posture six-item strip added between hero and § 04
+- [x] Who-We-Work-With cards expanded to cover all six audiences (Independent adjusters · Public adjusters · Carriers · Contents companies · Restoration contractors · Property managers), with a mono "alongside" line beneath the cards
+- [x] `deploy/` renamed to `deployment/` with `.example` suffixes on templates; all references updated
+
+### Exact next action for the user
+Three independent tracks, ordered by urgency:
+
+1. **Open the AWS console and start the SES production-access request** (#4 above). It has the longest lead time (~24h); nothing else is gated by it but launch is. Do this first.
+2. **Allocate an Elastic IP and update DNS** (#1, #2) — pointed at this instance. Once DNS resolves to the EIP, Caddy will provision Let's Encrypt automatically the first time it starts after the systemd service is enabled.
+3. **Decide on the seven non-home pages**: leave them in their current token-migrated state (Phase 1 visual minimum) or schedule a Phase 3 section-by-section redesign pass to bring them up to homepage fidelity. The current state is launch-acceptable for v1.
+
+Once #1 and #2 are in motion, run the host-setup recipe in `deployment/README.md` (Caddy install · `puresoft` user · `/etc/puresoft.env` · systemd unit · first release rsync). That puts the site on `https://puresoftrestoration.com`.
 
 ### Intake architecture
 - Photo uploads to S3

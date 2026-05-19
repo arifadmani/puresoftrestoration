@@ -28,11 +28,11 @@ sudo chown puresoft:puresoft /etc/puresoft.env
 sudo chmod 600 /etc/puresoft.env
 
 # 4. Caddy config
-sudo cp /path/to/repo/deploy/Caddyfile /etc/caddy/Caddyfile
+sudo cp /path/to/repo/deployment/Caddyfile.example /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 
 # 5. systemd unit (after first release is in place)
-sudo cp /path/to/repo/deploy/systemd/puresoft.service /etc/systemd/system/puresoft.service
+sudo cp /path/to/repo/deployment/puresoft.service.example /etc/systemd/system/puresoft.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now puresoft
 ```

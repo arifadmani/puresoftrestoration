@@ -176,22 +176,22 @@ const audiences = [
   {
     ix: "A/01",
     h: "Insurance carriers.",
-    d: "Approved vendor across 40+ carriers nationally. Direct billing, deductible-aware reporting, carrier-portal audit access on every lot.",
+    d: "Approved soft-goods vendor across 40+ carriers. Direct billing, deductible-aware reporting, carrier-portal audit access on every lot.",
     lk: "Carrier intake",
     href: "/insurance-professionals",
   },
   {
     ix: "A/02",
-    h: "Public adjusters.",
-    d: "Adjuster-grade documentation built for claim disputes: photographs, salvage scoring, certified pre-loss valuation methodology.",
+    h: "Adjusters · independent & public.",
+    d: "Adjuster-grade documentation built for claim disputes: per-item photographs, salvage scoring, pre-loss valuation methodology, defensible chain logs.",
     lk: "Adjuster portal",
     href: "/insurance-professionals",
   },
   {
     ix: "A/03",
-    h: "Large-loss GCs.",
-    d: "Sub-vendor on whole-house and commercial restoration projects. Coordinated scheduling with structural and contents teams.",
-    lk: "GC partnership",
+    h: "Contents companies & restoration GCs.",
+    d: "Sub-vendor on whole-house and commercial restoration projects. Coordinated scheduling with structural and contents teams. Manifest hand-off ready.",
+    lk: "Vendor onboarding",
     href: "/insurance-professionals",
   },
   {
@@ -201,6 +201,15 @@ const audiences = [
     lk: "PM agreement",
     href: "/insurance-professionals",
   },
+];
+
+const audienceRoll = [
+  "Independent adjusters",
+  "Public adjusters",
+  "Carriers",
+  "Contents companies",
+  "Restoration contractors",
+  "Property managers",
 ];
 
 const mapRegions: { name: string; jobs: number; pos: string; tone: "warm" | "cool" }[] = [
@@ -246,8 +255,21 @@ export default function HomePage() {
               </Display>
 
               <p className="mt-9 max-w-[54ch] text-[16px] leading-[1.6] text-ink-600">
-                <b className="text-ink-900 font-medium">Pure Soft Restoration</b> is North Texas&apos;s specialized soft-goods recovery operation — engineered for the scale, speed and documentation rigor that insurance carriers require on smoke, water, fire and biohazard losses. <b className="text-ink-900 font-medium">24-hour CAT mobilization. Chain-of-custody on every item. Carrier-audited reporting.</b>
+                Specialized soft-goods recovery for smoke, water, fire and biohazard losses across North Texas. Built for the adjusters, carriers and contents teams who run the claim.
               </p>
+              <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-7 gap-y-1.5 max-w-[54ch] text-[14px] text-ink-700">
+                {[
+                  "24-hour CAT mobilization",
+                  "Chain of custody on every item",
+                  "Item-level salvage scoring",
+                  "Carrier-audited reporting",
+                ].map((line) => (
+                  <li key={line} className="flex items-start gap-2">
+                    <span aria-hidden className="mt-2 inline-block h-[3px] w-[3px] rounded-full bg-ink-700" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
 
               <div className="mt-9 flex flex-wrap gap-2.5">
                 <Button href="/contact" variant="primary" size="lg">
@@ -338,6 +360,41 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Operational posture — proof placeholders, scannable for adjusters */}
+      <section aria-labelledby="posture-h" className="bg-paper border-t border-ink-900/10">
+        <div className="doc-shell gutter py-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-3 mb-6">
+            <h2
+              id="posture-h"
+              className="mono text-[11px] tracking-[0.18em] uppercase text-ink-500"
+            >
+              § Operational Posture · how Pure Soft works a claim
+            </h2>
+            <span className="mono text-[10px] tracking-[0.14em] uppercase text-ink-400">
+              Indicative · pending vendor configuration
+            </span>
+          </div>
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-5">
+            {[
+              { k: "01", h: "Same-day response", d: "Pickup within hours of carrier dispatch across the DFW metroplex." },
+              { k: "02", h: "North Texas coverage", d: "Tarrant · Dallas · Collin · Denton · Rockwall · Johnson." },
+              { k: "03", h: "Item-level intake", d: "Photo-verified inventory, RFID lot tags, condition codes per item." },
+              { k: "04", h: "Chain of custody", d: "Signed transfers from on-site pickup through sealed return." },
+              { k: "05", h: "Salvage-focused", d: "Restoration over replacement; per-item salvage score in every manifest." },
+              { k: "06", h: "CAT / event mode", d: "Surge capacity to absorb large-loss events without breaking custody." },
+            ].map((p) => (
+              <li key={p.k} className="flex flex-col gap-1.5 border-l border-ink-900/10 pl-4">
+                <span className="mono text-[10px] tracking-[0.18em] text-ink-500">{p.k}</span>
+                <span className="text-[13.5px] font-medium text-ink-900 leading-tight tracking-[-0.005em]">
+                  {p.h}
+                </span>
+                <span className="text-[12.5px] leading-[1.5] text-ink-600">{p.d}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -703,6 +760,16 @@ export default function HomePage() {
                 {a.lk} <span className="text-signal group-hover:translate-x-[2px] inline-block transition-transform">→</span>
               </span>
             </a>
+          ))}
+        </div>
+        <div className="mt-7 flex flex-wrap items-baseline gap-x-3 gap-y-2 mono text-[11px] tracking-[0.14em] uppercase text-ink-500">
+          <span>Operators we work alongside</span>
+          <span className="text-ink-300">·</span>
+          {audienceRoll.map((a, i) => (
+            <span key={a} className="text-ink-700">
+              {a}
+              {i < audienceRoll.length - 1 && <span className="text-ink-300"> · </span>}
+            </span>
           ))}
         </div>
       </Section>
