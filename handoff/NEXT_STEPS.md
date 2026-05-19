@@ -1,58 +1,127 @@
-# Immediate Next Steps
+# Next Steps
 
-## Infrastructure
+This file has two parts:
 
-- Install Claude Code on Ubuntu AWS server
-- Configure GitHub repo connection locally
-- Configure Node.js runtime
-- Configure deployment workflow
-- Configure Caddy
-- Configure systemd service
-- Configure AWS SES placeholders
-- Configure AWS S3 placeholders
+1. **User-side AWS prerequisites** — actions only the human can take (AWS console, registrar, Cloudflare). Start in parallel with the build; they have real lead time.
+2. **Strategic build phases** — what comes after the prereqs are in motion.
 
-## Website build phase
+---
 
-Build:
+## Part 1 — User-side prerequisites
 
-- homepage
-- insurance professionals page
-- CAT response page
-- service pages
-- contact/claim intake page
-- SEO foundation
-- responsive layout
-- shared design system
+### 1. Elastic IP
+- EC2 → Elastic IPs → Allocate → associate with this instance.
+- Record the IP — it goes into DNS below.
 
-## Intake architecture
+### 2. DNS at the registrar
+Once the Elastic IP is assigned:
+- `A` record: `@` → `<elastic-ip>`
+- `CNAME` record: `www` → `puresoftrestoration.com`
 
-Plan for:
+### 3. AWS SES — domain verification
+- SES → Verified identities → Create identity → Domain.
+- Domain: `puresoftrestoration.com`.
+- Enable Easy DKIM (RSA 2048).
+- Add the three `CNAME` records SES gives you to the registrar.
+- Verification completes once DNS propagates (minutes to hours).
 
-- photo uploads
-- chain of custody
-- claim documentation
-- adjuster intake workflows
-- future CRM integration
+### 4. AWS SES — production access request
+- SES is sandboxed by default (outbound only to verified addresses).
+- SES → Account dashboard → Request production access.
+- Use case: transactional email for an insurance-claim intake form.
+- AWS typically responds within 24h.
 
-## Marketing and sales phase
+### 5. Interim SES email identities (while still sandboxed)
+- Verify `admin@puresoftrestoration.com` and `arifadmani@gmail.com` as **email identities** in SES.
+- Allows end-to-end claim-form testing before production access is granted.
 
-Create:
+### 6. AWS Security Group
+- Inbound 22 (SSH) — restricted to your IP only.
+- Inbound 80 (HTTP) — `0.0.0.0/0`.
+- Inbound 443 (HTTPS) — `0.0.0.0/0`.
+- All other inbound: denied.
 
-- adjuster capability statement PDF
+### 7. AWS S3 bucket
+- Create `puresoft-claim-uploads-prod` in the same region as this EC2.
+- Block all public access.
+- Default encryption: SSE-S3 (or KMS if preferred).
+- CORS: PUT/GET from `https://puresoftrestoration.com` only.
+
+### 8. AWS IAM role for EC2
+- Create role `puresoft-ec2`.
+- Attach inline policies granting only:
+  - `ses:SendEmail` / `ses:SendRawEmail` on the verified domain
+  - `s3:PutObject`, `s3:GetObject` on the claim-uploads bucket
+- Attach to this EC2 instance — avoids long-lived AWS keys on the server.
+
+### 9. Cloudflare Turnstile
+- cloudflare.com (free) → Turnstile → add `puresoftrestoration.com`.
+- Save the **site key** and **secret key** for the `.env`.
+
+### 10. `admin@puresoftrestoration.com` mailbox
+- Confirm a real mailbox exists for `admin@puresoftrestoration.com` (Google Workspace recommended).
+- This is where all claim notifications will land.
+
+### Status checklist
+- [ ] Elastic IP allocated & associated
+- [ ] DNS `A` + `CNAME` records added
+- [ ] SES domain verified (DKIM CNAMEs added)
+- [ ] SES production access requested
+- [ ] SES production access granted
+- [ ] Interim email identities verified
+- [ ] Security group rules confirmed
+- [ ] S3 bucket created with CORS + encryption
+- [ ] IAM role created and attached to EC2
+- [ ] Turnstile keys obtained
+- [ ] `admin@puresoftrestoration.com` mailbox live and monitored
+
+---
+
+## Part 2 — Strategic build phases
+
+(Full detail in `docs/ROADMAP.md`. This is the short version.)
+
+### Infrastructure (in progress)
+- [x] Install Claude Code on Ubuntu AWS server
+- [x] Configure GitHub repo connection locally
+- [x] Configure Node.js runtime (v22.22.3)
+- [ ] Configure Caddy
+- [ ] Configure systemd service
+- [ ] Configure AWS SES integration
+- [ ] Configure AWS S3 integration
+- [ ] Configure deployment workflow
+
+### Website build phase
+- Homepage
+- Insurance Professionals page
+- CAT / Emergency Response page
+- Service pages (Soft Contents, Fire & Smoke, Water & Mold)
+- About page
+- Contact / Submit a Claim page (with photo upload)
+- SEO foundation (metadata, JSON-LD schema, sitemap, robots)
+- Responsive layout
+- Shared design system (navy/slate/white + accent)
+
+### Intake architecture
+- Photo uploads to S3
+- Chain-of-custody-ready schema in Postgres
+- Claim documentation fields
+- Adjuster intake workflows
+- Future CRM integration hooks
+
+### Marketing and sales phase
+- Adjuster capability statement (PDF)
 - CAT response sheet
-- claim intake packet
-- restoration case studies
-- adjuster outreach strategy
+- Claim intake packet
+- Restoration case studies
+- Adjuster outreach strategy
 
-## Long-term platform direction
-
-Future modules may include:
-
-- adjuster portal
-- claim tracking
-- customer portal
-- reporting dashboard
-- barcode tracking
-- room-level inventory
-- salvage analytics
+### Long-term platform direction
+- Adjuster portal
+- Claim tracking
+- Customer portal
+- Reporting dashboard
+- Barcode tracking
+- Room-level inventory
+- Salvage analytics
 - CAT operations workflows
