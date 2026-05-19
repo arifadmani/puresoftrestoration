@@ -43,8 +43,14 @@ sudo systemctl enable --now puresoft
 # On the build host (or this server):
 npm ci
 npm run build
+# `npm run build` triggers the `postbuild` script which copies
+# .next/static/ and public/ into .next/standalone/ so the standalone
+# server can serve CSS, JS chunks, and fonts. The rsync flow below
+# also covers those paths explicitly — the redundancy is intentional
+# so that a forgotten step on either side still produces a working
+# release.
 
-# Copy standalone output, static assets, and public/ into a new release dir.
+# Copy the staged standalone bundle into a new release dir.
 TS=$(date +%Y%m%d%H%M%S)
 sudo install -d -o puresoft -g puresoft /var/www/puresoft/releases/$TS
 sudo rsync -a --chown=puresoft:puresoft .next/standalone/ /var/www/puresoft/releases/$TS/
@@ -54,6 +60,19 @@ sudo rsync -a --chown=puresoft:puresoft public/ /var/www/puresoft/releases/$TS/p
 # Atomic swap.
 sudo ln -sfn /var/www/puresoft/releases/$TS /var/www/puresoft/current
 sudo systemctl restart puresoft
+```
+
+### Verifying a release renders styled
+
+After restarting, fetch the page and then follow one of the CSS URLs
+in its `<head>` — a working release should return ~45 KB of CSS, not a
+404. (Previous smoke tests checked only the HTML body, which still
+returns 200 even when CSS is missing.)
+
+```bash
+curl -s http://127.0.0.1:3000/ \
+  | grep -oE '/_next/static/[^"]+\.css' | head -1 \
+  | xargs -I{} curl -s -o /dev/null -w "HTTP %{http_code} · %{size_download}b\n" "http://127.0.0.1:3000{}"
 ```
 
 ## Logs

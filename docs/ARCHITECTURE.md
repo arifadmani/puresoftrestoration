@@ -25,7 +25,7 @@ This document describes the technical architecture of the Pure Soft Restoration 
 
 ### Next.js application
 - **Runtime:** Node.js 22.x, Next.js 16 (App Router), TypeScript.
-- **Build:** standalone output (`next.config.ts` → `output: "standalone"`). Produces a self-contained `.next/standalone/server.js` and a `.next/static` directory.
+- **Build:** standalone output (`next.config.ts` → `output: "standalone"`). Produces a self-contained `.next/standalone/server.js`. A `postbuild` npm script (`scripts/copy-standalone-assets.mjs`) copies `.next/static/` and `public/` into the standalone tree, since Next.js does not do this automatically and the standalone server otherwise 404s every CSS, JS chunk, and font.
 - **Process model:** single Node process, bound to `127.0.0.1:3000` (not exposed publicly).
 - **Bundle size:** standalone build keeps node_modules to only what's needed at runtime (~80 MB).
 - **Styling:** Tailwind v4 via `@tailwindcss/postcss`. Brand tokens declared in CSS using the `@theme` directive — no `tailwind.config.{ts,js}` file. The palette is the Operating Theatre system: paper / ink / signal / verified / data / caution (see `docs/DECISIONS.md`).

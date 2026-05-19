@@ -1,9 +1,6 @@
-import { ArrowUpRight } from "lucide-react";
 import { Button, BtnArrow } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Field, Input } from "@/components/ui/input";
 import { Display, Eyebrow, Lede, Section, SectionTag } from "@/components/section";
-import { CatStrip } from "@/components/ops/cat-strip";
 import { LotTile } from "@/components/ops/lot-tile";
 import { Metric } from "@/components/ops/metric";
 import { ProcessStep } from "@/components/ops/process-step";
@@ -770,7 +767,3 @@ export default function HomePage() {
   );
 }
 
-/* Suppress unused export marker for next/lint; keep the icon import available
- * for future hero embellishments. */
-void ArrowUpRight;
-void Badge;

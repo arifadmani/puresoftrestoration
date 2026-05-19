@@ -114,6 +114,11 @@ Once the Elastic IP is assigned:
 - [ ] Wire `/api/ops/current` to a real lot / CAT data source (the CAT strip, live ops panel, and stat blocks currently read from `lib/site.ts.activeCat`)
 - [ ] Fill placeholder copy in `lib/site.ts`: real phone numbers, real address, real IICRC / Texas DPS numbers (currently design-spec placeholders)
 
+### Build pipeline fix (resolved 2026-05-19)
+- [x] `npm run build` now runs a `postbuild` step that copies `.next/static/` and `public/` into `.next/standalone/` so the standalone server can serve CSS, JS, and fonts (Next.js does not copy them automatically).
+- [x] `npm start` retargeted from `next start` to `node .next/standalone/server.js` so local-preview matches production.
+- [x] Deploy README documents a CSS-fetch sanity check so future smoke tests catch un-styled releases.
+
 ### Intake architecture
 - Photo uploads to S3
 - Chain-of-custody-ready schema in Postgres

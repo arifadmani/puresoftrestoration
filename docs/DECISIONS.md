@@ -308,3 +308,17 @@ Photography pipeline: `next/image` with `quality=85`, `placeholder="blur"`. Colo
 - ❌ Hero background video loops
 - ❌ Marketing-style spacing (< 48px between sections)
 - ❌ Multiple signal-amber elements on the same screen
+
+---
+
+## Standalone build asset copy (2026-05-19, later)
+
+**Decision:** wire a `postbuild` npm script that copies `.next/static/` → `.next/standalone/.next/static/` and `public/` → `.next/standalone/public/` after every `next build`. Script lives at `scripts/copy-standalone-assets.mjs`.
+
+**Why:** Next.js standalone mode produces a self-contained `server.js` at `.next/standalone/server.js` but does not copy the static assets or `public/` directory into the standalone tree. Without the copy, the locally-run standalone server returns HTML correctly but 404s every CSS, JS chunk, and woff2 — the page renders as unstyled markup, looking like a Notepad document.
+
+The omission cost us a misread of the Phase 1 smoke test, where "all routes return 200" was technically true but referred only to the HTML body. The reason it took a user-visible regression to surface: the smoke test never followed CSS or font URLs. Future smoke tests should `curl` at least one CSS asset.
+
+The production deploy recipe in `deploy/README.md` already used `rsync` to populate both directories on the server — that path is unaffected. This change is for the local-preview / CI workflow.
+
+**`npm start`** also retargeted from `next start` (which expects the full `.next/` build) to `node .next/standalone/server.js` so it matches what runs in production.
