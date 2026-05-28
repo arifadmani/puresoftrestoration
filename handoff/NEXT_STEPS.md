@@ -1,6 +1,6 @@
 # Next Steps
 
-## At-a-glance status (last updated 2026-05-28 18:1x UTC)
+## At-a-glance status (last updated 2026-05-28 19:30 UTC)
 
 | Layer | State |
 | --- | --- |
@@ -14,32 +14,30 @@
 | TLS | ✅ Let's Encrypt via tls-alpn-01, auto-renew |
 | Caddy 2.11.3 | ✅ active, redirects `:80 → :443`, proxies to `127.0.0.1:3000` |
 | Next.js (systemd `puresoft.service`) | ✅ active, `next-server v16.2.6`, 14 routes prerendered |
-| Host firewall (UFW) | ✅ SSH/80/443 open (3000/8000 still open to world — minor cleanup) |
+| Host firewall (UFW) | ✅ SSH/80/443 open (3000/8000 still world-open — minor cleanup, app binds to 127.0.0.1 so non-exploitable) |
 | AWS Security Group | ✅ confirmed correct |
 | SES domain identity `puresoftrestoration.com` | ✅ verified (DKIM Successful, 2026-05-28) |
+| SES email identity `admin@puresoftrestoration.com` | ✅ verified (interim, useful while sandbox is in effect) |
 | SES production access | ⏳ submitted 2026-05-28, awaiting AWS review (~24h) |
-| `/etc/puresoft.env` | ⚠️ placeholders only — needs real SES + Turnstile + (later) DB values |
-| Interim SES email identities | ❌ not verified (`admin@puresoftrestoration.com`, `arifadmani@gmail.com`) — needed for end-to-end claim-form testing while SES is still sandboxed |
-| S3 `puresoft-claim-uploads-prod` | ❌ not created (needed for Phase 2 photo uploads) |
-| IAM `ec2-puresoft-app-role` runtime policy | ❌ still only `s3:ListAllMyBuckets` (needs SES + S3 least-priv — recipe in `docs/aws/SETUP_RESULTS.md` § 7) |
-| Cloudflare Turnstile keys | ❌ not obtained |
+| SES end-to-end smoke test | ✅ EC2 role → SES → `admin@` inbox confirmed delivered 2026-05-28 |
+| IAM `ec2-puresoft-app-role` runtime policy | ✅ `puresoft-app-runtime` inline policy attached — `ses:SendEmail`/`SendRawEmail` on `identity/*` with `ses:FromAddress` pinned to `noreply@puresoftrestoration.com` |
+| Cloudflare Turnstile keys | ✅ provisioned and stored in `/etc/puresoft.env` (currently unused — no active form) |
+| `/etc/puresoft.env` | ✅ real SES + Turnstile values in; S3 section dropped; mode `0600`, owner `puresoft:puresoft` |
+| `puresoft.service` last restart | ✅ 2026-05-28 — picked up new env successfully, healthy under load |
+| S3 `puresoft-claim-uploads-prod` | 🚫 **canceled** — no photo upload in scope (see `docs/DECISIONS.md` § "Phase 2 rescope") |
+| PostgreSQL | 🚫 **deferred** — no claim-submissions table needed without a structured online form |
 
-**Phase 1 (marketing site live) is complete. Phase 2 (claim intake → email + photo upload) is gated on the four ❌ rows above and the ⏳ SES production-access response.**
+**Phase 1 is complete. The only outstanding item is AWS's SES production-access response (which lifts the sandbox so the site can email any recipient, not just verified ones). Nothing on our side is blocked on it — `admin@` mail already flows; the production-access approval just widens the To: side.**
 
-### Immediate next action (ordered by what unblocks the most parallel work)
+### What's next
 
-1. **Verify the two interim SES email identities** — `admin@puresoftrestoration.com` (claim notifications destination) and `arifadmani@gmail.com` (test sender). Each is a single SES Console action plus clicking a verification link in the mailbox. Total ~5 min. Lets the claim form be exercised end-to-end *before* AWS approves production access.
-2. **Create the S3 bucket** `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com` only). Independent of SES — can do anytime.
-3. **Attach the least-privilege runtime policy** from `docs/aws/SETUP_RESULTS.md` § 7 to `ec2-puresoft-app-role`. Depends on (2) — bucket has to exist first because the policy references its ARN.
-4. **Provision Cloudflare Turnstile site + secret keys** at https://dash.cloudflare.com/?to=/:account/turnstile (free tier). Independent of all the above.
-5. **Fill `/etc/puresoft.env` with real values and `sudo systemctl restart puresoft`** — does the actual wiring. Do this last, once SES/S3/Turnstile values exist.
-
-### Parallel: AWS SES production-access response
-
-When AWS responds (~24h), one of three things:
-- **Approved** — sandbox is lifted, the claim form can email *any* address. No further DNS/console work; just plug `noreply@puresoftrestoration.com` into the env.
-- **Approved with reduced quota** — same as above but at a lower daily quota than requested. Fine for launch; can request increases later as volume grows.
-- **Follow-up questions** — paste their question and we'll draft the response. Common asks: confirm bounce/complaint handling, confirm no marketing use, confirm IP/domain match.
+1. **Wait on AWS SES production-access response** (~24h). When AWS replies:
+   - **Approved** — sandbox is lifted, the site can email any recipient. No env or code change required.
+   - **Approved with reduced quota** — fine for launch; can request increases later.
+   - **Follow-up questions** — paste their question here and we'll draft the response. Common asks: confirm bounce/complaint handling, confirm no marketing use, confirm sender domain.
+2. **Optional: tighten DMARC** to add `rua=mailto:admin@puresoftrestoration.com; ruf=mailto:admin@puresoftrestoration.com; fo=1` so we receive aggregate reports on outbound DKIM/SPF passes. Edit the existing `_dmarc` TXT record at GoDaddy. Not urgent.
+3. **Optional: prune UFW** to drop the world-open `3000/tcp` and `8000/tcp` rules (left over from earlier debugging — app binds to `127.0.0.1` so they don't expose anything, but they're noise in the rule list).
+4. **Homepage UI revamp** — queued as Task #10. The current "Operating Theatre" design reads as a SaaS dashboard (live ops panel with lot codes, throughput bars, mono fonts, geometric maps); we want it to read as a specialty textile-restoration services firm with insurance-pro positioning. Detailed proposal in chat history; user has not yet greenlit execution.
 
 ---
 
@@ -74,9 +72,9 @@ Once the Elastic IP is assigned:
 - Use case: transactional email for an insurance-claim intake form.
 - AWS typically responds within 24h.
 
-### 5. Interim SES email identities (while still sandboxed)
-- Verify `admin@puresoftrestoration.com` and `arifadmani@gmail.com` as **email identities** in SES.
-- Allows end-to-end claim-form testing before production access is granted.
+### 5. Interim SES email identity (while still sandboxed)
+- Verify `admin@puresoftrestoration.com` as an **email identity** in SES.
+- Allows end-to-end smoke-testing of the SES pipeline (and any future contact form) before production access is granted, since sandboxed SES can only send to verified addresses.
 
 ### 6. AWS Security Group
 - Inbound 22 (SSH) — restricted to your IP only.
@@ -84,18 +82,14 @@ Once the Elastic IP is assigned:
 - Inbound 443 (HTTPS) — `0.0.0.0/0`.
 - All other inbound: denied.
 
-### 7. AWS S3 bucket
-- Create `puresoft-claim-uploads-prod` in the same region as this EC2.
-- Block all public access.
-- Default encryption: SSE-S3 (or KMS if preferred).
-- CORS: PUT/GET from `https://puresoftrestoration.com` only.
+### 7. ~~AWS S3 bucket~~ — canceled 2026-05-28
+- No photo upload in scope. See `docs/DECISIONS.md` § "Phase 2 rescope (2026-05-28)".
 
 ### 8. AWS IAM role for EC2
-- Create role `puresoft-ec2`.
-- Attach inline policies granting only:
-  - `ses:SendEmail` / `ses:SendRawEmail` on the verified domain
-  - `s3:PutObject`, `s3:GetObject` on the claim-uploads bucket
-- Attach to this EC2 instance — avoids long-lived AWS keys on the server.
+- Role `ec2-puresoft-app-role` (already attached to the instance).
+- Inline policy `puresoft-app-runtime`:
+  - `ses:SendEmail` / `ses:SendRawEmail` on `arn:aws:ses:us-east-2:638515252835:identity/*` with `ses:FromAddress` condition pinning the sender to `noreply@puresoftrestoration.com`.
+- No S3 statements (S3 was canceled — see § 7). No long-lived AWS keys on the server.
 
 ### 9. Cloudflare Turnstile
 - cloudflare.com (free) → Turnstile → add `puresoftrestoration.com`.
@@ -105,21 +99,21 @@ Once the Elastic IP is assigned:
 - Confirm a real mailbox exists for `admin@puresoftrestoration.com` (Google Workspace recommended).
 - This is where all claim notifications will land.
 
-### Status checklist (updated 2026-05-28 after server-side bootstrap run)
+### Status checklist (snapshot, see the at-a-glance table at the top for the current state)
 
-- [x] Elastic IP allocated & associated *(2026-05-28 — `18.225.78.200` associated with `i-02f5706e777ef2130`)*
-- [x] DNS `A` + `CNAME` records added *(2026-05-28 — `A @ → 18.225.78.200` only; `CNAME www → puresoftrestoration.com.`; old GoDaddy parking record was a single "Parked"/forwarding entry that fanned out to `3.33.130.190` and `15.197.148.33` — deleting the one GoDaddy "Parked" record removed both)*
-- [x] **HTTPS live with Let's Encrypt cert** *(2026-05-28 — `https://puresoftrestoration.com/` → `HTTP/2 200`; `https://www.puresoftrestoration.com/` → `308` to apex. Required opening UFW for 80/443 — host firewall was active and only allowed SSH; AWS SG was already correct. See `docs/aws/SETUP_RESULTS.md` § "Things that did not go on the first attempt" #3.)*
-- [ ] SES domain verified (DKIM CNAMEs added) *(identity does not exist yet)*
-- [ ] SES production access requested *(longest lead time — start this first)*
-- [ ] SES production access granted
-- [ ] Interim email identities verified
-- [ ] Security group rules confirmed
-- [ ] S3 bucket created with CORS + encryption *(bucket `puresoft-claim-uploads-prod` does not exist; account has 0 buckets)*
-- [x] IAM role attached to EC2 *(role `ec2-puresoft-app-role` is attached)*
-- [ ] IAM role granted the least-privilege runtime policy *(role currently only has `s3:ListAllMyBuckets`; recommended policy is in `docs/aws/SETUP_RESULTS.md` § 7)*
-- [ ] Turnstile keys obtained
-- [x] `admin@puresoftrestoration.com` mailbox live and monitored *(Google Workspace MX confirmed)*
+- [x] Elastic IP `18.225.78.200` allocated and associated with `i-02f5706e777ef2130`
+- [x] DNS `A @` + `CNAME www` published at GoDaddy
+- [x] SES domain identity verified (three DKIM CNAMEs + SPF + DMARC published)
+- [x] SES `admin@puresoftrestoration.com` email identity verified (interim, for sandbox-era testing)
+- [x] SES production-access request submitted *(awaiting AWS — only outstanding item)*
+- [x] Security group rules confirmed (22 / 80 / 443)
+- [x] UFW host firewall opened for 80 / 443 (was active and SSH-only by default — see `docs/aws/SETUP_RESULTS.md`)
+- [x] IAM role `ec2-puresoft-app-role` attached with `puresoft-app-runtime` inline policy (SES-only)
+- [x] Cloudflare Turnstile keys provisioned and stored in `/etc/puresoft.env`
+- [x] `admin@puresoftrestoration.com` mailbox live in Google Workspace
+- [x] HTTPS live with Let's Encrypt cert; SES end-to-end smoke test from EC2 role delivered to `admin@`
+- [🚫] S3 bucket — **canceled** (no photo upload in scope)
+- [🚫] Postgres — **deferred** (no claim-submissions table needed)
 
 ---
 
@@ -133,15 +127,15 @@ Once the Elastic IP is assigned:
 - [x] Configure Node.js runtime (v22.22.3 in nvm + v22.22.2 system-wide at `/usr/bin/node` from NodeSource)
 - [x] Author Caddy reverse-proxy config (`deployment/Caddyfile.example`)
 - [x] Author systemd unit (`deployment/puresoft.service.example`)
-- [x] Author env template (`.env.example`) with SES, S3, Turnstile, DB keys
+- [x] Author env template (`.env.example`) with SES, Turnstile keys *(2026-05-28 — S3 and DATABASE_URL sections removed per Phase 2 rescope)*
 - [x] Install AWS CLI v2 on the server (`/usr/local/bin/aws`)
-- [x] **Install Caddy on the server and copy `deployment/Caddyfile.example` to `/etc/caddy/Caddyfile`** *(2026-05-28 — Caddy 2.11.3 active; redirects :80 → :443; ACME will provision certs the moment DNS resolves to this instance)*
-- [x] **Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`** *(2026-05-28 — env file is placeholders only, mode 0600, owned by puresoft:puresoft)*
+- [x] **Install Caddy on the server and copy `deployment/Caddyfile.example` to `/etc/caddy/Caddyfile`** *(2026-05-28 — Caddy 2.11.3 active; redirects :80 → :443; cert obtained via tls-alpn-01)*
+- [x] **Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`** *(2026-05-28 — env mode 0600, owned by puresoft:puresoft, real SES + Turnstile values in place)*
 - [x] **Install systemd unit and enable the service** *(2026-05-28 — `puresoft.service` active, `next-server (v16.2.6)` on 127.0.0.1:3000; required removing `MemoryDenyWriteExecute=true` from the unit because it crashes V8's JIT — see `docs/DECISIONS.md`)*
 - [x] **Deploy first release bundle** *(2026-05-28 — `/var/www/puresoft/releases/20260528162123`, symlinked from `/var/www/puresoft/current`)*
-- [ ] Fill `/etc/puresoft.env` with real values (still placeholders; do this after SES + Turnstile are configured, then `sudo systemctl restart puresoft`)
-- [ ] Wire AWS SES integration (Phase 2)
-- [ ] Wire AWS S3 integration (Phase 2)
+- [x] **Fill `/etc/puresoft.env` with real values + restart** *(2026-05-28 — Turnstile keys in, S3 vars commented out, SES smoke test passed end-to-end)*
+- [x] Wire AWS SES integration *(2026-05-28 — IAM policy attached, tested from EC2 role to admin@ inbox)*
+- [🚫] ~~Wire AWS S3 integration~~ — canceled
 - [ ] CI/CD deployment workflow (Phase 4)
 
 ### Website build phase
@@ -150,7 +144,7 @@ Once the Elastic IP is assigned:
 - [x] CAT / Emergency Response page (token migration; full design treatment Phase 3)
 - [x] Service pages — Soft Contents, Fire & Smoke, Water & Mold (token migration; full design treatment Phase 3)
 - [x] About page (token migration; full design treatment Phase 3)
-- [x] Contact / Submit a Claim page (intake placeholder — full intake form with photo upload arrives in Phase 2)
+- [x] Contact page — renders two intake channels (`tel:` CAT line + `mailto:admin@…`) plus a "what to send" aside. No structured online form; no photo upload. See `docs/DECISIONS.md` § "Phase 2 rescope (2026-05-28)" for the reasoning.
 - [x] SEO foundation (per-page metadata, LocalBusiness + Service JSON-LD, sitemap, robots, OG image)
 - [x] Responsive layout (mobile drawer nav)
 - [x] Shared design system (Operating Theatre — paper / ink / signal / verified / data tokens, Geist + Geist Mono + Instrument Serif, three motion primitives)
