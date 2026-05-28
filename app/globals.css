@@ -404,7 +404,16 @@ html.js-ready .reveal.in {
 .rvr__col { padding: 48px 44px; }
 .rvr__col--restore { background: var(--color-ink); color: var(--color-bone); }
 .rvr__col--restore .rvr__tag { color: var(--color-ox-soft); }
-.rvr__col--replace { background: var(--color-bone-bright); }
+/*
+ * .rvr__col--replace lives inside a band-dark parent that sets the default
+ * text color to bone (light cream). Without an explicit override here, the
+ * "Write off" list items inherit that light color and become invisible
+ * against the bone-bright background of the column itself. Force ink-2 to
+ * restore contrast.
+ */
+.rvr__col--replace { background: var(--color-bone-bright); color: var(--color-ink-2); }
+.rvr__col--replace .rvr__list li { color: var(--color-ink-2); }
+.rvr__col--replace .rvr__tag { color: var(--color-ink-3); }
 .rvr__tag {
   font-size: 12px;
   font-weight: 700;
