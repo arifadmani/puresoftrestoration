@@ -64,8 +64,8 @@ Once the Elastic IP is assigned:
 
 ### Status checklist (updated 2026-05-28 after server-side bootstrap run)
 
-- [ ] Elastic IP allocated & associated *(instance is on ephemeral `18.225.211.99` — stop/start will lose the IP)*
-- [ ] DNS `A` + `CNAME` records added *(currently still pointing at GoDaddy parking — see `docs/aws/dns-records-needed.md`)*
+- [x] Elastic IP allocated & associated *(2026-05-28 — `18.225.78.200` associated with `i-02f5706e777ef2130`)*
+- [ ] DNS `A` + `CNAME` records added *(2026-05-28 — `www` CNAME and new `A → 18.225.78.200` are in place, but the two old parking A records `3.33.130.190` and `15.197.148.33` were not deleted; until they are, ~2/3 of traffic lands on parking pages and ACME will fail intermittently — see `docs/aws/dns-records-needed.md`)*
 - [ ] SES domain verified (DKIM CNAMEs added) *(identity does not exist yet)*
 - [ ] SES production access requested *(longest lead time — start this first)*
 - [ ] SES production access granted
@@ -134,8 +134,8 @@ Once the Elastic IP is assigned:
 
 Server-side bootstrap is **done** (see `docs/aws/SETUP_RESULTS.md`). The site is live on the EC2 box at `http://127.0.0.1:3000` and Caddy is wired and waiting for DNS. The remaining work is all in the AWS Console + GoDaddy. Three independent tracks, ordered by urgency:
 
-1. **Start the SES production-access request** (#4 above). Longest lead time (~24h). Until granted, SES will only send to verified email identities, which blocks live claim notifications. Start this first.
-2. **Allocate an Elastic IP and update DNS at GoDaddy** (#1, #2). Records are documented exactly in `docs/aws/dns-records-needed.md`. Once DNS resolves to the EIP, Caddy will provision Let's Encrypt automatically on the first request to the domain — no further server-side work needed.
+1. **Finish the DNS swap at GoDaddy** — the Elastic IP `18.225.78.200` is allocated and the new `A @` record was added, but the two old GoDaddy parking A records (`3.33.130.190`, `15.197.148.33`) are still present. While they are, the apex returns three IPs round-robin, so ~2/3 of requests miss the server and Let's Encrypt's HTTP-01 challenge will fail intermittently. **Delete those two parking A records in the GoDaddy DNS console** so only `A @ 18.225.78.200` remains. Once that lands and propagates, Caddy will provision the Let's Encrypt cert automatically on the first request.
+2. **Start the SES production-access request** (#4 above). Longest lead time (~24h). Until granted, SES will only send to verified email identities, which blocks live claim notifications. Start this in parallel with the DNS cleanup.
 3. **Create the S3 bucket and update the IAM role with the least-privilege policy** (#6, #7 in `docs/aws/SETUP_RESULTS.md`). Not blocking the marketing site going live, but blocks Phase 2 (claim intake with photo uploads).
 
 Sub-steps for the user that the bootstrap could *not* do from the instance role:

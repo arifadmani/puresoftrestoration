@@ -3,6 +3,7 @@
 **Domain:** `puresoftrestoration.com`
 **Current registrar / DNS:** GoDaddy (`ns01.domaincontrol.com`, `ns02.domaincontrol.com`)
 **Last DNS audit:** 2026-05-28
+**Elastic IP (allocated 2026-05-28):** `18.225.78.200` — associated with `i-02f5706e777ef2130`
 
 GoDaddy DNS console: https://dcc.godaddy.com/manage/puresoftrestoration.com/dns
 
@@ -10,17 +11,17 @@ GoDaddy DNS console: https://dcc.godaddy.com/manage/puresoftrestoration.com/dns
 
 ---
 
-## Current state (what's there right now)
+## Current state (as of 2026-05-28, after user's first DNS change)
 
 ```
-A      @     3.33.130.190 / 15.197.148.33    ← GoDaddy parking — REPLACE
-CNAME  www  (none)                            ← MISSING — ADD
-NS     @     ns01/02.domaincontrol.com        ← GoDaddy, keep
-MX     @     ASPMX.L.GOOGLE.COM + Google alts ← Google Workspace, keep
-TXT    @     google-site-verification=...     ← keep
+A      @     3.33.130.190 / 15.197.148.33 / 18.225.78.200   ← parking IPs still present — MUST DELETE
+CNAME  www  → puresoftrestoration.com.                       ← added ✓
+NS     @     ns01/02.domaincontrol.com                        ← GoDaddy, keep
+MX     @     ASPMX.L.GOOGLE.COM + Google alts                 ← Google Workspace, keep
+TXT    @     google-site-verification=...                     ← keep
 ```
 
-The two A records currently in place are GoDaddy's domain-forwarding / parking IPs, not the EC2 instance. They are why `puresoftrestoration.com` does not resolve to us today.
+The new A record for the Elastic IP `18.225.78.200` was added, but the two old GoDaddy parking A records (`3.33.130.190`, `15.197.148.33`) were not deleted. Until they are removed, ~2/3 of DNS responses land on parking pages and Let's Encrypt's HTTP-01 challenge will fail intermittently. The next user action is to delete those two records in the GoDaddy DNS console.
 
 ---
 
@@ -30,18 +31,18 @@ Required before Caddy can issue a Let's Encrypt cert.
 
 | Type  | Name | Value                          | TTL  | Notes |
 | ----- | ---- | ------------------------------ | ---- | ----- |
-| A     | `@`  | `<elastic-ip>` *(see below)*   | 600  | Replace BOTH existing parking A records with this single record. |
+| A     | `@`  | `18.225.78.200`                | 600  | Replace BOTH existing parking A records with this single record. |
 | CNAME | `www`| `puresoftrestoration.com.`     | 600  | Caddy is configured to 308-redirect www → apex. |
 
-**`<elastic-ip>`**: allocate this in EC2 → Elastic IPs (region `us-east-2`) and associate with instance `i-02f5706e777ef2130` first. **Do not use the instance's current public IP `18.225.211.99` directly** — it's ephemeral and will change on any stop/start, breaking DNS.
+**Elastic IP `18.225.78.200`** was allocated and associated with instance `i-02f5706e777ef2130` on 2026-05-28.
 
 ### Verifying pass 1
 
 After GoDaddy says the records are saved (and ~5–60 minutes of propagation):
 
 ```bash
-dig +short A   puresoftrestoration.com   @1.1.1.1   # expect: <elastic-ip>
-dig +short     www.puresoftrestoration.com @1.1.1.1  # expect: puresoftrestoration.com. then <elastic-ip>
+dig +short A   puresoftrestoration.com   @1.1.1.1   # expect: 18.225.78.200 (and ONLY that)
+dig +short     www.puresoftrestoration.com @1.1.1.1  # expect: puresoftrestoration.com. then 18.225.78.200
 ```
 
 Then on the server:
@@ -117,7 +118,7 @@ aws sesv2 get-email-identity --email-identity puresoftrestoration.com --region u
 ## Quick reference — what we're aiming for after both passes
 
 ```
-A      @                              <elastic-ip>
+A      @                              18.225.78.200
 CNAME  www                            puresoftrestoration.com.
 CNAME  <dkim-token-1>._domainkey      <dkim-token-1>.dkim.amazonses.com
 CNAME  <dkim-token-2>._domainkey      <dkim-token-2>.dkim.amazonses.com

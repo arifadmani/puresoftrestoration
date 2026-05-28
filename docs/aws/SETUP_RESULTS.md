@@ -8,6 +8,8 @@
 **Public IPv4 at run time:** `18.225.211.99` (ephemeral — no Elastic IP yet)
 **Public hostname:** `ec2-18-225-211-99.us-east-2.compute.amazonaws.com`
 
+**Update (2026-05-28, later same day):** Elastic IP `18.225.78.200` allocated and associated with `i-02f5706e777ef2130` by the user via the AWS Console. The instance's public IPv4 is now `18.225.78.200` (verified via IMDSv2). GoDaddy DNS has the new A record but still has the two old parking A records present — see `docs/aws/dns-records-needed.md`.
+
 This file is the durable record of what the bootstrap run actually did vs. what it documented as outstanding user-side work. Anything that *requires* the AWS Console because the EC2 instance role does not have the permission is listed under "Outstanding (user action required)".
 
 ---
