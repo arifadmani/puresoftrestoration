@@ -1,128 +1,115 @@
-import { ArrowRight, FlameKindling, Sparkles, Wind } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
-const PATH = "/fire-smoke-odor-restoration";
-const NAME = "Fire & Smoke Odor Textile Restoration";
-const DESC =
-  "Soot extraction, smoke odor neutralization, and post-treatment air-quality verification on textiles affected by fire losses. Built for the claim file across North Texas.";
-
 export const metadata = buildMetadata({
-  title: NAME,
-  description: DESC,
-  path: PATH,
+  title: "Fire & Smoke Odor Restoration",
+  description:
+    "Fire, smoke and soot textile restoration in North Texas. Ozone, hydroxyl, and ESPORTA wet-wash workflows. Particulate verification before release. IICRC-certified.",
+  path: "/fire-smoke-odor-restoration",
 });
+
+const protocols = [
+  { n: "i.", h: "On-site triage", p: "Soot class, smoke residue and substrate identified before items leave the loss." },
+  { n: "ii.", h: "Pre-treatment", p: "Surface particulate removed in a controlled environment before wet protocols begin." },
+  { n: "iii.", h: "Ozone & hydroxyl", p: "Deep odor neutralization on items where wet cleaning isn't viable." },
+  { n: "iv.", h: "ESPORTA wet-wash", p: "Fiber-safe wash cycles for textile loads — particulate and odor verified at exit." },
+  { n: "v.", h: "Finishing", p: "Pressing, structural repair, and re-deodorization where required." },
+  { n: "vi.", h: "Release inspection", p: "Independent particulate and odor check before any item is returned." },
+];
 
 export default function FireSmokePage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
+      <JsonLd
+        data={serviceSchema({
+          name: "Fire & Smoke Odor Restoration",
+          description:
+            "Smoke and soot textile restoration for fire losses in North Texas — ozone, hydroxyl, ESPORTA wet-wash protocols.",
+          slug: "/fire-smoke-odor-restoration",
+        })}
+      />
 
-      <Section tone="ink">
-        <Eyebrow className="text-signal">Service</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          Fire and smoke odor textile restoration.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Smoke contamination, soot, and odor are textile problems before they
-          are anything else. We isolate, treat, and verify — and report exactly
-          what was restored, what was not, and why.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="primary" size="lg">
-            Submit a claim <ArrowRight size={16} aria-hidden />
-          </Button>
-          <Button href="/cat-emergency-response" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
-            CAT response
-          </Button>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">Fire &amp; Smoke Odor Restoration</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              When the loss is<br /><em>smoke</em>, we have a<br />protocol for it.
+            </h1>
+          </div>
+          <p className="lede">
+            Fire and smoke don&apos;t just damage textiles — they re-emit odor weeks
+            after the event if recovery isn&apos;t done right. Our protocols are built
+            around verified outcomes, not best effort.
+          </p>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper">
-        <Eyebrow>Treatment scope</Eyebrow>
-        <SectionHeading>From soot to verified-clean.</SectionHeading>
-        <SectionLead>
-          Smoke odor is a function of particulate, vapor, and substrate. Our
-          treatment chain addresses each, and we verify outcomes rather than
-          asserting them.
-        </SectionLead>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          <Card>
-            <CardBody>
-              <FlameKindling className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Soot extraction</CardTitle>
-              <CardDescription>
-                Pre-cleaning, dry-soot removal, and isolation before any wet
-                process to prevent setting smoke residue into fibers.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <Sparkles className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Odor neutralization</CardTitle>
-              <CardDescription>
-                Process selection — ozone, hydroxyl, thermal fog, or
-                specialty-chemistry — matched to substrate and contamination
-                category.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <Wind className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Post-treatment verification</CardTitle>
-              <CardDescription>
-                Sensory verification and where appropriate air-quality checks
-                before items are released for return to the property.
-              </CardDescription>
-            </CardBody>
-          </Card>
+      <section className="section shell reveal">
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">01</span>
+              <span className="kicker">Smoke &amp; Soot Workflow</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)" }}>
+              Six checkpoints.<br />Each one a release gate.
+            </h2>
+          </div>
+          <p className="lede">
+            Nothing leaves the floor without passing every stage. Particulate counts and
+            odor verification at the end — not after the policyholder complains.
+          </p>
         </div>
-      </Section>
 
-      <Section tone="paper-shadow">
-        <Eyebrow>For the claim file</Eyebrow>
-        <SectionHeading>Documentation that defends the salvage decision.</SectionHeading>
-        <ul className="mt-8 grid gap-3 md:grid-cols-2 text-sm text-ink-700">
-          {[
-            "Per-item intake with photos and damage notes at the loss site",
-            "Treatment log with process, dwell time, and operator",
-            "Non-restorable list with reasoning (substrate, contamination class, structural damage)",
-            "Salvage report dollarized for the claim adjustment",
-            "Chain of custody from pickup through return",
-            "Reinspection-ready record retention",
-          ].map((line) => (
-            <li key={line} className="rounded-sm border border-ink-900/10 bg-paper px-4 py-3">
-              {line}
+        <ul className="cat__list" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "48px", marginTop: "16px", borderTop: "1px solid var(--color-bone-rule)" }}>
+          {protocols.map((p) => (
+            <li key={p.n} style={{ borderColor: "var(--color-bone-rule)" }}>
+              <span className="n">{p.n}</span>
+              <div>
+                <h4 style={{ color: "var(--color-ink)" }}>{p.h}</h4>
+                <p style={{ color: "var(--color-ink-3)" }}>{p.p}</p>
+              </div>
             </li>
           ))}
         </ul>
-      </Section>
+      </section>
 
-      <Section tone="ink">
-        <div className="grid items-center gap-8 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Active fire loss?
-            </h2>
-            <p className="mt-3 max-w-2xl text-ink-300">
-              The CAT line is staffed 24/7 for active losses. Submit the claim
-              online for non-emergency intake.
-            </p>
-          </div>
-          <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="primary" size="xl">
-              Submit a claim
-            </Button>
+      <section className="section band-dark reveal" style={{ paddingBlock: "104px" }}>
+        <div className="shell">
+          <div className="cat__grid" style={{ alignItems: "center" }}>
+            <div className="ph" data-label="ESPORTA wash floor — fiber-safe wash cycles for smoke-impacted textiles" style={{ minHeight: "380px" }} />
+            <div>
+              <p className="eyebrow">Equipment &amp; Verification</p>
+              <h2 className="cat__display" style={{ margin: "18px 0 24px" }}>
+                Not just clean.<br /><em>Verified</em> clean.
+              </h2>
+              <p className="body-copy" style={{ color: "var(--color-ink-4)", fontSize: "16.5px" }}>
+                Ozone chamber, hydroxyl generators, ESPORTA washes, and an independent
+                particulate / odor verification station. Each unit logged against the
+                lot ID — the proof the carrier needs, attached to the file.
+              </p>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
+
+      <section className="section shell reveal" style={{ textAlign: "center", paddingBlock: "100px" }}>
+        <h2 className="display" style={{ fontSize: "clamp(34px,5vw,64px)", maxWidth: "20ch", marginInline: "auto" }}>
+          Smoke-impacted lot<br />ready for pickup?
+        </h2>
+        <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
+          Call the response line for active losses, or send the details and we&apos;ll
+          dispatch.
+        </p>
+        <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Submit a loss <span className="arr">→</span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

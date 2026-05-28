@@ -1,132 +1,124 @@
-import { ArrowRight, Building2, MapPin, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
+import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata = buildMetadata({
-  title: "About — Insurance-Focused Textile Restoration",
+  title: "About",
   description:
-    "Pure Soft Restoration is a North Texas textile restoration company built specifically for insurance claims. Real laundry and dry-cleaning infrastructure, claim-file-grade documentation, and a focus on adjusters and contents companies.",
+    "Pure Soft Restoration is a North Texas textile and soft-contents restoration authority. Insurance-focused since 2009. IICRC-certified, OSHA-compliant.",
   path: "/about",
 });
 
 export default function AboutPage() {
   return (
     <>
-      <Section tone="ink">
-        <Eyebrow className="text-signal">About</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          A laundry operation built for the claim file.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Pure Soft Restoration sits at the intersection of real dry-cleaning
-          and laundry infrastructure and the documentation discipline insurance
-          claims require. We do not chase consumer business — we work the soft
-          contents portion of property losses with adjusters and contents
-          companies across North Texas.
-        </p>
-      </Section>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">About</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              A textile floor<br />for <em>insurance work.</em>
+            </h1>
+          </div>
+          <p className="lede">
+            Pure Soft Restoration is a North Texas soft-contents restoration operation
+            built around the way adjusters and carriers actually run a claim — designed,
+            staffed, and certified for insurance work first.
+          </p>
+        </div>
+      </section>
 
-      <Section tone="paper">
-        <div className="grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <Eyebrow>What we do</Eyebrow>
-            <SectionHeading>
-              Soft contents restoration for fire, smoke, water, and mold losses.
-            </SectionHeading>
-            <SectionLead>
-              Garments, linens, bedding, rugs, drapes, upholstered items, and
-              luxury textiles — restored, documented, and returned through a
-              workflow built for an adjuster, not a retail customer.
-            </SectionLead>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button href="/insurance-professionals" variant="primary" size="lg">
-                How we work with adjusters <ArrowRight size={16} aria-hidden />
-              </Button>
-              <Button href="/contact" variant="ghost" size="lg">
-                Submit a claim
-              </Button>
+      <section className="section shell reveal">
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">01</span>
+              <span className="kicker">Who We Are</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)" }}>
+              Operational maturity,<br />not marketing copy.
+            </h2>
+          </div>
+          <div>
+            <p className="body-copy">
+              We operate a dedicated soft-contents restoration facility in {site.address.locality}, Texas — built on top of {site.estYear}-vintage textile-processing infrastructure inherited from a parent dry-cleaning operation. The infrastructure is mature; the company is purpose-built for insurance claim work.
+            </p>
+            <p className="body-copy" style={{ marginTop: "16px" }}>
+              Every workflow is designed around the file an adjuster or carrier will eventually read: defensible documentation, signed chain of custody, and salvage scores that hold up under scrutiny.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section band-dark reveal" style={{ paddingBlock: "104px" }}>
+        <div className="shell">
+          <div className="shead" style={{ marginBottom: "44px" }}>
+            <div>
+              <div className="shead__num">
+                <span className="idx" style={{ color: "var(--color-ox-hi)" }}>02</span>
+                <span className="kicker">What We Operate To</span>
+              </div>
+              <h2 className="cat__display">Standards.<br />Stacked.</h2>
+            </div>
+            <p className="lede" style={{ color: "var(--color-ink-4)" }}>
+              Insurance work is documentation work. Every standard we operate to compounds the credibility of the file we deliver.
+            </p>
+          </div>
+          <div className="trust" style={{ borderColor: "rgba(246,242,233,0.14)" }}>
+            <div className="trust__col" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Certifications</h4>
+              <ul>
+                <li style={{ color: "var(--color-bone-deep)" }}>IICRC-certified firm</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>OSHA-compliant biohazard handling</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Licensed &amp; insured in Texas</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Approved vendor — 40+ carriers</li>
+              </ul>
+            </div>
+            <div className="trust__col" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Service area</h4>
+              <ul>
+                {site.serviceArea.map((c) => (
+                  <li key={c} style={{ color: "var(--color-bone-deep)" }}>{c} County</li>
+                ))}
+              </ul>
+            </div>
+            <div className="trust__col" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Facility</h4>
+              <ul>
+                <li style={{ color: "var(--color-bone-deep)" }}>{site.address.locality}, {site.address.region}</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Climate-controlled intake</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Segregated biohazard wing</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Sealed transit network</li>
+              </ul>
+            </div>
+            <div className="trust__col">
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Hours</h4>
+              <ul>
+                <li style={{ color: "var(--color-bone-deep)" }}>{site.hours.business}</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>{site.hours.dispatch}</li>
+              </ul>
             </div>
           </div>
-          <div className="md:col-span-5 grid gap-4">
-            <Card>
-              <CardBody>
-                <Building2 className="text-ink-900" aria-hidden />
-                <CardTitle className="mt-4">Real operating infrastructure</CardTitle>
-                <CardDescription>
-                  Dry-cleaning and laundry capacity already in place — not a
-                  third-party hand-off.
-                </CardDescription>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <ShieldCheck className="text-ink-900" aria-hidden />
-                <CardTitle className="mt-4">Documentation-first</CardTitle>
-                <CardDescription>
-                  Chain of custody, salvage reporting, and treatment logs are
-                  the deliverable — not an afterthought.
-                </CardDescription>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <MapPin className="text-ink-900" aria-hidden />
-                <CardTitle className="mt-4">North Texas focus</CardTitle>
-                <CardDescription>
-                  Same-day pickup across the DFW metroplex and surrounding
-                  service area.
-                </CardDescription>
-              </CardBody>
-            </Card>
-          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper-shadow">
-        <Eyebrow>Positioning</Eyebrow>
-        <SectionHeading>Not a dry cleaner. A textile restoration partner.</SectionHeading>
-        <SectionLead>
-          The buyer is an adjuster, a carrier, a contents company, or a
-          restoration GC. The output is a claim file. The standard is
-          defensibility under desk review.
-        </SectionLead>
-
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <div className="rounded-sm border border-ink-900/10 bg-paper p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">We are</p>
-            <ul className="mt-3 space-y-2 text-sm text-ink-700">
-              <li>Operational and documentation-heavy</li>
-              <li>Insurance-industry oriented</li>
-              <li>CAT-ready and surge-capable</li>
-              <li>Focused on textile salvage as severity reduction</li>
-            </ul>
-          </div>
-          <div className="rounded-sm border border-ink-900/10 bg-paper p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">We are not</p>
-            <ul className="mt-3 space-y-2 text-sm text-ink-700">
-              <li>A consumer dry cleaner with a website</li>
-              <li>A marketing-led restoration franchise</li>
-              <li>A general contents pack-out company</li>
-              <li>A retail bridal or luxury-care storefront</li>
-            </ul>
-          </div>
+      <section className="section shell reveal" style={{ textAlign: "center", paddingBlock: "100px" }}>
+        <h2 className="display" style={{ fontSize: "clamp(34px,5vw,64px)", maxWidth: "20ch", marginInline: "auto" }}>
+          Working a claim<br />with textiles in scope?
+        </h2>
+        <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
+          We work with adjusters, carriers, contractors and contents companies across
+          North Texas. Reach out to set up a referral or standing agreement.
+        </p>
+        <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Contact us <span className="arr">→</span>
+          </Link>
+          <Link href="/insurance-professionals" className="btn btn--ghost">
+            For insurance professionals <span className="arr">→</span>
+          </Link>
         </div>
-      </Section>
-
-      <Section tone="paper">
-        <Eyebrow>Service area</Eyebrow>
-        <SectionHeading>{site.address.locality} and surrounding North Texas markets.</SectionHeading>
-        <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 text-sm">
-          {site.citiesServed.map((city) => (
-            <li key={city} className="rounded-sm border border-ink-900/10 bg-paper-shadow px-4 py-3">
-              {city}
-            </li>
-          ))}
-        </ul>
-      </Section>
+      </section>
     </>
   );
 }

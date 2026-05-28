@@ -1,82 +1,117 @@
 import Link from "next/link";
-import { BrandMark } from "@/components/brand-mark";
 import { site } from "@/lib/site";
 
 const cols = [
   {
     h: "Capabilities",
     links: [
-      { label: "Smoke & soot", href: "/fire-smoke-odor-restoration" },
-      { label: "Water & flood", href: "/water-mold-textile-recovery" },
-      { label: "Mold & biohazard", href: "/water-mold-textile-recovery" },
-      { label: "Document recovery", href: "/soft-contents-restoration" },
-      { label: "Art & heirloom", href: "/soft-contents-restoration" },
-    ],
-  },
-  {
-    h: "Operations",
-    links: [
+      { label: "What we restore", href: "/#restore" },
       { label: "Process", href: "/#process" },
-      { label: "Chain of custody", href: "/#process" },
+      { label: "Soft contents", href: "/soft-contents-restoration" },
+      { label: "Smoke & fire", href: "/fire-smoke-odor-restoration" },
+      { label: "Water & mold", href: "/water-mold-textile-recovery" },
       { label: "CAT response", href: "/cat-emergency-response" },
-      { label: "Mutual aid", href: "/cat-emergency-response" },
-      { label: "Facility tour", href: "/about" },
     ],
   },
   {
-    h: "For partners",
+    h: "For Partners",
     links: [
-      { label: "Carrier portal", href: "/insurance-professionals" },
-      { label: "Adjuster portal", href: "/insurance-professionals" },
-      { label: "GC partnership", href: "/insurance-professionals" },
-      { label: "PM agreement", href: "/insurance-professionals" },
-      { label: "Vendor onboarding", href: "/contact" },
+      { label: "Adjusters", href: "/insurance-professionals" },
+      { label: "Carriers", href: "/insurance-professionals" },
+      { label: "Contractors", href: "/insurance-professionals" },
+      { label: "Property managers", href: "/insurance-professionals" },
     ],
   },
   {
-    h: "Company",
+    h: "Contact",
     links: [
+      { label: site.contact.responseLineLabel, href: `tel:${site.contact.responseLineTel}` },
+      { label: "Email response team", href: `mailto:${site.contact.responseEmail}` },
+      { label: "Submit a loss", href: "/contact" },
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/about" },
-      { label: "Certifications", href: "/about" },
-      { label: "Press", href: "/about" },
-      { label: "Careers", href: "/about" },
     ],
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-ink-900 text-ink-300">
-      <div className="doc-shell gutter pt-16 pb-7 text-[13.5px]">
-        <div className="grid gap-9 md:grid-cols-12 pb-12 border-b border-[rgb(255_251_242/0.10)]">
-          <div className="md:col-span-4">
-            <BrandMark tone="paper" />
-            <div className="mono text-[11px] tracking-[0.08em] leading-[1.7] text-ink-300 mt-5">
-              {site.address.street}
-              <br />
-              {site.address.locality}, {site.address.region} {site.address.postalCode}
-              <br />
-              <br />
-              Carrier line · <a href={`tel:${site.contact.carrierLineTel}`} className="text-paper hover:text-signal-hi">{site.contact.carrierLineLabel}</a>
-              <br />
-              Intake · <a href={`mailto:${site.contact.intakeEmail}`} className="text-paper hover:text-signal-hi">{site.contact.intakeEmail}</a>
-              <br />
-              {site.hours.dispatch}
-            </div>
+    <footer
+      style={{
+        background: "var(--color-ink)",
+        color: "var(--color-bone-deep)",
+        paddingTop: "72px",
+        paddingBottom: "40px",
+      }}
+    >
+      <div className="shell">
+        <div
+          className="grid gap-10"
+          style={{
+            gridTemplateColumns: "1.4fr 1fr 1fr 1fr",
+          }}
+        >
+          <div>
+            <Link href="/" className="flex items-baseline gap-2.5">
+              <span
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "23px",
+                  letterSpacing: "-0.01em",
+                  color: "var(--color-bone-bright)",
+                }}
+              >
+                Pure&nbsp;Soft
+              </span>
+              <span
+                style={{
+                  fontSize: "10.5px",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "var(--color-ink-4)",
+                  fontWeight: 600,
+                }}
+              >
+                Restoration
+              </span>
+            </Link>
+            <p
+              style={{
+                fontSize: "13.5px",
+                color: "var(--color-ink-4)",
+                marginTop: "16px",
+                maxWidth: "30ch",
+                lineHeight: 1.6,
+              }}
+            >
+              North Texas&apos;s textile and soft-contents restoration authority. {site.address.locality}, {site.address.region} — serving the DFW metroplex since {site.estYear}.
+            </p>
           </div>
 
           {cols.map((c) => (
-            <div key={c.h} className="md:col-span-2">
-              <h5 className="mono text-[11px] tracking-[0.18em] uppercase text-ink-200 font-medium">
+            <div key={c.h}>
+              <h5
+                style={{
+                  fontSize: "11px",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "var(--color-ink-4)",
+                  marginBottom: "16px",
+                  fontWeight: 700,
+                }}
+              >
                 {c.h}
               </h5>
-              <ul className="mt-4 space-y-1">
+              <ul>
                 {c.links.map((l) => (
                   <li key={`${c.h}-${l.label}`}>
                     <Link
                       href={l.href}
-                      className="block py-1 text-ink-300 hover:text-paper transition-colors"
+                      className="block transition-colors"
+                      style={{
+                        fontSize: "14px",
+                        color: "var(--color-bone-deep)",
+                        marginBottom: "10px",
+                      }}
                     >
                       {l.label}
                     </Link>
@@ -87,11 +122,20 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="pt-6 flex flex-col md:flex-row md:justify-between gap-3 mono text-[10.5px] tracking-[0.14em] uppercase text-ink-400">
+        <div
+          className="flex flex-wrap items-center justify-between gap-4"
+          style={{
+            marginTop: "52px",
+            paddingTop: "24px",
+            borderTop: "1px solid rgba(246,242,233,0.14)",
+            fontSize: "12px",
+            color: "var(--color-ink-4)",
+          }}
+        >
           <span>
-            © {new Date().getFullYear()} {site.legalName} · IICRC {site.certifications.iicrc} · Texas DPS {site.certifications.texasDps}
+            © {new Date().getFullYear()} {site.legalName} · IICRC-certified · Licensed &amp; insured in Texas
           </span>
-          <span>Privacy · Terms · Vendor compliance</span>
+          <span>Textile &amp; soft-contents restoration · North Texas</span>
         </div>
       </div>
     </footer>

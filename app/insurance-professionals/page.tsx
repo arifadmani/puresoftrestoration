@@ -1,188 +1,145 @@
-import { ArrowRight, ClipboardCheck, FileSearch, ListChecks, ShieldCheck, Workflow } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
+import Link from "next/link";
+import { JsonLd } from "@/components/json-ld";
 import { buildMetadata } from "@/lib/seo";
-import { site } from "@/lib/site";
+import { serviceSchema } from "@/lib/schema";
 
 export const metadata = buildMetadata({
-  title: "Insurance Professionals — Textile Restoration Partner",
+  title: "For Insurance Professionals",
   description:
-    "Pure Soft Restoration partners with adjusters, carriers, public adjusters, contents companies, and restoration GCs on the textile portion of fire, smoke, water, and mold losses across North Texas.",
+    "Pure Soft Restoration partners with adjusters, carriers and contractors on soft-contents claims — defensible documentation, chain of custody, salvage-first reporting.",
   path: "/insurance-professionals",
 });
 
-const audience = [
-  "Independent adjusters",
-  "Staff adjusters",
-  "Public adjusters",
-  "Carriers and TPAs",
-  "Contents companies",
-  "Restoration GCs",
-  "Property managers and risk teams",
+const pillars = [
+  { idx: "01", name: "Chain of custody", body: "Signed transfers from on-site pickup through sealed return. Every hand-off logged, timestamped and attributable." },
+  { idx: "02", name: "Claim expertise", body: "We speak the language of the file — deductibles, scope, ACV vs RCV — and format our output to drop straight into your claim." },
+  { idx: "03", name: "Salvage before replacement", body: "Every item scored for salvageability, so the replacement schedule only carries what genuinely can't be saved." },
+  { idx: "04", name: "Cost reduction", body: "Restoration typically runs a fraction of replacement value — a measurable reduction on textile-heavy losses." },
+  { idx: "05", name: "Professional reporting", body: "One audit-grade report per lot: photographs, protocols, scores and signatures, carrier-ready." },
+  { idx: "06", name: "Large-loss capability", body: "Surge capacity to absorb catastrophe-scale events without breaking custody on a single item." },
 ];
 
-const workflow = [
-  {
-    n: "01",
-    title: "Intake",
-    body: "Loss type, claim number, carrier, peril, property address, contents categories, and photos captured in a structured intake.",
-  },
-  {
-    n: "02",
-    title: "Pickup & inventory",
-    body: "On-site or at a staging location. Items are logged, tagged, photographed, and condition-coded before transport.",
-  },
-  {
-    n: "03",
-    title: "Restoration",
-    body: "Workflow calibrated to peril — soot extraction, odor neutralization, Cat-1/2/3 water protocols, controlled antimicrobial.",
-  },
-  {
-    n: "04",
-    title: "Reporting & return",
-    body: "Per-item disposition (restored / non-restorable), salvage-vs-replacement reporting, signed return delivery.",
-  },
+const reportingItems = [
+  { n: "i.", h: "Per-item photographic record", p: "Before and after, in consistent lighting and crop." },
+  { n: "ii.", h: "Salvage score, 0–100", p: "A defensible salvageability rating for every flagged item." },
+  { n: "iii.", h: "Chain-of-custody log", p: "Stage timestamps and signatures, intake to return." },
+  { n: "iv.", h: "Compliance citations", p: "IICRC and OSHA protocols referenced per workflow." },
+];
+
+const engageWays = [
+  { n: "01", name: "Per-claim referral", desc: "Send us a single loss. We handle intake, restoration and reporting, then hand the file back." },
+  { n: "02", name: "Approved vendor", desc: "List Pure Soft as your soft-goods vendor for direct dispatch on every qualifying loss." },
+  { n: "03", name: "Standing agreement", desc: "Portfolio and CAT coverage with pre-negotiated terms and priority mobilization." },
 ];
 
 export default function InsuranceProfessionalsPage() {
   return (
     <>
-      <Section tone="ink">
-        <Eyebrow className="text-signal">For insurance professionals</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          A textile restoration partner that works inside your claim file.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Pure Soft Restoration handles the soft contents portion of fire,
-          smoke, water, and mold losses across North Texas. We integrate into
-          the existing scope of work and produce documentation that holds up
-          under desk review.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="primary" size="lg">
-            Submit a claim <ArrowRight size={16} aria-hidden />
-          </Button>
-          <Button href="#workflow" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
-            See the workflow
-          </Button>
-        </div>
-      </Section>
+      <JsonLd
+        data={serviceSchema({
+          name: "Soft-Contents Restoration for Insurance Carriers",
+          description:
+            "Soft-contents textile restoration for insurance adjusters, carriers, and contractors. Defensible documentation, chain of custody, salvage-first reporting.",
+          slug: "/insurance-professionals",
+        })}
+      />
 
-      <Section tone="paper">
-        <div className="grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <Eyebrow>Who we work with</Eyebrow>
-            <SectionHeading>Built for the people on the claim.</SectionHeading>
-            <SectionLead>
-              Our intake, documentation, and reporting are calibrated for the
-              roles that touch a loss — not for a retail customer.
-            </SectionLead>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">For Insurance Professionals</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              Documentation your<br />claim file can <em>stand on.</em>
+            </h1>
           </div>
-          <ul className="md:col-span-7 grid gap-3 sm:grid-cols-2 text-sm">
-            {audience.map((role) => (
-              <li
-                key={role}
-                className="rounded-sm border border-ink-900/10 bg-paper-shadow px-4 py-3 text-ink"
-              >
-                {role}
-              </li>
-            ))}
-          </ul>
+          <p className="lede">
+            We built Pure Soft around the way adjusters, carriers and contractors
+            actually work a loss — defensible records, predictable scheduling, and a
+            salvage-first posture that reduces indemnity without cutting corners.
+          </p>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper-shadow" innerClassName="" >
-        <span id="workflow" className="sr-only">Workflow</span>
-        <Eyebrow>Workflow</Eyebrow>
-        <SectionHeading>Documented from intake to return.</SectionHeading>
-        <div className="mt-10 grid gap-5 md:grid-cols-4">
-          {workflow.map((step) => (
-            <Card key={step.n}>
-              <CardBody>
-                <span className="text-xs font-semibold tracking-[0.22em] text-ink-500">
-                  {step.n}
-                </span>
-                <CardTitle className="mt-3">{step.title}</CardTitle>
-                <CardDescription>{step.body}</CardDescription>
-              </CardBody>
-            </Card>
+      <section className="section shell reveal">
+        <div className="serve" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+          {pillars.map((p) => (
+            <article key={p.idx} className="serve__card">
+              <span className="idx">{p.idx}</span>
+              <h3>{p.name}</h3>
+              <p>{p.body}</p>
+            </article>
           ))}
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper">
-        <Eyebrow>What you get</Eyebrow>
-        <SectionHeading>A claim file your reviewer will recognize.</SectionHeading>
-        <SectionLead>
-          Every loss produces the same set of deliverables, calibrated to the
-          peril and the scope.
-        </SectionLead>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {[
-            {
-              icon: <FileSearch className="text-ink-900" aria-hidden />,
-              title: "Item-level inventory",
-              body: "Per-piece intake with photos, category, condition code, and disposition routing.",
-            },
-            {
-              icon: <ShieldCheck className="text-ink-900" aria-hidden />,
-              title: "Chain of custody",
-              body: "Signed transfers at pickup, facility intake, transfer-between-areas, and return delivery.",
-            },
-            {
-              icon: <ClipboardCheck className="text-ink-900" aria-hidden />,
-              title: "Salvage report",
-              body: "Restored vs. non-restorable counts and dollarized salvage impact for the claim file.",
-            },
-            {
-              icon: <ListChecks className="text-ink-900" aria-hidden />,
-              title: "Treatment log",
-              body: "Per-load treatment notes — soot extraction, odor neutralization, water category, antimicrobial.",
-            },
-            {
-              icon: <Workflow className="text-ink-900" aria-hidden />,
-              title: "Return manifest",
-              body: "Signed return delivery with item count reconciliation and any deviations flagged.",
-            },
-            {
-              icon: <ShieldCheck className="text-ink-900" aria-hidden />,
-              title: "Reinspection-ready",
-              body: "All documentation retained and retrievable for desk reviews, reinspections, or examinations under oath.",
-            },
-          ].map((b) => (
-            <Card key={b.title}>
-              <CardBody>
-                {b.icon}
-                <CardTitle className="mt-4">{b.title}</CardTitle>
-                <CardDescription>{b.body}</CardDescription>
-              </CardBody>
-            </Card>
-          ))}
+      <section className="section band-dark reveal" style={{ paddingBlock: "110px" }}>
+        <div className="shell">
+          <div className="cat__grid">
+            <div>
+              <p className="eyebrow">The Reporting Standard</p>
+              <h2 className="cat__display" style={{ margin: "18px 0 24px" }}>
+                One report.<br />Everything <em>in&nbsp;it.</em>
+              </h2>
+              <p className="body-copy" style={{ color: "var(--color-ink-4)", fontSize: "16.5px" }}>
+                Each closed lot delivers a single, structured document — the record an
+                adjuster needs to justify scope and a carrier needs to settle with
+                confidence.
+              </p>
+              <ul className="cat__list">
+                {reportingItems.map((r) => (
+                  <li key={r.h}>
+                    <span className="n">{r.n}</span>
+                    <div>
+                      <h4>{r.h}</h4>
+                      <p>{r.p}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="cat__media">
+              <div className="ph" data-label="Sample lot report — cover sheet, item schedule, before/after plates" />
+            </div>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="ink">
-        <div className="grid items-center gap-8 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Active claim with soft contents?
+      <section className="section shell reveal">
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">A</span>
+              <span className="kicker">Working Together</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(34px,4vw,54px)" }}>
+              Three ways adjusters<br />and contractors engage.
             </h2>
-            <p className="mt-3 max-w-2xl text-ink-300">
-              Submit it now and we will respond within one business hour
-              during business hours; CAT-line claims are answered 24/7.
-            </p>
           </div>
-          <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="primary" size="xl">
-              Submit a claim
-            </Button>
-            <p className="mt-3 text-xs text-ink-400">
-              {site.contact.intakeEmail} · {site.contact.catLineLabel}
-            </p>
-          </div>
+          <p className="lede">
+            No portal to learn, no onboarding gauntlet. Pick up the phone, or set up a
+            standing agreement.
+          </p>
         </div>
-      </Section>
+
+        <div className="proc" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+          {engageWays.map((w) => (
+            <div key={w.n} className="proc__step">
+              <span className="proc__num">{w.n}</span>
+              <h3 className="proc__name">{w.name}</h3>
+              <p className="proc__desc">{w.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: "48px", display: "flex", flexWrap: "wrap", gap: "14px" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Set up vendor status <span className="arr">→</span>
+          </Link>
+          <Link href="/cat-emergency-response" className="btn btn--ghost">
+            See CAT capability <span className="arr">→</span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

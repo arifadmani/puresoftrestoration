@@ -1,133 +1,130 @@
-import { AlertTriangle, Clock, Phone, Truck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
 
-const PATH = "/cat-emergency-response";
-const NAME = "CAT / Emergency Response";
-const DESC =
-  "24/7 catastrophe and emergency textile response for North Texas — storm events, large losses, multi-property incidents. On-scene intake, manifest-grade documentation, surge throughput.";
-
 export const metadata = buildMetadata({
-  title: NAME,
-  description: DESC,
-  path: PATH,
+  title: "Large Loss & CAT Response",
+  description:
+    "Catastrophe-scale soft-contents restoration in North Texas. Surge capacity, mutual-aid agreements, unbroken chain of custody at event scale.",
+  path: "/cat-emergency-response",
 });
+
+const capabilities = [
+  { n: "01", h: "Rapid mobilization", p: "Crew and sealed transit dispatched within hours of carrier instruction." },
+  { n: "02", h: "Climate-controlled facility", p: "Segregated by loss class, with a separate biohazard wing." },
+  { n: "03", h: "Surge capacity", p: "Throughput to absorb large multi-property events without delay." },
+  { n: "04", h: "Mutual-aid network", p: "Agreements with adjacent vendors extend reach beyond the metroplex." },
+  { n: "05", h: "Unbroken custody", p: "Every item tracked individually, even at event scale." },
+  { n: "06", h: "Carrier coordination", p: "One point of contact and one reporting standard across the event." },
+];
 
 export default function CatResponsePage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
+      <JsonLd
+        data={serviceSchema({
+          name: "Catastrophe (CAT) Soft-Contents Response",
+          description:
+            "Catastrophe-scale soft-contents restoration response in North Texas — surge capacity, mutual-aid agreements, chain of custody at event scale.",
+          slug: "/cat-emergency-response",
+        })}
+      />
 
-      <section className="bg-signal text-paper">
-        <div className="container-prose py-16 md:py-20">
-          <div className="inline-flex items-center gap-2 rounded-sm bg-paper/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]">
-            <AlertTriangle size={12} aria-hidden /> 24/7 CAT response line
-          </div>
-          <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-            When the event is bigger than the plan.
-          </h1>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-ink-100 md:text-lg">
-            Storm, fire, flood, and multi-property events all share a problem:
-            soft contents stack up faster than a normal pipeline can handle.
-            Pure Soft Restoration runs in event mode — on-scene intake,
-            manifest-grade documentation, and the surge capacity to keep
-            claims moving.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={`tel:${site.contact.catLineTel}`}
-              className="inline-flex h-14 items-center gap-2 rounded-sm bg-paper px-7 text-base font-semibold text-signal hover:bg-paper-shadow"
-            >
-              <Phone size={16} aria-hidden /> Call CAT line: {site.contact.catLineLabel}
-            </a>
-            <Button href="/contact" variant="ghost" size="xl" className="border-paper text-paper hover:bg-paper hover:text-signal">
-              Submit a claim
-            </Button>
+      <section
+        className="band-dark"
+        style={{
+          paddingBlock: "84px 96px",
+          borderBottom: "1px solid rgba(246,242,233,0.12)",
+        }}
+      >
+        <div className="shell">
+          <div className="phero__grid">
+            <div>
+              <p className="eyebrow">Large Loss &amp; Catastrophe Response</p>
+              <h1 className="display phero__display" style={{ color: "var(--color-bone-bright)", marginTop: "20px" }}>
+                Built to absorb<br />the <em>worst&nbsp;week</em><br />of the year.
+              </h1>
+            </div>
+            <p className="lede" style={{ color: "var(--color-ink-4)" }}>
+              Hail, severe water and multi-property fire don&apos;t arrive politely.
+              When North Texas takes a catastrophe-scale hit, Pure Soft scales
+              soft-contents recovery without breaking custody on a single lot.
+            </p>
           </div>
         </div>
       </section>
 
-      <Section tone="paper">
-        <Eyebrow>What event mode looks like</Eyebrow>
-        <SectionHeading>Different scale. Same documentation discipline.</SectionHeading>
-        <SectionLead>
-          CAT loads do not get a discount on documentation. The intake form
-          works the same, the chain of custody works the same, and the
-          reporting works the same — at higher volume.
-        </SectionLead>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          <Card>
-            <CardBody>
-              <Truck className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">On-scene intake</CardTitle>
-              <CardDescription>
-                Mobile crews log, photograph, and bag textiles directly at the
-                loss or contents staging area with manifest tracking.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <Clock className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Surge throughput</CardTitle>
-              <CardDescription>
-                Capacity scales with the event. We sequence loads to keep the
-                most time-sensitive items moving without losing tracking.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <AlertTriangle className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Risk-prioritized</CardTitle>
-              <CardDescription>
-                Smoke, sewage, and mold-risk loads are isolated and
-                prioritized to prevent secondary damage and protect unaffected
-                contents.
-              </CardDescription>
-            </CardBody>
-          </Card>
+      <section className="section shell reveal">
+        <div className="cat__grid" style={{ alignItems: "stretch" }}>
+          <div className="ph" data-label="Coverage schematic — DFW metroplex, 60-min response radius from Irving" style={{ minHeight: "440px" }} />
+          <div>
+            <p className="eyebrow">North Texas Coverage</p>
+            <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)", margin: "14px 0 18px" }}>
+              Pre-positioned across<br />the metroplex.
+            </h2>
+            <p className="body-copy" style={{ fontSize: "16px" }}>
+              Crews and transit staged for a sixty-minute response radius from our
+              {" "}{site.address.locality} facility — the difference between a
+              salvageable lot and a total loss is often measured in hours.
+            </p>
+            <div className="cat__counties" style={{ marginTop: "24px" }}>
+              {site.serviceArea.map((c) => (
+                <span key={c} className="cat__county" style={{ borderColor: "var(--color-bone-rule)", color: "var(--color-ink-2)" }}>{c}</span>
+              ))}
+            </div>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="ink">
-        <Eyebrow className="text-signal">Engagement</Eyebrow>
-        <SectionHeading className="text-paper">
-          Who calls the CAT line.
-        </SectionHeading>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2 text-sm text-ink-200">
-          {[
-            "Carrier CAT desks coordinating large-scale response",
-            "Independent adjuster firms standing up event-mode teams",
-            "Contents companies needing textile surge partners",
-            "Restoration GCs with soft contents in scope on large losses",
-            "Public adjusters managing complex multi-property claims",
-            "Property managers and risk teams with commercial textile losses",
-          ].map((line) => (
-            <li
-              key={line}
-              className="rounded-sm border border-ink-700/60 bg-ink/60 px-4 py-3"
-            >
-              {line}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-10 text-sm text-ink-300">
-          Direct line for active events:{" "}
-          <a
-            href={`tel:${site.contact.catLineTel}`}
-            className="font-semibold text-signal hover:text-paper"
-          >
-            {site.contact.catLineLabel}
-          </a>
+      <section className="section band-dark reveal" style={{ paddingBlock: "104px" }}>
+        <div className="shell">
+          <div className="shead" style={{ marginBottom: "44px" }}>
+            <div>
+              <div className="shead__num">
+                <span className="idx" style={{ color: "var(--color-ox-hi)" }}>—</span>
+                <span className="kicker">CAT Capability</span>
+              </div>
+              <h2 className="cat__display">Scale, on the<br />worst day.</h2>
+            </div>
+            <p className="lede" style={{ color: "var(--color-ink-4)" }}>
+              Surge capacity, mutual-aid agreements and a single chain of accountability
+              — the operational backbone behind a calm response.
+            </p>
+          </div>
+          <ul className="cat__list" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "48px" }}>
+            {capabilities.map((c) => (
+              <li key={c.n}>
+                <span className="n">{c.n}</span>
+                <div>
+                  <h4>{c.h}</h4>
+                  <p>{c.p}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="section shell reveal" style={{ textAlign: "center", paddingBlock: "110px" }}>
+        <p className="eyebrow">When it happens</p>
+        <h2 className="display" style={{ fontSize: "clamp(38px,5.4vw,76px)", margin: "16px auto 0", maxWidth: "18ch" }}>
+          Have us on the call<br />before the event.
+        </h2>
+        <p className="body-copy" style={{ margin: "24px auto 32px", textAlign: "center" }}>
+          Standing CAT agreements mean priority mobilization when the region needs it
+          most. Set one up now.
         </p>
-      </Section>
+        <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Set up a CAT agreement <span className="arr">→</span>
+          </Link>
+          <Link href="/insurance-professionals" className="btn btn--ghost">
+            For adjusters &amp; contractors <span className="arr">→</span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

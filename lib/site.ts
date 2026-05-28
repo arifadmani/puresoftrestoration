@@ -3,23 +3,22 @@ export const site = {
   shortName: "Pure Soft",
   legalName: "Pure Soft Restoration LLC",
   tagline:
-    "The textile recovery operation insurance carriers call first.",
+    "When a loss touches textiles, the claim comes to us.",
   description:
-    "Pure Soft Restoration is North Texas's specialized soft-goods recovery operation — engineered for the scale, speed, and documentation rigor that insurance carriers require on smoke, water, fire, and biohazard losses. 24-hour CAT mobilization, chain-of-custody on every item, carrier-audited reporting.",
+    "Pure Soft Restoration is North Texas's specialist in garment, linen, bedding and soft-contents recovery — the partner independent adjusters, carriers and restoration contractors trust to salvage what replacement would cost far more to lose.",
   positioningLine:
-    "North Texas's operational authority on insurance-grade soft-goods recovery.",
+    "North Texas's textile and soft-contents restoration authority.",
   url: "https://puresoftrestoration.com",
   estYear: 2009,
   /*
-   * Contact details below carry the design-spec placeholder values from
-   * the Pure Soft — Design Direction handoff. Replace before launch.
+   * Contact details carry placeholder values from the Conservation House
+   * design direction. Replace before launch with real numbers.
    */
   contact: {
-    carrierLineLabel: "(817) 555-PURE",
-    carrierLineTel: "+18175557873",
-    catLineLabel: "(817) 555-PURE",
-    catLineTel: "+18175557873",
-    intakeEmail: "intake@puresoftrestoration.com",
+    responseLineLabel: "(214) 555-0142",
+    responseLineTel: "+12145550142",
+    responseEmail: "admin@puresoftrestoration.com",
+    intakeEmail: "admin@puresoftrestoration.com",
     adminEmail: "admin@puresoftrestoration.com",
   },
   address: {
@@ -31,8 +30,8 @@ export const site = {
     facilityLabel: "Facility · Irving TX",
   },
   certifications: {
-    iicrc: "#214418",
-    texasDps: "#B19234",
+    iicrc: "IICRC-certified",
+    insurance: "Licensed & insured in Texas",
   },
   serviceArea: [
     "Tarrant",
@@ -55,22 +54,7 @@ export const site = {
   ],
   hours: {
     business: "Mon–Fri 8:00–17:00 CT",
-    dispatch: "24-hour dispatch · 365 days",
-  },
-  stats: {
-    mobilizationHours: "24",
-    facilitySqft: "412k",
-    activeCarriers: "40+",
-    surgeCapacity: "5k",
-  },
-  activeCat: {
-    code: "CAT-2026-04",
-    name: "North Texas Hailstorm Event",
-    counties: "Tarrant / Denton / Collin",
-    mobilizedAgo: "04:12:36",
-    properties: 41,
-    lots: 1847,
-    lastUpdate: "14:36 CST",
+    dispatch: "24/7 response line for active losses",
   },
 } as const;
 

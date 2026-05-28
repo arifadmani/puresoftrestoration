@@ -1,118 +1,137 @@
-import { ArrowRight, Package, Shirt, Sparkles, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
-const PATH = "/soft-contents-restoration";
-const NAME = "Soft Contents Restoration";
-const DESC =
-  "Insurance-grade restoration for garments, linens, bedding, rugs, drapes, upholstered items, and luxury textiles. Item-level intake, documented chain of custody, and salvage reporting for North Texas claims.";
-
 export const metadata = buildMetadata({
-  title: NAME,
-  description: DESC,
-  path: PATH,
+  title: "Soft Contents Restoration",
+  description:
+    "Soft-contents textile restoration in North Texas — garments, linens, bedding, drapery, heirlooms. Per-item documentation, salvage-first protocols, IICRC-certified.",
+  path: "/soft-contents-restoration",
 });
+
+const categories = [
+  { tag: "01 · Couture & designer", name: "Luxury garments", desc: "Designer, couture and structured pieces handled to conservation standard." },
+  { tag: "02 · Wardrobe", name: "Everyday clothing", desc: "Full-wardrobe recovery, sorted, restored and returned ready to wear." },
+  { tag: "03 · Household", name: "Linens", desc: "Table, bath and bed linens — smoke, soot and water-impacted." },
+  { tag: "04 · Fill & structured", name: "Bedding", desc: "Down, fill and structured bedding deodorized and sanitized through." },
+  { tag: "05 · Window treatments", name: "Drapery", desc: "Custom drapery and panels cleaned without losing line or finish." },
+  { tag: "06 · Commercial wear", name: "Uniforms", desc: "Workwear and uniform programs turned around against tight SLAs." },
+  { tag: "07 · Sentimental", name: "Stuffed animals", desc: "The pieces a family asks about first — restored, not replaced." },
+  { tag: "08 · Archival", name: "Heirloom textiles", desc: "Quilts, lace and generational pieces handled by conservation method." },
+  { tag: "09 · At scale", name: "Commercial textiles", desc: "Hospitality, healthcare and institutional soft goods, in volume." },
+];
+
+const protocols = [
+  { idx: "01", name: "Fiber & condition triage", body: "Composition identified, contamination class determined, salvage probability scored per item." },
+  { idx: "02", name: "Loss-matched cleaning", body: "Smoke, soot, water, or biohazard — each routed to its certified protocol, never blended." },
+  { idx: "03", name: "Finish & restoration", body: "Pressing, deodorization, structural repair where required. Returned to pre-loss condition." },
+  { idx: "04", name: "Carrier-grade documentation", body: "Per-item photographs, salvage scores, and chain-of-custody log bound into a single report." },
+];
 
 export default function SoftContentsPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
+      <JsonLd
+        data={serviceSchema({
+          name: "Soft Contents Textile Restoration",
+          description:
+            "Garment, linen, bedding, drapery and heirloom textile restoration for North Texas insurance claims.",
+          slug: "/soft-contents-restoration",
+        })}
+      />
 
-      <Section tone="ink">
-        <Eyebrow className="text-signal">Service</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          Soft contents restoration, documented to the item.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Garments, linens, bedding, area rugs, drapes, window treatments,
-          upholstered items, and luxury textiles. Every piece is intake-logged,
-          photographed, condition-coded, and routed through a documented
-          restoration workflow.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="primary" size="lg">
-            Submit a claim <ArrowRight size={16} aria-hidden />
-          </Button>
-          <Button href="/insurance-professionals" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
-            For adjusters
-          </Button>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">Soft Contents Restoration</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              Every textile<br />on the schedule, <em>accounted for.</em>
+            </h1>
+          </div>
+          <p className="lede">
+            From a single garment to a whole-house wardrobe, every soft-contents item
+            moves through the same documented, fiber-matched protocol — and returns to
+            the policyholder in pre-loss condition.
+          </p>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper">
-        <Eyebrow>Categories handled</Eyebrow>
-        <SectionHeading>If it is a soft good, it is in our scope.</SectionHeading>
-        <SectionLead>
-          We restore the textile portion of a claim — including items most
-          adjusters expect to write off when they review the loss.
-        </SectionLead>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            "Everyday garments and uniforms",
-            "Designer and luxury apparel",
-            "Linens, bedding, and pillows",
-            "Drapes, curtains, and window treatments",
-            "Area rugs (machine-cleanable)",
-            "Upholstery cleaning of removable covers",
-            "Plush toys and children's items",
-            "Leather and suede (specialty referrals)",
-            "Wedding gowns and heirloom textiles",
-          ].map((line) => (
-            <Card key={line}>
-              <CardBody>
-                <Shirt className="text-ink-900" aria-hidden />
-                <CardTitle className="mt-4">{line}</CardTitle>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section tone="paper-shadow">
-        <Eyebrow>How it works</Eyebrow>
-        <SectionHeading>One workflow. Documented at every step.</SectionHeading>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-4">
-          {[
-            { icon: <Package />, title: "Pickup", body: "On-site or at a staging area, with intake logs and signed transfer." },
-            { icon: <Tag />, title: "Tag & log", body: "Per-item barcode, photo, category, and condition code captured." },
-            { icon: <Sparkles />, title: "Restore", body: "Cleaning, odor, and contamination protocols matched to the peril." },
-            { icon: <ArrowRight />, title: "Return", body: "Inventory reconciliation and signed return delivery to the property." },
-          ].map((s) => (
-            <Card key={s.title}>
-              <CardBody>
-                <div className="text-ink-900">{s.icon}</div>
-                <CardTitle className="mt-4">{s.title}</CardTitle>
-                <CardDescription>{s.body}</CardDescription>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section tone="ink">
-        <div className="grid items-center gap-8 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Have a claim with soft contents in scope?
+      <section className="section shell reveal">
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">01</span>
+              <span className="kicker">Categories</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(34px,4vw,54px)" }}>
+              What runs through<br />our floor.
             </h2>
-            <p className="mt-3 max-w-2xl text-ink-300">
-              Reach our intake team by phone or email. Same-day pickup is
-              standard across the DFW metroplex.
+          </div>
+          <p className="lede">
+            If it&apos;s woven, stuffed, stitched or upholstered, we have a protocol for
+            it. Each category is handled by certified technicians.
+          </p>
+        </div>
+
+        <div className="restore-grid">
+          {categories.map((c) => (
+            <article key={c.name} className="rcard">
+              <div className="ph" data-label={c.name} />
+              <div>
+                <p className="rcard__tag">{c.tag}</p>
+                <p className="rcard__name">{c.name}</p>
+                <p className="rcard__desc">{c.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section band-dark reveal" style={{ paddingBlock: "110px" }}>
+        <div className="shell">
+          <div className="shead" style={{ marginBottom: "44px" }}>
+            <div>
+              <div className="shead__num">
+                <span className="idx" style={{ color: "var(--color-ox-hi)" }}>02</span>
+                <span className="kicker">The Protocol</span>
+              </div>
+              <h2 className="cat__display">Four stages.<br />One standard.</h2>
+            </div>
+            <p className="lede" style={{ color: "var(--color-ink-4)" }}>
+              The same workflow applies whether we receive ten items or ten thousand.
+              Each item gets the same attention; the carrier gets the same report.
             </p>
           </div>
-          <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="primary" size="xl">
-              Submit a claim
-            </Button>
+          <div className="proc" style={{ gridTemplateColumns: "repeat(4,1fr)", borderTopColor: "var(--color-ox-hi)" }}>
+            {protocols.map((p) => (
+              <div key={p.idx} className="proc__step" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
+                <span className="proc__num">{p.idx}</span>
+                <h3 className="proc__name" style={{ color: "var(--color-bone-bright)" }}>{p.name}</h3>
+                <p className="proc__desc" style={{ color: "var(--color-ink-4)" }}>{p.body}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </Section>
+      </section>
+
+      <section className="section shell reveal" style={{ textAlign: "center" }}>
+        <h2 className="display" style={{ fontSize: "clamp(34px,5vw,64px)", maxWidth: "20ch", marginInline: "auto" }}>
+          Have a claim with<br />soft contents in scope?
+        </h2>
+        <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
+          Reach our intake team by phone or email. Same-day pickup is standard across
+          the DFW metroplex.
+        </p>
+        <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Submit a loss <span className="arr">→</span>
+          </Link>
+          <Link href="/insurance-professionals" className="btn btn--ghost">
+            For adjusters &amp; contractors <span className="arr">→</span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

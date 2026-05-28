@@ -8,8 +8,8 @@ export function localBusinessSchema() {
     name: site.legalName,
     description: site.description,
     url: site.url,
-    email: site.contact.intakeEmail,
-    telephone: site.contact.carrierLineLabel,
+    email: site.contact.responseEmail,
+    telephone: site.contact.responseLineLabel,
     foundingDate: String(site.estYear),
     areaServed: site.citiesServed.map((city) => ({
       "@type": "City",
@@ -27,7 +27,7 @@ export function localBusinessSchema() {
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
-        description: "24-hour CAT response line for active losses",
+        description: "24-hour response line for active losses",
         dayOfWeek: [
           "Monday",
           "Tuesday",
@@ -42,8 +42,8 @@ export function localBusinessSchema() {
       },
     ],
     hasCredential: [
-      { "@type": "EducationalOccupationalCredential", name: `IICRC ${site.certifications.iicrc}` },
-      { "@type": "EducationalOccupationalCredential", name: `Texas DPS ${site.certifications.texasDps}` },
+      { "@type": "EducationalOccupationalCredential", name: site.certifications.iicrc },
+      { "@type": "EducationalOccupationalCredential", name: site.certifications.insurance },
     ],
   };
 }

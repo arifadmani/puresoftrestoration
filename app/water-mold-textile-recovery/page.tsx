@@ -1,145 +1,114 @@
-import { ArrowRight, Droplets, Microscope, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
-import { Eyebrow, Section, SectionHeading, SectionLead } from "@/components/section";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
-const PATH = "/water-mold-textile-recovery";
-const NAME = "Water & Mold Textile Recovery";
-const DESC =
-  "Cat-1, Cat-2, and Cat-3 water damage textile workflows plus controlled antimicrobial treatment for mold-affected soft contents. Insurance-claim documentation built in.";
-
 export const metadata = buildMetadata({
-  title: NAME,
-  description: DESC,
-  path: PATH,
+  title: "Water & Mold Textile Recovery",
+  description:
+    "Water, flood and mold textile recovery in North Texas. CAT-3 protocols, antimicrobial treatment, controlled-environment drying. Mold preempted before it forms.",
+  path: "/water-mold-textile-recovery",
 });
+
+const protocols = [
+  { n: "i.", h: "Rapid intake", p: "Hours-not-days mobilization to prevent secondary mold formation in fibers and fill." },
+  { n: "ii.", h: "CAT-3 protocol", p: "Contaminated-water workflow segregated from clean intake floors." },
+  { n: "iii.", h: "Antimicrobial", p: "Targeted antimicrobial treatment matched to fiber composition." },
+  { n: "iv.", h: "Climate-controlled dry", p: "Drying chambers managed to humidity and temperature ranges that don't shock fiber." },
+  { n: "v.", h: "Mold pre-empt", p: "Sub-fabric inspection before items advance — spores caught before they bloom." },
+  { n: "vi.", h: "Finish & recoat", p: "Restoration of finish where displaced; structural repair where required." },
+];
 
 export default function WaterMoldPage() {
   return (
     <>
-      <JsonLd data={serviceSchema({ name: NAME, description: DESC, slug: PATH })} />
+      <JsonLd
+        data={serviceSchema({
+          name: "Water & Mold Textile Recovery",
+          description:
+            "Water, flood and mold textile recovery for North Texas insurance losses — CAT-3 contaminated-water protocols and antimicrobial treatment.",
+          slug: "/water-mold-textile-recovery",
+        })}
+      />
 
-      <Section tone="ink">
-        <Eyebrow className="text-signal">Service</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          Water and mold textile recovery.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Category-driven water recovery and controlled antimicrobial treatment
-          for mold-affected soft contents. Every load is contained, processed,
-          and reported in line with the loss classification.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/contact" variant="primary" size="lg">
-            Submit a claim <ArrowRight size={16} aria-hidden />
-          </Button>
-          <Button href="/insurance-professionals" variant="ghost" size="lg" className="border-paper/30 text-paper hover:bg-paper hover:text-ink-900">
-            For adjusters
-          </Button>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">Water &amp; Mold Textile Recovery</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              Water doesn&apos;t wait.<br /><em>We don&apos;t&nbsp;either.</em>
+            </h1>
+          </div>
+          <p className="lede">
+            On water and mold losses, the gap between salvageable and total loss is
+            measured in hours. Our intake is built for speed — and for the
+            chain-of-custody the file will need later.
+          </p>
         </div>
-      </Section>
+      </section>
 
-      <Section tone="paper">
-        <Eyebrow>Water categories</Eyebrow>
-        <SectionHeading>Workflow calibrated to contamination class.</SectionHeading>
-        <SectionLead>
-          The category drives the workflow. Cat-3 is not Cat-1 — and the
-          documentation we produce reflects which one was on the loss.
-        </SectionLead>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {[
-            {
-              tag: "Category 1",
-              title: "Clean water",
-              body: "Standard textile recovery workflow with priority drying to prevent secondary damage and microbial growth.",
-            },
-            {
-              tag: "Category 2",
-              title: "Grey water",
-              body: "Containment-first intake, enhanced cleaning chemistry, antimicrobial as appropriate to substrate.",
-            },
-            {
-              tag: "Category 3",
-              title: "Black water",
-              body: "Strict containment, controlled antimicrobial, and a higher non-restorable threshold based on contamination contact.",
-            },
-          ].map((c) => (
-            <Card key={c.tag}>
-              <CardBody>
-                <p className="text-xs font-semibold tracking-[0.22em] text-ink-500">{c.tag}</p>
-                <CardTitle className="mt-2">{c.title}</CardTitle>
-                <CardDescription>{c.body}</CardDescription>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section tone="paper-shadow">
-        <Eyebrow>Mold-affected textiles</Eyebrow>
-        <SectionHeading>Controlled treatment, defensible call.</SectionHeading>
-        <SectionLead>
-          For mold-impacted soft contents we work with the structural
-          remediator&apos;s scope and produce textile-specific documentation that
-          aligns with the broader remediation plan.
-        </SectionLead>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          <Card>
-            <CardBody>
-              <Droplets className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Containment</CardTitle>
-              <CardDescription>
-                HEPA-filtered handling and isolated processing to prevent
-                cross-contamination of unaffected contents.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <Microscope className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Assessment</CardTitle>
-              <CardDescription>
-                Per-item evaluation against substrate, growth extent, and
-                hygroscopic exposure to call restorable vs. non-restorable.
-              </CardDescription>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody>
-              <ShieldCheck className="text-ink-900" aria-hidden />
-              <CardTitle className="mt-4">Treatment & verification</CardTitle>
-              <CardDescription>
-                Approved antimicrobial chemistry, full drying cycle, and
-                post-treatment sensory and visual verification before release.
-              </CardDescription>
-            </CardBody>
-          </Card>
-        </div>
-      </Section>
-
-      <Section tone="ink">
-        <div className="grid items-center gap-8 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Water or mold loss with soft contents?
+      <section className="section shell reveal">
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">01</span>
+              <span className="kicker">Water &amp; Mold Workflow</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)" }}>
+              Six steps,<br />no secondary mold.
             </h2>
-            <p className="mt-3 max-w-2xl text-ink-300">
-              Same-day intake reduces secondary damage and microbial growth on
-              affected textiles. Submit the claim now.
-            </p>
           </div>
-          <div className="md:col-span-4 md:text-right">
-            <Button href="/contact" variant="primary" size="xl">
-              Submit a claim
-            </Button>
+          <p className="lede">
+            The protocols below are the difference between a salvaged claim and a
+            replaced one. Hours, not days.
+          </p>
+        </div>
+
+        <ul className="cat__list" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "48px", marginTop: "16px", borderTop: "1px solid var(--color-bone-rule)" }}>
+          {protocols.map((p) => (
+            <li key={p.n} style={{ borderColor: "var(--color-bone-rule)" }}>
+              <span className="n">{p.n}</span>
+              <div>
+                <h4 style={{ color: "var(--color-ink)" }}>{p.h}</h4>
+                <p style={{ color: "var(--color-ink-3)" }}>{p.p}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="section band-dark reveal" style={{ paddingBlock: "104px" }}>
+        <div className="shell">
+          <div className="cat__grid" style={{ alignItems: "center" }}>
+            <div>
+              <p className="eyebrow">Mold &amp; Biohazard</p>
+              <h2 className="cat__display" style={{ margin: "18px 0 24px" }}>
+                Segregated. <em>Always.</em>
+              </h2>
+              <p className="body-copy" style={{ color: "var(--color-ink-4)", fontSize: "16.5px" }}>
+                Mold-impacted and biohazard textiles route to a separate wing — never
+                co-located with clean intake. OSHA-rated workflow, IICRC textile
+                protocols, sealed transit from on-site pickup through return.
+              </p>
+            </div>
+            <div className="ph" data-label="Climate-controlled drying chamber — humidity-managed environment" style={{ minHeight: "380px" }} />
           </div>
         </div>
-      </Section>
+      </section>
+
+      <section className="section shell reveal" style={{ textAlign: "center", paddingBlock: "100px" }}>
+        <h2 className="display" style={{ fontSize: "clamp(34px,5vw,64px)", maxWidth: "20ch", marginInline: "auto" }}>
+          Water event in progress?<br />Call now.
+        </h2>
+        <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
+          Every hour we save on intake is hours of mold prevention.
+        </p>
+        <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
+          <Link href="/contact" className="btn btn--primary">
+            Submit a loss <span className="arr">→</span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

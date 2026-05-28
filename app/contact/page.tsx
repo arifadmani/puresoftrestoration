@@ -1,143 +1,83 @@
-import { AlertTriangle, ArrowRight, Mail, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardBody } from "@/components/ui/card";
-import { Eyebrow, Section, SectionHeading } from "@/components/section";
+import { IntakeForm } from "@/components/intake-form";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata = buildMetadata({
-  title: "Submit a Claim",
+  title: "Contact",
   description:
-    "Submit a soft contents textile restoration claim to Pure Soft Restoration. Insurance-focused intake for adjusters, carriers, contents companies, and property managers across North Texas.",
+    "Reach the Pure Soft Restoration response team directly. Call for active losses, or submit a loss for response within one business hour.",
   path: "/contact",
 });
 
 export default function ContactPage() {
+  const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY ?? "";
+
   return (
     <>
-      <Section tone="ink">
-        <Eyebrow className="text-signal">Submit a claim</Eyebrow>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight md:text-5xl">
-          Route a soft contents loss to our intake team.
-        </h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          Reach our intake team directly by phone or email. We confirm receipt
-          and provide a claim reference inside one business hour during
-          business hours.
-        </p>
-      </Section>
+      <section className="phero shell">
+        <div className="phero__grid">
+          <div>
+            <p className="eyebrow">Contact</p>
+            <h1 className="display phero__display" style={{ marginTop: "20px" }}>
+              Reach the response<br />team <em>directly.</em>
+            </h1>
+          </div>
+          <p className="lede">
+            No portal, no ticket queue. Call for an active loss, or send the details below
+            and we&apos;ll mobilize. We work with adjusters, carriers and contractors first —
+            homeowners through their pro.
+          </p>
+        </div>
+      </section>
 
-      <Section tone="paper">
-        <div className="grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <Eyebrow>How to reach intake</Eyebrow>
-            <SectionHeading className="text-2xl md:text-3xl">
-              Two channels into our claims desk.
-            </SectionHeading>
-
-            <div className="mt-8 grid gap-4">
-              <Card>
-                <CardBody className="flex items-start gap-4">
-                  <Phone className="mt-1 text-ink-900" aria-hidden />
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
-                      24/7 CAT response
-                    </p>
-                    <a
-                      href={`tel:${site.contact.catLineTel}`}
-                      className="mt-2 inline-block text-2xl font-semibold text-ink hover:text-ink-900"
-                    >
-                      {site.contact.catLineLabel}
-                    </a>
-                    <p className="mt-1 text-sm text-ink-600">
-                      For active losses, large-loss events, and after-hours
-                      intake.
-                    </p>
-                  </div>
-                </CardBody>
-              </Card>
-
-              <Card>
-                <CardBody className="flex items-start gap-4">
-                  <Mail className="mt-1 text-ink-900" aria-hidden />
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
-                      Claim email
-                    </p>
-                    <a
-                      href={`mailto:${site.contact.intakeEmail}?subject=New%20soft%20contents%20claim`}
-                      className="mt-2 inline-block text-lg font-medium text-ink hover:text-ink-900"
-                    >
-                      {site.contact.intakeEmail}
-                    </a>
-                    <p className="mt-1 text-sm text-ink-600">
-                      Send claim number, carrier, loss type, property address,
-                      and contact details. We confirm receipt and a claim
-                      reference inside one business hour.
-                    </p>
-                  </div>
-                </CardBody>
-              </Card>
+      <section className="section shell reveal" style={{ paddingTop: "80px" }}>
+        <div className="contact__grid">
+          <div>
+            <h2 className="display" style={{ fontSize: "clamp(28px,3.4vw,42px)" }}>
+              Direct lines.
+            </h2>
+            <div className="contact__methods">
+              <div className="contact__method">
+                <span className="lbl">Response line</span>
+                <a className="val" href={`tel:${site.contact.responseLineTel}`}>
+                  {site.contact.responseLineLabel}
+                  <small>24/7 for active losses</small>
+                </a>
+              </div>
+              <div className="contact__method">
+                <span className="lbl">Email</span>
+                <a className="val" href={`mailto:${site.contact.responseEmail}`}>
+                  Email us
+                  <small>{site.contact.responseEmail}</small>
+                </a>
+              </div>
+              <div className="contact__method">
+                <span className="lbl">Facility</span>
+                <span className="val">
+                  {site.address.locality}, {site.address.region}
+                  <small>
+                    Serving {site.serviceArea.join(" · ")}
+                  </small>
+                </span>
+              </div>
+              <div className="contact__method">
+                <span className="lbl">Hours</span>
+                <span className="val">
+                  Always on
+                  <small>Office {site.hours.business} · response line 24/7</small>
+                </span>
+              </div>
             </div>
 
-            <div className="mt-8 rounded-sm border border-signal/30 bg-signal-soft/40 p-5">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="mt-0.5 text-signal" aria-hidden />
-                <div>
-                  <p className="text-sm font-semibold text-signal">
-                    Active loss in progress?
-                  </p>
-                  <p className="mt-1 text-sm text-ink-700">
-                    Call the CAT response line directly. Email is for
-                    non-emergency intake.
-                  </p>
-                </div>
-              </div>
+            <div className="seal-row" style={{ marginTop: "36px" }}>
+              <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>IICRC Certified</b><span>Textile &amp; odor control</span></span></div>
+              <div className="seal"><span className="seal__mark">40+</span><span className="seal__txt"><b>Approved Carriers</b><span>Direct vendor status</span></span></div>
             </div>
           </div>
 
-          <aside className="md:col-span-5">
-            <div className="rounded-sm border border-ink-900/10 bg-paper-shadow p-6">
-              <Eyebrow>What to send</Eyebrow>
-              <SectionHeading className="mt-3 text-xl md:text-2xl">
-                Information that speeds intake.
-              </SectionHeading>
-              <ul className="mt-5 space-y-3 text-sm text-ink-700">
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Adjuster, carrier, and claim number
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Loss type, date of loss, peril classification
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Property address, site contact, access notes
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Brief contents description and urgency
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Best callback number and email
-                </li>
-              </ul>
-              <p className="mt-5 text-xs text-ink-500">
-                Once we have these, we assign a claim reference, confirm
-                pickup, and seed chain-of-custody documentation from the first
-                touch.
-              </p>
-              <div className="mt-6">
-                <Button href="/insurance-professionals" variant="ghost" size="md">
-                  How we work with adjusters <ArrowRight size={14} aria-hidden />
-                </Button>
-              </div>
-            </div>
-          </aside>
+          <IntakeForm tone="paper" siteKey={turnstileSiteKey} />
         </div>
-      </Section>
+      </section>
     </>
   );
 }
