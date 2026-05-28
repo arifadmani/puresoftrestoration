@@ -6,7 +6,7 @@ import { serviceSchema } from "@/lib/schema";
 export const metadata = buildMetadata({
   title: "Fire & Smoke Odor Restoration",
   description:
-    "Fire, smoke and soot textile restoration in North Texas. Ozone, hydroxyl, and ESPORTA wet-wash workflows. Particulate verification before release. IICRC-certified.",
+    "Fire, smoke and soot textile restoration in North Texas. Pure Soft Restoration accepts smoke-impacted soft contents from partner contents companies and adjusters for restoration and odor recovery, with 24-hour turnaround on rush orders.",
   path: "/fire-smoke-odor-restoration",
 });
 

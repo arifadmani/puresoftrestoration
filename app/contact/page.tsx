@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 export const metadata = buildMetadata({
   title: "Contact",
   description:
-    "Reach the Pure Soft Restoration response team directly. Call for active losses, or submit a loss for response within one business hour.",
+    "Reach Pure Soft Restoration by email or by submitting a loss. We are available 24 hours for rush textile intake from contents companies, adjusters, carriers, and contractors across North Texas.",
   path: "/contact",
 });
 
@@ -23,9 +23,9 @@ export default function ContactPage() {
             </h1>
           </div>
           <p className="lede">
-            No portal, no ticket queue. Call for an active loss, or send the details below
-            and we&apos;ll mobilize. We work with adjusters, carriers and contractors first —
-            homeowners through their pro.
+            Submit a loss below, or email us directly. We are available 24 hours
+            for rush textile intake from contents companies, adjusters, carriers
+            and contractors across North Texas.
           </p>
         </div>
       </section>
@@ -38,13 +38,6 @@ export default function ContactPage() {
             </h2>
             <div className="contact__methods">
               <div className="contact__method">
-                <span className="lbl">Response line</span>
-                <a className="val" href={`tel:${site.contact.responseLineTel}`}>
-                  {site.contact.responseLineLabel}
-                  <small>24/7 for active losses</small>
-                </a>
-              </div>
-              <div className="contact__method">
                 <span className="lbl">Email</span>
                 <a className="val" href={`mailto:${site.contact.responseEmail}`}>
                   Email us
@@ -52,26 +45,21 @@ export default function ContactPage() {
                 </a>
               </div>
               <div className="contact__method">
-                <span className="lbl">Facility</span>
+                <span className="lbl">Service area</span>
                 <span className="val">
-                  {site.address.locality}, {site.address.region}
+                  North Texas
                   <small>
-                    Serving {site.serviceArea.join(" · ")}
+                    Counties served: {site.serviceArea.join(" · ")}
                   </small>
                 </span>
               </div>
               <div className="contact__method">
-                <span className="lbl">Hours</span>
+                <span className="lbl">Availability</span>
                 <span className="val">
-                  Always on
-                  <small>Office {site.hours.business} · response line 24/7</small>
+                  24 hours
+                  <small>{site.availability.rushTurnaround}</small>
                 </span>
               </div>
-            </div>
-
-            <div className="seal-row" style={{ marginTop: "36px" }}>
-              <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>IICRC Certified</b><span>Textile &amp; odor control</span></span></div>
-              <div className="seal"><span className="seal__mark">40+</span><span className="seal__txt"><b>Approved Carriers</b><span>Direct vendor status</span></span></div>
             </div>
           </div>
 

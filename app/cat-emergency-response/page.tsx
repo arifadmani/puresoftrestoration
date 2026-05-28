@@ -65,9 +65,17 @@ export default function CatResponsePage() {
               Pre-positioned across<br />the metroplex.
             </h2>
             <p className="body-copy" style={{ fontSize: "16px" }}>
-              Crews and transit staged for a sixty-minute response radius from our
-              {" "}{site.address.locality} facility — the difference between a
-              salvageable lot and a total loss is often measured in hours.
+              {/*
+                The current sentence frames Pure Soft as operating from a
+                facility with crews staged for on-site dispatch — the
+                opposite of the actual service model (CANONICAL_FACTS
+                Round 1 #6). This entire CAT page is flagged for a copy
+                rewrite. For now the address reference is stripped so the
+                page compiles; the broader rewrite is Round 2 / 3.
+              */}
+              We accept rush textile work from partner contents companies
+              across North Texas, with a 24-hour turnaround on rush orders
+              from receipt.
             </p>
             <div className="cat__counties" style={{ marginTop: "24px" }}>
               {site.serviceArea.map((c) => (

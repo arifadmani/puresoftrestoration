@@ -30,7 +30,7 @@ export function Header() {
         <Link
           href="/"
           aria-label={`${site.name} — home`}
-          className="flex items-baseline gap-2.5 shrink-0"
+          className="shrink-0"
         >
           <span
             style={{
@@ -38,20 +38,10 @@ export function Header() {
               fontSize: "23px",
               letterSpacing: "-0.01em",
               color: "var(--color-ink)",
+              whiteSpace: "nowrap",
             }}
           >
-            Pure&nbsp;Soft
-          </span>
-          <span
-            style={{
-              fontSize: "10.5px",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "var(--color-ink-4)",
-              fontWeight: 600,
-            }}
-          >
-            Restoration
+            Pure Soft Restoration
           </span>
         </Link>
 
@@ -78,31 +68,11 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-[22px]">
-          <a
-            href={`tel:${site.contact.responseLineTel}`}
-            className="hidden md:flex flex-col"
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "17px",
-              color: "var(--color-ink)",
-              whiteSpace: "nowrap",
-              lineHeight: 1.1,
-            }}
-          >
-            {site.contact.responseLineLabel}
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "10.5px",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "var(--color-ink-4)",
-                fontWeight: 600,
-              }}
-            >
-              Response line
-            </span>
-          </a>
+          {/*
+            Per CANONICAL_FACTS Round 1 #5: no public phone number is published
+            until the Twilio line is provisioned. When it is, restore a phone
+            link block here pulled from site.contact.responseLineLabel/Tel.
+          */}
           <Link href="/contact" className="btn btn--primary">
             Contact <span className="arr">→</span>
           </Link>

@@ -60,7 +60,7 @@ const processSteps = [
   { n: "03", name: "Cleaning", desc: "Loss-matched protocol: smoke, soot, water or biohazard, handled by certified technicians." },
   { n: "04", name: "Restoration", desc: "Finishing, deodorization and repair to return each piece to pre-loss condition." },
   { n: "05", name: "Quality Review", desc: "Independent inspection against the manifest before anything leaves the facility." },
-  { n: "06", name: "Return", desc: "Climate-bagged, signature-released, with a single audit-grade report to the carrier." },
+  { n: "06", name: "Return", desc: "Climate-bagged, signature-released, with documentation back to the partner." },
 ];
 
 const catLossTypes = [
@@ -82,33 +82,55 @@ const trustCols = [
     ],
   },
   {
-    h: "Process Standards",
+    h: "Service Posture",
+    /*
+     * Process Standards previously asserted "IICRC textile protocols",
+     * "OSHA-compliant handling", "Sealed, tracked transit", "Segregated
+     * biohazard workflow", "Independent quality review" — none of which were
+     * confirmed in CANONICAL_FACTS Round 1. Replaced with Round-1-confirmed
+     * facts about the service model.
+     */
     items: [
-      "IICRC textile protocols",
-      "OSHA-compliant handling",
-      "Sealed, tracked transit",
-      "Segregated biohazard workflow",
-      "Independent quality review",
+      "Rush textile intake",
+      "24-hour turnaround on rush orders",
+      "Partner with contents companies on-site",
+      "Specialty textile equipment",
+      "Vendor relationships across textiles",
     ],
   },
   {
-    h: "Reporting Standards",
+    h: "Coverage",
+    /*
+     * Reporting Standards previously asserted "Per-item photographic record",
+     * "Salvage score, 0–100", "Chain-of-custody log", "Single audit-grade
+     * report", "Carrier-ready formatting" — all Round-2-pending. Replaced
+     * with Round-1-confirmed geographic facts.
+     */
     items: [
-      "Per-item photographic record",
-      "Salvage score, 0–100",
-      "Chain-of-custody log",
-      "Single audit-grade report",
-      "Carrier-ready formatting",
+      "DFW metroplex",
+      "Two-hour radius from DFW",
+      "16 counties with completed work",
+      "Insurance adjusters, carriers, contractors",
+      "Contents companies and property managers",
     ],
   },
   {
     h: "Credentials",
+    /*
+     * Per CANONICAL_FACTS Round 1 — every specific credential claim here is
+     * Round-2-pending. The placeholder list previously read:
+     *   "IICRC-certified firm" — pending Round 2 confirmation
+     *   "Licensed & insured" — pending Round 2 confirmation
+     *   "Approved vendor, 40+ carriers" — pending Round 2 confirmation
+     *   `North Texas, since ${site.estYear}` — false; brand began 2025
+     *   "Mutual-aid network" — pending Round 2 confirmation
+     * Until those are confirmed, the column shows only Round-1-confirmed facts.
+     */
     items: [
-      "IICRC-certified firm",
-      "Licensed & insured",
-      "Approved vendor, 40+ carriers",
-      `North Texas, since ${site.estYear}`,
-      "Mutual-aid network",
+      "North Texas operations",
+      `${site.experienceYears} years of textile expertise`,
+      "Service-area business",
+      "Insurance-focused practice",
     ],
   },
 ];
@@ -133,17 +155,19 @@ export default function HomePage() {
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", marginTop: "34px" }}>
               <Link href="/contact" className="btn btn--primary">
-                Contact Our Response Team <span className="arr">→</span>
+                Submit a loss <span className="arr">→</span>
               </Link>
               <Link href="/insurance-professionals" className="btn btn--ghost">
                 For Adjusters &amp; Contractors <span className="arr">→</span>
               </Link>
             </div>
-            <div className="hero__cred">
-              <span><b>IICRC-certified</b> textile technicians</span>
-              <span>Serving the DFW metroplex since <b>{site.estYear}</b></span>
-              <span>Approved vendor for <b>40+ carriers</b></span>
-            </div>
+            {/*
+              The hero credentials strip previously asserted "IICRC-certified
+              textile technicians", "Serving the DFW metroplex since 2009", and
+              "Approved vendor for 40+ carriers" — none of which were
+              confirmed by the owner in CANONICAL_FACTS Round 1. Strip removed
+              until Round 2 confirms specific credentials.
+            */}
           </div>
           <div className="hero__media">
             <div className="ph" data-label="Documentary — lot-tagged textile racks, conservation floor" />
@@ -431,18 +455,11 @@ export default function HomePage() {
                 A direct line.<br />No portal required.
               </h2>
               <p className="body-copy" style={{ color: "var(--color-ink-4)", marginTop: "24px", fontSize: "16.5px" }}>
-                A loss doesn&apos;t wait, and neither do we. Reach the response team
-                directly — by phone for active losses, or send the details and
-                we&apos;ll mobilize.
+                Submit a loss or email us directly. We are available 24 hours
+                for rush textile intake from contents companies, adjusters,
+                carriers and contractors across North Texas.
               </p>
               <div className="contact__methods">
-                <div className="contact__method" style={{ borderColor: "rgba(246,242,233,0.14)" }}>
-                  <span className="lbl" style={{ color: "var(--color-ink-4)" }}>Response line</span>
-                  <a className="val" href={`tel:${site.contact.responseLineTel}`} style={{ color: "var(--color-bone-bright)" }}>
-                    {site.contact.responseLineLabel}
-                    <small style={{ color: "var(--color-ink-4)" }}>24/7 for active losses</small>
-                  </a>
-                </div>
                 <div className="contact__method" style={{ borderColor: "rgba(246,242,233,0.14)" }}>
                   <span className="lbl" style={{ color: "var(--color-ink-4)" }}>Email</span>
                   <a className="val" href={`mailto:${site.contact.responseEmail}`} style={{ color: "var(--color-bone-bright)" }}>
@@ -451,10 +468,10 @@ export default function HomePage() {
                   </a>
                 </div>
                 <div className="contact__method" style={{ borderColor: "rgba(246,242,233,0.14)" }}>
-                  <span className="lbl" style={{ color: "var(--color-ink-4)" }}>Facility</span>
+                  <span className="lbl" style={{ color: "var(--color-ink-4)" }}>Availability</span>
                   <span className="val" style={{ color: "var(--color-bone-bright)" }}>
-                    {site.address.locality}, {site.address.region}
-                    <small style={{ color: "var(--color-ink-4)" }}>Serving the DFW metroplex</small>
+                    24 hours
+                    <small style={{ color: "var(--color-ink-4)" }}>{site.availability.rushTurnaround}</small>
                   </span>
                 </div>
               </div>

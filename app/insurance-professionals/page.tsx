@@ -15,7 +15,7 @@ const pillars = [
   { idx: "02", name: "Claim expertise", body: "We speak the language of the file — deductibles, scope, ACV vs RCV — and format our output to drop straight into your claim." },
   { idx: "03", name: "Salvage before replacement", body: "Every item scored for salvageability, so the replacement schedule only carries what genuinely can't be saved." },
   { idx: "04", name: "Cost reduction", body: "Restoration typically runs a fraction of replacement value — a measurable reduction on textile-heavy losses." },
-  { idx: "05", name: "Professional reporting", body: "One audit-grade report per lot: photographs, protocols, scores and signatures, carrier-ready." },
+  { idx: "05", name: "Professional reporting", body: "One report per lot covering photographs, protocols, and signatures — formatted for the carrier file." },
   { idx: "06", name: "Large-loss capability", body: "Surge capacity to absorb catastrophe-scale events without breaking custody on a single item." },
 ];
 

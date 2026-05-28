@@ -103,7 +103,12 @@ export default function OpengraphImage() {
               Pure Soft Restoration
             </div>
             <div style={{ display: "flex", color: INK_4, fontSize: 14, letterSpacing: 2, textTransform: "uppercase", fontWeight: 600 }}>
-              IICRC-certified · Licensed &amp; insured in Texas
+              {/*
+                Per CANONICAL_FACTS Round 1, "IICRC-certified" and "Licensed
+                & insured in Texas" remain Round-2-pending. Replaced with a
+                Round-1-confirmed framing.
+              */}
+              North Texas Textile &amp; Soft-Contents Restoration
             </div>
           </div>
           <div style={{ display: "flex", color: INK_3, fontSize: 16, letterSpacing: 1 }}>

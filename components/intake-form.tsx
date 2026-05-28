@@ -150,7 +150,6 @@ export function IntakeForm({
         widgetIdRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [siteKey, tone]);
 
   // Reset Turnstile widget after a failed submission so a new token is fetched

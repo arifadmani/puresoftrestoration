@@ -1,5 +1,11 @@
 import { site } from "@/lib/site";
 
+/**
+ * LocalBusiness JSON-LD for the site. Every field traces to a confirmed entry
+ * in `docs/CANONICAL_FACTS.md`. Fields whose canonical truth is "undisclosed"
+ * (street address, phone, certifications) are intentionally absent from the
+ * emitted schema rather than carrying placeholder values.
+ */
 export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
@@ -9,25 +15,35 @@ export function localBusinessSchema() {
     description: site.description,
     url: site.url,
     email: site.contact.responseEmail,
-    telephone: site.contact.responseLineLabel,
-    foundingDate: String(site.estYear),
-    areaServed: site.citiesServed.map((city) => ({
-      "@type": "City",
-      name: city,
-      containedInPlace: { "@type": "AdministrativeArea", name: "Texas" },
+    /** Per Round 1 #8 — DBA began operating in 2025. */
+    foundingDate: String(site.foundedYear),
+    areaServed: site.serviceArea.map((county) => ({
+      "@type": "AdministrativeArea",
+      name: `${county} County`,
+      containedInPlace: {
+        "@type": "State",
+        name: "Texas",
+      },
     })),
+    /**
+     * Per Round 1 #4 — service-area business with no public street address.
+     * Only region/country are emitted; consumers (Google, Bing) treat the
+     * presence of `areaServed` as the operational footprint.
+     */
     address: {
       "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: site.address.locality,
       addressRegion: site.address.region,
-      postalCode: site.address.postalCode || undefined,
       addressCountry: site.address.country,
     },
+    /**
+     * Per Round 1 #6 — confirmed availability for rush textile intake. Not
+     * an "open 24 hours" claim about an office; this describes the team's
+     * availability to accept rush soft-contents work from partners.
+     */
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
-        description: "24-hour response line for active losses",
+        description: site.availability.intakeWindow,
         dayOfWeek: [
           "Monday",
           "Tuesday",
@@ -41,10 +57,11 @@ export function localBusinessSchema() {
         closes: "23:59",
       },
     ],
-    hasCredential: [
-      { "@type": "EducationalOccupationalCredential", name: site.certifications.iicrc },
-      { "@type": "EducationalOccupationalCredential", name: site.certifications.insurance },
-    ],
+    /**
+     * `hasCredential` intentionally omitted until Round 2 confirms specific
+     * certifications. Adding unverified credentials here would echo into
+     * Google Knowledge Panels.
+     */
   };
 }
 
@@ -60,9 +77,9 @@ export function serviceSchema(args: {
     name: args.name,
     description: args.description,
     provider: { "@id": `${site.url}#business` },
-    areaServed: site.citiesServed.map((city) => ({
-      "@type": "City",
-      name: city,
+    areaServed: site.serviceArea.map((county) => ({
+      "@type": "AdministrativeArea",
+      name: `${county} County`,
     })),
     serviceType: args.name,
     url: `${site.url}${args.slug}`,

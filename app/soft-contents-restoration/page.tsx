@@ -6,7 +6,7 @@ import { serviceSchema } from "@/lib/schema";
 export const metadata = buildMetadata({
   title: "Soft Contents Restoration",
   description:
-    "Soft-contents textile restoration in North Texas — garments, linens, bedding, drapery, heirlooms. Per-item documentation, salvage-first protocols, IICRC-certified.",
+    "Soft-contents textile restoration in North Texas — garments, linens, bedding, drapery, heirlooms. The team behind Pure Soft brings 20+ years of textile and soft-contents expertise to insurance recovery work.",
   path: "/soft-contents-restoration",
 });
 
@@ -120,8 +120,9 @@ export default function SoftContentsPage() {
           Have a claim with<br />soft contents in scope?
         </h2>
         <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
-          Reach our intake team by phone or email. Same-day pickup is standard across
-          the DFW metroplex.
+          Reach our intake team by email. We are available 24 hours for rush
+          textile intake from contents companies, adjusters and contractors
+          across North Texas.
         </p>
         <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
           <Link href="/contact" className="btn btn--primary">

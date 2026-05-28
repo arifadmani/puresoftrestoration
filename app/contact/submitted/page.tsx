@@ -18,8 +18,8 @@ export default function SubmittedPage() {
           Thank you. We&apos;re on it.
         </h1>
         <p className="body-copy" style={{ marginTop: "28px", marginInline: "auto", fontSize: "17px" }}>
-          A member of our response team will reach out within one business hour. For an
-          active loss, please call our 24/7 response line directly.
+          A member of our team will reach out by email. We are available 24
+          hours for rush textile intake.
         </p>
 
         <div
@@ -31,8 +31,8 @@ export default function SubmittedPage() {
             gap: "14px",
           }}
         >
-          <a className="btn btn--ox" href={`tel:${site.contact.responseLineTel}`}>
-            Call the response line <span className="arr">→</span>
+          <a className="btn btn--ox" href={`mailto:${site.contact.responseEmail}`}>
+            Email us <span className="arr">→</span>
           </a>
           <Link href="/" className="btn btn--ghost">
             Return home <span className="arr">→</span>
@@ -48,7 +48,7 @@ export default function SubmittedPage() {
             fontSize: "13.5px",
           }}
         >
-          {site.contact.responseLineLabel} · {site.contact.responseEmail}
+          {site.contact.responseEmail}
         </div>
       </div>
     </section>

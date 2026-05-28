@@ -19,6 +19,7 @@
 | SES domain identity `puresoftrestoration.com` | ✅ verified (DKIM Successful, 2026-05-28) |
 | SES email identity `admin@puresoftrestoration.com` | ✅ verified (interim, useful while sandbox is in effect) |
 | SES production access | ⏳ submitted 2026-05-28, awaiting AWS review (~24h) |
+| **Canonical content truth audit** | ✅ Round 1 (Core Business Facts) complete 2026-05-28 — see `docs/CANONICAL_FACTS.md`. Round 2 (Certifications + Vendor Relationships + Reporting Standards) pending. |
 | SES end-to-end smoke test | ✅ EC2 role → SES → `admin@` inbox confirmed delivered 2026-05-28 |
 | IAM `ec2-puresoft-app-role` runtime policy | ✅ `puresoft-app-runtime` inline policy attached — `ses:SendEmail`/`SendRawEmail` on `identity/*` with `ses:FromAddress` pinned to `noreply@puresoftrestoration.com` |
 | Cloudflare Turnstile keys | ✅ provisioned and stored in `/etc/puresoft.env` (currently unused — no active form) |
@@ -31,7 +32,8 @@
 
 ### What's next
 
-1. **Wait on AWS SES production-access response** (~24h). When AWS replies:
+1. **Run Round 2 of the canonical content truth audit** — Certifications, Vendor Relationships, and Reporting Standards. The Round-1 edit pass scrubbed every forbidden claim (IICRC-certified, OSHA-compliant, "Approved vendor for 40+ carriers", audit-grade, carrier-ready, "since 2009", "same-day pickup", 24/7) from the live site so nothing unverified is on the wire today. Round 2 will revisit each scrubbed claim with the owner and either restore it with the truthful version or remove the surrounding section entirely. Page bodies on `/cat-emergency-response`, the homepage CAT section, and the service pages still have on-site-response framing that contradicts the confirmed service model (the team processes textiles received from contents companies; it does not dispatch on-site response). That copy rewrite is a follow-on round after Round 2 fact-collection.
+2. **Wait on AWS SES production-access response** (~24h). When AWS replies:
    - **Approved** — sandbox is lifted, the site can email any recipient. No env or code change required.
    - **Approved with reduced quota** — fine for launch; can request increases later.
    - **Follow-up questions** — paste their question here and we'll draft the response. Common asks: confirm bounce/complaint handling, confirm no marketing use, confirm sender domain.

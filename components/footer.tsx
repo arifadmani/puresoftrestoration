@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 
+/**
+ * Footer. Canonical-fact-driven: phone is omitted entirely until the Twilio
+ * number lands (Round 1 #5); no "since 2009" anywhere (Round 1 #8); no LLC
+ * suffix in the legal line (Round 1 #1). Address-related fields are absent —
+ * per Round 1 #4 there is no street address to display.
+ */
+
 const cols = [
   {
     h: "Capabilities",
@@ -25,7 +32,6 @@ const cols = [
   {
     h: "Contact",
     links: [
-      { label: site.contact.responseLineLabel, href: `tel:${site.contact.responseLineTel}` },
       { label: "Email response team", href: `mailto:${site.contact.responseEmail}` },
       { label: "Submit a loss", href: "/contact" },
       { label: "About", href: "/about" },
@@ -51,27 +57,17 @@ export function Footer() {
           }}
         >
           <div>
-            <Link href="/" className="flex items-baseline gap-2.5">
+            <Link href="/" className="flex items-baseline">
               <span
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "23px",
                   letterSpacing: "-0.01em",
                   color: "var(--color-bone-bright)",
+                  whiteSpace: "nowrap",
                 }}
               >
-                Pure&nbsp;Soft
-              </span>
-              <span
-                style={{
-                  fontSize: "10.5px",
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  color: "var(--color-ink-4)",
-                  fontWeight: 600,
-                }}
-              >
-                Restoration
+                Pure Soft Restoration
               </span>
             </Link>
             <p
@@ -79,11 +75,11 @@ export function Footer() {
                 fontSize: "13.5px",
                 color: "var(--color-ink-4)",
                 marginTop: "16px",
-                maxWidth: "30ch",
+                maxWidth: "32ch",
                 lineHeight: 1.6,
               }}
             >
-              North Texas&apos;s textile and soft-contents restoration authority. {site.address.locality}, {site.address.region} — serving the DFW metroplex since {site.estYear}.
+              North Texas textile and soft-contents restoration. {site.experienceYears} years of textile and soft-contents expertise behind the brand.
             </p>
           </div>
 
@@ -133,7 +129,7 @@ export function Footer() {
           }}
         >
           <span>
-            © {new Date().getFullYear()} {site.legalName} · IICRC-certified · Licensed &amp; insured in Texas
+            © {new Date().getFullYear()} {site.legalName}
           </span>
           <span>Textile &amp; soft-contents restoration · North Texas</span>
         </div>
