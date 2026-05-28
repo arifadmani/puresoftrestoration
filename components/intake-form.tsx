@@ -1,19 +1,68 @@
 "use client";
 
-import { useActionState, useEffect, useId } from "react";
+import { useActionState, useEffect, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
-import Script from "next/script";
 import { submitIntake, type IntakeResult } from "@/app/contact/actions";
 
 type Tone = "paper" | "ink";
 
+type TurnstileGlobal = {
+  render: (
+    container: string | HTMLElement,
+    options: {
+      sitekey: string;
+      theme?: "light" | "dark" | "auto";
+      callback?: (token: string) => void;
+      "error-callback"?: () => void;
+      "expired-callback"?: () => void;
+    }
+  ) => string | undefined;
+  reset: (widgetId?: string) => void;
+  remove: (widgetId?: string) => void;
+};
+
 declare global {
   interface Window {
-    turnstile?: {
-      render: (container: string | HTMLElement, options: Record<string, unknown>) => string;
-      reset: (widgetId?: string) => void;
-    };
+    turnstile?: TurnstileGlobal;
+    __turnstileScriptLoading?: boolean;
   }
+}
+
+const TURNSTILE_SCRIPT_SRC =
+  "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+function loadTurnstileScript(): Promise<TurnstileGlobal> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === "undefined") return reject(new Error("ssr"));
+    if (window.turnstile) return resolve(window.turnstile);
+
+    const existing = document.querySelector(
+      `script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]`
+    ) as HTMLScriptElement | null;
+
+    const onReady = () => {
+      const start = Date.now();
+      const check = () => {
+        if (window.turnstile) return resolve(window.turnstile);
+        if (Date.now() - start > 10_000) return reject(new Error("timeout"));
+        setTimeout(check, 50);
+      };
+      check();
+    };
+
+    if (existing) {
+      onReady();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = TURNSTILE_SCRIPT_SRC;
+    script.async = true;
+    script.defer = true;
+    script.onload = onReady;
+    script.onerror = () => reject(new Error("script-load-failed"));
+    document.head.appendChild(script);
+  });
 }
 
 function SubmitButton({ tone }: { tone: Tone }) {
@@ -47,6 +96,73 @@ export function IntakeForm({
     null
   );
   const widgetContainerId = useId();
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+  const [turnstileStatus, setTurnstileStatus] = useState<
+    "idle" | "loading" | "ready" | "failed"
+  >("idle");
+
+  // Explicit render of the Turnstile widget — implicit auto-init via
+  // <Script> from next/script was inconsistent. With explicit rendering we
+  // guarantee the widget mounts after this component does.
+  useEffect(() => {
+    if (!siteKey) return;
+    if (!turnstileRef.current) return;
+    if (widgetIdRef.current) return; // already rendered
+
+    setTurnstileStatus("loading");
+    let cancelled = false;
+
+    loadTurnstileScript()
+      .then((turnstile) => {
+        if (cancelled || !turnstileRef.current) return;
+        try {
+          const id = turnstile.render(turnstileRef.current, {
+            sitekey: siteKey,
+            theme: tone === "ink" ? "dark" : "light",
+            "error-callback": () => setTurnstileStatus("failed"),
+            "expired-callback": () => {
+              if (widgetIdRef.current && window.turnstile) {
+                window.turnstile.reset(widgetIdRef.current);
+              }
+            },
+          });
+          widgetIdRef.current = id ?? null;
+          setTurnstileStatus("ready");
+        } catch (err) {
+          console.error("[turnstile] render failed", err);
+          setTurnstileStatus("failed");
+        }
+      })
+      .catch((err) => {
+        console.error("[turnstile] script load failed", err);
+        setTurnstileStatus("failed");
+      });
+
+    return () => {
+      cancelled = true;
+      if (widgetIdRef.current && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetIdRef.current);
+        } catch {
+          // ignore
+        }
+        widgetIdRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [siteKey, tone]);
+
+  // Reset Turnstile widget after a failed submission so a new token is fetched
+  useEffect(() => {
+    if (state && !state.ok && widgetIdRef.current && window.turnstile) {
+      try {
+        window.turnstile.reset(widgetIdRef.current);
+      } catch {
+        // ignore
+      }
+    }
+  }, [state]);
 
   const inputStyle =
     tone === "ink"
@@ -70,17 +186,6 @@ export function IntakeForm({
     tone === "ink"
       ? { color: "var(--color-ink-4)" }
       : undefined;
-
-  // Reset Turnstile widget after a failed submission so a new token is fetched
-  useEffect(() => {
-    if (state && !state.ok && window.turnstile) {
-      try {
-        window.turnstile.reset();
-      } catch {
-        // ignore
-      }
-    }
-  }, [state]);
 
   return (
     <form action={formAction} className="form" style={formStyle} noValidate>
@@ -272,19 +377,34 @@ export function IntakeForm({
       </div>
 
       {siteKey ? (
-        <>
-          <div
-            className="cf-turnstile"
-            data-sitekey={siteKey}
-            data-theme={tone === "ink" ? "dark" : "light"}
-            style={{ marginTop: "20px" }}
-          />
-          <Script
-            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-            async
-            defer
-          />
-        </>
+        <div style={{ marginTop: "20px", minHeight: "70px" }}>
+          <div ref={turnstileRef} />
+          {turnstileStatus === "loading" ? (
+            <p
+              className="small"
+              style={{
+                ...(smallStyle ?? {}),
+                fontSize: "12.5px",
+                marginTop: "4px",
+              }}
+            >
+              Loading bot-protection challenge…
+            </p>
+          ) : null}
+          {turnstileStatus === "failed" ? (
+            <p
+              role="alert"
+              style={{
+                fontSize: "12.5px",
+                color: tone === "ink" ? "var(--color-ox-hi)" : "var(--color-ox)",
+                marginTop: "4px",
+              }}
+            >
+              Couldn&apos;t load the bot-protection challenge. You can still
+              submit — or call the response line directly.
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       <SubmitButton tone={tone} />
