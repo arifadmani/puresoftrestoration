@@ -1,5 +1,9 @@
 # Pure Soft Restoration
 
+**Marketing site live:** https://puresoftrestoration.com (as of 2026-05-28). Phase 2 (claim intake → SES email + S3 photo upload) is gated on AWS Console steps in [`handoff/NEXT_STEPS.md`](handoff/NEXT_STEPS.md).
+
+---
+
 Pure Soft Restoration is being built as the North Texas soft contents and textile restoration specialist for insurance claims.
 
 The project goal is to become the default regional authority for adjusters, carriers, public adjusters, contents companies, restoration companies, and property managers when a claim involves clothing, linens, bedding, rugs, drapes, luxury garments, smoke odor, water damage, or mold-affected textiles.

@@ -1,5 +1,37 @@
 # Next Steps
 
+## At-a-glance status (last updated 2026-05-28 17:34 UTC)
+
+| Layer | State |
+| --- | --- |
+| **Marketing site** | ✅ **LIVE** at https://puresoftrestoration.com (HTTP/2 200, HSTS, Let's Encrypt cert) |
+| `www` → apex | ✅ 308 redirect |
+| Elastic IP | ✅ `18.225.78.200` associated with `i-02f5706e777ef2130` (`us-east-2c`) |
+| DNS (GoDaddy) | ✅ `A @ → 18.225.78.200`, `CNAME www → puresoftrestoration.com.` |
+| TLS | ✅ Let's Encrypt via tls-alpn-01, auto-renew |
+| Caddy 2.11.3 | ✅ active, redirects `:80 → :443`, proxies to `127.0.0.1:3000` |
+| Next.js (systemd `puresoft.service`) | ✅ active, `next-server v16.2.6`, 14 routes prerendered |
+| Host firewall (UFW) | ✅ SSH/80/443 open (3000/8000 still open to world — minor cleanup) |
+| AWS Security Group | ✅ confirmed correct |
+| `/etc/puresoft.env` | ⚠️ placeholders only — needs real SES + Turnstile + (later) DB values |
+| SES domain identity | ❌ not created yet (needed for claim-intake email) |
+| SES production access | ❌ not requested (~24h lead) |
+| S3 `puresoft-claim-uploads-prod` | ❌ not created (needed for Phase 2 photo uploads) |
+| IAM `ec2-puresoft-app-role` runtime policy | ❌ still only `s3:ListAllMyBuckets` (needs SES + S3 least-priv — recipe in `docs/aws/SETUP_RESULTS.md` § 7) |
+| Cloudflare Turnstile keys | ❌ not obtained |
+
+**Phase 1 (marketing site live) is complete. Phase 2 (claim intake → email + photo upload) is gated on the four ❌ rows above.**
+
+### Immediate next action (ordered by lead time)
+
+1. **SES production-access request** — longest lead (~24h), nothing else email-related moves until it's granted. AWS Console → SES → Account dashboard → Request production access.
+2. **SES domain identity for `puresoftrestoration.com`** — create the identity, enable Easy DKIM (RSA 2048), paste the three CNAMEs into GoDaddy (see `docs/aws/dns-records-needed.md` § Pass 2).
+3. **Interim SES email identities** for `admin@puresoftrestoration.com` and `arifadmani@gmail.com` so the claim form can be exercised before production access lands.
+4. **S3 bucket + IAM policy** — bucket `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com`), then attach the least-privilege inline policy from `docs/aws/SETUP_RESULTS.md` § 7 to `ec2-puresoft-app-role`.
+5. **Cloudflare Turnstile** — create site + secret keys, then plug them and the SES/S3 values into `/etc/puresoft.env` and `sudo systemctl restart puresoft`.
+
+---
+
 This file has two parts:
 
 1. **User-side AWS prerequisites** — actions only the human can take (AWS console, registrar, Cloudflare). Start in parallel with the build; they have real lead time.

@@ -16,7 +16,7 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 
 ## Phase 1 — Site scaffold & deploy
 
-**Status:** code complete; deployment to live server pending AWS prerequisites.
+**Status:** ✅ **COMPLETE 2026-05-28** — `https://puresoftrestoration.com` returns HTTP/2 200 with a valid Let's Encrypt certificate. See `handoff/NEXT_STEPS.md` § "At-a-glance status".
 
 - [x] Next.js 16 + TS + Tailwind v4 at repo root (16, not 15 — see DECISIONS amendments)
 - [x] shadcn/ui-style primitives (hand-crafted Button + Card with `cva`, `clsx + tailwind-merge`, `lucide-react`)
@@ -29,8 +29,8 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 - [x] `next.config.ts` set to `output: "standalone"` for systemd deployment
 - [x] `deployment/Caddyfile.example`, `deployment/puresoft.service.example`, `deployment/README.md` (first-time setup + deploy recipe), `.env.example`
 - [x] `npm run build` passes; smoke-tested the standalone server locally (all 14 routes return 200)
-- [x] Caddy reverse proxy + systemd service deployed on this EC2 box *(2026-05-28 — see `docs/aws/SETUP_RESULTS.md`; HTTP `:80` returns 308 → HTTPS as configured; HTTPS waits on DNS)*
-- [ ] HTTPS live on `puresoftrestoration.com` and `www` (blocked on DNS — see `docs/aws/dns-records-needed.md`)
+- [x] Caddy reverse proxy + systemd service deployed on this EC2 box *(2026-05-28 — see `docs/aws/SETUP_RESULTS.md`)*
+- [x] **HTTPS live on `puresoftrestoration.com` and `www`** *(2026-05-28 — Let's Encrypt cert via tls-alpn-01, both apex and www; www 308-redirects to apex)*
 
 Real phone numbers and street address still need to be plugged into `lib/site.ts` (currently placeholders).
 

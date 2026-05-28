@@ -368,3 +368,26 @@ Phase 1.6 renamed `deploy/` → `deployment/` and added the `.example` suffix to
 ### Operational-posture strip
 
 A new six-item mono strip sits between the hero panel and § 04 on the homepage. It covers same-day response, North Texas coverage, item-level intake, chain of custody, salvage focus, and CAT/event capacity. The strip is labeled `Indicative · pending vendor configuration` so the placeholder nature of the values is explicit until real metrics replace them. This is the documented landing pad for the proof claims that adjusters scan for; placing it above the design's existing capabilities triptych is intentional — it answers the "what is this place" question before the page presents the loss-type pillars.
+
+---
+
+## Live-deployment day amendments (2026-05-28)
+
+**No reversals of prior decisions.** Three operational notes from the final cutover that should not have to be rediscovered.
+
+### Ubuntu AMI ships with UFW active and SSH-only
+
+The stock Ubuntu 24.04 LTS AMI on AWS comes with UFW enabled and only an `OpenSSH ALLOW` rule. After the AWS Security Group was correctly opened for 80/443, Caddy's ACME challenges still failed with TCP connection timeouts because UFW's INPUT chain (policy DROP) was discarding the inbound packets before they reached Caddy. Symptom from outside is indistinguishable from a missing SG rule, so it's easy to misdiagnose. Cure on 2026-05-28: `sudo ufw allow 80/tcp && sudo ufw allow 443/tcp`.
+
+Standing rule going forward: when public services don't respond and the AWS SG is verified open, **always check `sudo ufw status` next** before chasing routing, DNS, or app-level explanations.
+
+### Caddy needs `restart`, not `reload`, after upstream changes flip an ACME failure into success
+
+When Caddy has cached an ACME failure (rate-limit backoff after multiple failed challenges), `systemctl reload` does not clear it — Caddy's admin API tries to apply the new config without dropping the in-flight backoff state, and the cert never issues. A full `systemctl restart caddy` is required to start a clean ACME pipeline. Same advice applies after log-permission fixes (see § "Things that did not go on the first attempt" #1 in `docs/aws/SETUP_RESULTS.md`).
+
+### GoDaddy "Parked" / forwarding shows as one DNS record but resolves to multiple parking IPs
+
+The GoDaddy DNS console rolls up its domain-forwarding/parking feature into a single visual record labeled "Parked" in the *Data* column. Behind the scenes that single entry expands to *two* A records on GoDaddy's parking IPs (`3.33.130.190`, `15.197.148.33`). Deleting the one "Parked" UI entry removes both. We initially documented this as "delete the two parking A records" because authoritative `dig` showed both — but in the GoDaddy UI there is only one row. Updated `docs/aws/dns-records-needed.md` to match.
+
+Going forward: when reconciling our DNS instructions against what the user sees in the GoDaddy console, expect a single "Parked" entry to be the source of any pair of parking IPs in `dig` output.
+
