@@ -1,34 +1,45 @@
 # Next Steps
 
-## At-a-glance status (last updated 2026-05-28 17:34 UTC)
+## At-a-glance status (last updated 2026-05-28 18:1x UTC)
 
 | Layer | State |
 | --- | --- |
 | **Marketing site** | ✅ **LIVE** at https://puresoftrestoration.com (HTTP/2 200, HSTS, Let's Encrypt cert) |
 | `www` → apex | ✅ 308 redirect |
 | Elastic IP | ✅ `18.225.78.200` associated with `i-02f5706e777ef2130` (`us-east-2c`) |
-| DNS (GoDaddy) | ✅ `A @ → 18.225.78.200`, `CNAME www → puresoftrestoration.com.` |
+| DNS apex + www | ✅ `A @ → 18.225.78.200`, `CNAME www → puresoftrestoration.com.` |
+| DNS DKIM (3× CNAMEs) | ✅ `<token>._domainkey.puresoftrestoration.com → <token>.dkim.amazonses.com` × 3 |
+| DNS SPF | ✅ `TXT @ "v=spf1 include:_spf.google.com include:amazonses.com ~all"` (single record, Google + SES) |
+| DNS DMARC | ✅ `TXT _dmarc "v=DMARC1; p=none;"` (minimal — valid but no `rua`/`ruf` reporting; can tighten later) |
 | TLS | ✅ Let's Encrypt via tls-alpn-01, auto-renew |
 | Caddy 2.11.3 | ✅ active, redirects `:80 → :443`, proxies to `127.0.0.1:3000` |
 | Next.js (systemd `puresoft.service`) | ✅ active, `next-server v16.2.6`, 14 routes prerendered |
 | Host firewall (UFW) | ✅ SSH/80/443 open (3000/8000 still open to world — minor cleanup) |
 | AWS Security Group | ✅ confirmed correct |
+| SES domain identity `puresoftrestoration.com` | ✅ verified (DKIM Successful, 2026-05-28) |
+| SES production access | ⏳ submitted 2026-05-28, awaiting AWS review (~24h) |
 | `/etc/puresoft.env` | ⚠️ placeholders only — needs real SES + Turnstile + (later) DB values |
-| SES domain identity | ❌ not created yet (needed for claim-intake email) |
-| SES production access | ❌ not requested (~24h lead) |
+| Interim SES email identities | ❌ not verified (`admin@puresoftrestoration.com`, `arifadmani@gmail.com`) — needed for end-to-end claim-form testing while SES is still sandboxed |
 | S3 `puresoft-claim-uploads-prod` | ❌ not created (needed for Phase 2 photo uploads) |
 | IAM `ec2-puresoft-app-role` runtime policy | ❌ still only `s3:ListAllMyBuckets` (needs SES + S3 least-priv — recipe in `docs/aws/SETUP_RESULTS.md` § 7) |
 | Cloudflare Turnstile keys | ❌ not obtained |
 
-**Phase 1 (marketing site live) is complete. Phase 2 (claim intake → email + photo upload) is gated on the four ❌ rows above.**
+**Phase 1 (marketing site live) is complete. Phase 2 (claim intake → email + photo upload) is gated on the four ❌ rows above and the ⏳ SES production-access response.**
 
-### Immediate next action (ordered by lead time)
+### Immediate next action (ordered by what unblocks the most parallel work)
 
-1. **SES production-access request** — longest lead (~24h), nothing else email-related moves until it's granted. AWS Console → SES → Account dashboard → Request production access.
-2. **SES domain identity for `puresoftrestoration.com`** — create the identity, enable Easy DKIM (RSA 2048), paste the three CNAMEs into GoDaddy (see `docs/aws/dns-records-needed.md` § Pass 2).
-3. **Interim SES email identities** for `admin@puresoftrestoration.com` and `arifadmani@gmail.com` so the claim form can be exercised before production access lands.
-4. **S3 bucket + IAM policy** — bucket `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com`), then attach the least-privilege inline policy from `docs/aws/SETUP_RESULTS.md` § 7 to `ec2-puresoft-app-role`.
-5. **Cloudflare Turnstile** — create site + secret keys, then plug them and the SES/S3 values into `/etc/puresoft.env` and `sudo systemctl restart puresoft`.
+1. **Verify the two interim SES email identities** — `admin@puresoftrestoration.com` (claim notifications destination) and `arifadmani@gmail.com` (test sender). Each is a single SES Console action plus clicking a verification link in the mailbox. Total ~5 min. Lets the claim form be exercised end-to-end *before* AWS approves production access.
+2. **Create the S3 bucket** `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com` only). Independent of SES — can do anytime.
+3. **Attach the least-privilege runtime policy** from `docs/aws/SETUP_RESULTS.md` § 7 to `ec2-puresoft-app-role`. Depends on (2) — bucket has to exist first because the policy references its ARN.
+4. **Provision Cloudflare Turnstile site + secret keys** at https://dash.cloudflare.com/?to=/:account/turnstile (free tier). Independent of all the above.
+5. **Fill `/etc/puresoft.env` with real values and `sudo systemctl restart puresoft`** — does the actual wiring. Do this last, once SES/S3/Turnstile values exist.
+
+### Parallel: AWS SES production-access response
+
+When AWS responds (~24h), one of three things:
+- **Approved** — sandbox is lifted, the claim form can email *any* address. No further DNS/console work; just plug `noreply@puresoftrestoration.com` into the env.
+- **Approved with reduced quota** — same as above but at a lower daily quota than requested. Fine for launch; can request increases later as volume grows.
+- **Follow-up questions** — paste their question and we'll draft the response. Common asks: confirm bounce/complaint handling, confirm no marketing use, confirm IP/domain match.
 
 ---
 
