@@ -65,7 +65,8 @@ Once the Elastic IP is assigned:
 ### Status checklist (updated 2026-05-28 after server-side bootstrap run)
 
 - [x] Elastic IP allocated & associated *(2026-05-28 — `18.225.78.200` associated with `i-02f5706e777ef2130`)*
-- [ ] DNS `A` + `CNAME` records added *(2026-05-28 — `www` CNAME and new `A → 18.225.78.200` are in place, but the two old parking A records `3.33.130.190` and `15.197.148.33` were not deleted; until they are, ~2/3 of traffic lands on parking pages and ACME will fail intermittently — see `docs/aws/dns-records-needed.md`)*
+- [x] DNS `A` + `CNAME` records added *(2026-05-28 — `A @ → 18.225.78.200` only; `CNAME www → puresoftrestoration.com.`; old GoDaddy parking record was a single "Parked"/forwarding entry that fanned out to `3.33.130.190` and `15.197.148.33` — deleting the one GoDaddy "Parked" record removed both)*
+- [x] **HTTPS live with Let's Encrypt cert** *(2026-05-28 — `https://puresoftrestoration.com/` → `HTTP/2 200`; `https://www.puresoftrestoration.com/` → `308` to apex. Required opening UFW for 80/443 — host firewall was active and only allowed SSH; AWS SG was already correct. See `docs/aws/SETUP_RESULTS.md` § "Things that did not go on the first attempt" #3.)*
 - [ ] SES domain verified (DKIM CNAMEs added) *(identity does not exist yet)*
 - [ ] SES production access requested *(longest lead time — start this first)*
 - [ ] SES production access granted
@@ -134,9 +135,11 @@ Once the Elastic IP is assigned:
 
 Server-side bootstrap is **done** (see `docs/aws/SETUP_RESULTS.md`). The site is live on the EC2 box at `http://127.0.0.1:3000` and Caddy is wired and waiting for DNS. The remaining work is all in the AWS Console + GoDaddy. Three independent tracks, ordered by urgency:
 
-1. **Finish the DNS swap at GoDaddy** — the Elastic IP `18.225.78.200` is allocated and the new `A @` record was added, but the two old GoDaddy parking A records (`3.33.130.190`, `15.197.148.33`) are still present. While they are, the apex returns three IPs round-robin, so ~2/3 of requests miss the server and Let's Encrypt's HTTP-01 challenge will fail intermittently. **Delete those two parking A records in the GoDaddy DNS console** so only `A @ 18.225.78.200` remains. Once that lands and propagates, Caddy will provision the Let's Encrypt cert automatically on the first request.
-2. **Start the SES production-access request** (#4 above). Longest lead time (~24h). Until granted, SES will only send to verified email identities, which blocks live claim notifications. Start this in parallel with the DNS cleanup.
-3. **Create the S3 bucket and update the IAM role with the least-privilege policy** (#6, #7 in `docs/aws/SETUP_RESULTS.md`). Not blocking the marketing site going live, but blocks Phase 2 (claim intake with photo uploads).
+1. **Start the SES production-access request** (#4 above). Longest lead time (~24h). Until granted, SES will only send to verified email identities, which blocks live claim notifications. Do this first.
+2. **Add SES DKIM CNAMEs to GoDaddy** (pass 2 in `docs/aws/dns-records-needed.md`). Get the three CNAMEs from the SES → "Create identity → Domain" flow and paste them in. Also add the merged SPF TXT and DMARC TXT records.
+3. **Verify interim SES email identities** for `admin@puresoftrestoration.com` and `arifadmani@gmail.com` so the claim intake form can be exercised end-to-end while SES is still in sandbox.
+4. **Create the S3 bucket and update the IAM role with the least-privilege policy** (#6, #7 in `docs/aws/SETUP_RESULTS.md`). Not blocking the marketing site, but blocks Phase 2 (claim intake with photo uploads).
+5. **Get Cloudflare Turnstile site + secret keys** and fill them into `/etc/puresoft.env`, then `sudo systemctl restart puresoft`. Required to enable the claim form's anti-bot challenge.
 
 Sub-steps for the user that the bootstrap could *not* do from the instance role:
 
