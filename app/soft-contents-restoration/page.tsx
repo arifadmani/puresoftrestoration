@@ -102,7 +102,7 @@ export default function SoftContentsPage() {
               Have a claim with soft contents in scope?
             </h2>
             <p className="mt-3 max-w-2xl text-ink-300">
-              Submit the claim and upload contents photos. Same-day pickup is
+              Reach our intake team by phone or email. Same-day pickup is
               standard across the DFW metroplex.
             </p>
           </div>

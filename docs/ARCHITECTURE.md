@@ -11,15 +11,14 @@ This document describes the technical architecture of the Pure Soft Restoration 
    ───────► :443 ─┼─► Caddy 2 ──► 127.0.0.1:3000 Next.js (systemd) │
    ───────► :80 ──┼─► Caddy 2 (auto-redirect to :443)              │
                   │                       │                        │
-                  │                       ├── 127.0.0.1:5432 ───── │ Postgres (Docker)
-                  │                       │                        │
                   └───────────────────────┼────────────────────────┘
                                           │
                                           ▼
                                   AWS managed services
-                                  ├─ S3 (claim photos & documents)
-                                  └─ SES (transactional email)
+                                  └─ SES (transactional email — admin@ notifications only)
 ```
+
+Inbound claim intake routes to phone (CAT line) and email (`admin@puresoftrestoration.com`) directly — the site does not run a structured intake form, photo upload, claim-submissions database, or any S3 bucket. See `docs/DECISIONS.md` § "Phase 2 rescope (2026-05-28)" for the reasoning.
 
 ## Components
 
@@ -48,42 +47,28 @@ This document describes the technical architecture of the Pure Soft Restoration 
 - **Logging:** stdout/stderr → journald → `journalctl -u puresoft`.
 - **Sandbox notable exclusion:** `MemoryDenyWriteExecute` is intentionally **not** set. V8's JIT needs to allocate W+X pages, and enabling that flag crashes Node at startup with `Check failed: 12 == errno` (ENOMEM on `mprotect`). All other systemd hardening flags (`NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=strict`, `ProtectHome`, `ProtectKernel*`, `ProtectControlGroups`, `RestrictAddressFamilies`, `RestrictNamespaces`, `LockPersonality`) remain on. See `docs/DECISIONS.md`.
 
-### PostgreSQL
-- **Deployment:** Docker Compose at `deployment/docker-compose.yml`.
-- **Image:** official `postgres:16`.
-- **Storage:** named volume `puresoft_pgdata`, backed up via EBS snapshots.
-- **Exposure:** bound to `127.0.0.1:5432` only — never public.
-- **Credentials:** sourced from `.env` (not committed).
-
-### AWS S3
-- **Bucket:** `puresoft-claim-uploads-prod` (private, server-side-encrypted with SSE-S3 or KMS).
-- **Access pattern:** Next.js server actions generate pre-signed PUT URLs; the browser uploads directly to S3 (server never proxies bytes).
-- **Object key pattern:** `claims/<claim_reference>/<uuid>-<filename>`.
-- **Lifecycle:** transition to S3 Standard-IA after 90 days; retain indefinitely (until a documented retention policy is set).
-
 ### AWS SES
-- **Sending identity:** `noreply@puresoftrestoration.com` (DKIM-signed).
-- **Inbound:** `admin@puresoftrestoration.com` (provider TBD — Google Workspace recommended).
-- **Bounce/complaint handling:** SNS topic → Lambda or webhook (Phase 4).
+- **Sending identity:** `noreply@puresoftrestoration.com` (DKIM-signed, verified via the `puresoftrestoration.com` domain identity in `us-east-2`).
+- **Receiving:** `admin@puresoftrestoration.com` via Google Workspace MX records.
+- **DNS:** SPF (`v=spf1 include:_spf.google.com include:amazonses.com ~all`), DKIM (three `<token>._domainkey` CNAMEs published 2026-05-28), DMARC (`p=none` for now).
+- **Auth:** EC2 instance role `ec2-puresoft-app-role` carries an inline policy `puresoft-app-runtime` granting `ses:SendEmail` / `ses:SendRawEmail` scoped to the verified domain identity, with a `ses:FromAddress` condition pinning the sender to `noreply@puresoftrestoration.com`. No long-lived AWS keys on the server.
+- **Sandbox status:** production-access request submitted 2026-05-28 (case open at AWS). Until granted, sends are limited to verified recipient identities (`admin@`).
+- **Bounce/complaint handling:** deferred to Phase 4 — SNS topic → Lambda or webhook.
 
-### Cloudflare Turnstile
-- **Role:** invisible CAPTCHA on the claim form.
-- **Verification:** server action verifies the Turnstile token with Cloudflare's siteverify endpoint before processing the submission.
+### Cloudflare Turnstile (provisioned, not yet wired)
+- **Site + secret keys:** stored in `/etc/puresoft.env` (`TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`).
+- **Role:** reserved for any future lightweight contact form. Not in active use today — the `/contact` page only renders `tel:` and `mailto:` channels.
 
-## Data flow: claim submission
+## Data flow: claim intake
 
-1. Adjuster visits `/contact` (or `/claim`).
-2. Fills form fields (validated client-side by React Hook Form + Zod).
-3. For each photo: browser requests a pre-signed S3 PUT URL from the server, uploads directly to S3.
-4. On submit:
-   a. Turnstile token sent to server action.
-   b. Server verifies Turnstile, re-validates form data (Zod).
-   c. Server writes a row to `claim_submissions` with the S3 object keys.
-   d. Server calls SES `SendEmail` to notify `admin@puresoftrestoration.com` with a summary + signed S3 URLs for each photo.
-   e. Server returns a claim reference.
-5. Browser redirects to `/claim/submitted?ref=<claim_reference>`.
+1. Adjuster visits `/contact` (or any service page with a "Submit a claim" CTA, which links to `/contact`).
+2. The page renders two intake channels: `tel:<cat-line>` and `mailto:admin@puresoftrestoration.com?subject=…`.
+3. Adjuster clicks one — phone or email — and the conversation happens outside the website.
+4. Our intake desk replies inside one business hour, opens a claim reference, and seeds chain-of-custody documentation in our internal systems (Google Workspace + the parent business's existing operational stack).
 
-If SES fails: the row is still persisted; an admin retry job re-sends notifications. The user always gets their claim reference.
+There is no form submission, no database row, no server-side SES send triggered by the visitor. The only SES sends from this codebase today are operator-initiated (e.g., the smoke test on 2026-05-28 used to prove the IAM → SES pipeline works).
+
+If we later choose to add a lightweight contact form: Turnstile is already provisioned, SES is already wired, and the env file is ready. The addition would be one server action plus form UI — no S3, no DB. See `docs/DECISIONS.md` § "Phase 2 rescope (2026-05-28)".
 
 ## Repository layout (as built in Phase 1)
 
@@ -140,12 +125,12 @@ puresoft-restoration/
 └── ...
 ```
 
-Reserved for Phase 2: `app/api/`, `app/claim/`, `content/` (MDX), `db/` (schema + migrations), `lib/db.ts`, `lib/ses.ts`, `lib/s3.ts`, `lib/turnstile.ts`.
+Reserved (if a future lightweight contact form lands): `lib/ses.ts`, `lib/turnstile.ts`, a single server-action route. Not reserved any longer: `app/claim/`, `db/`, `lib/db.ts`, `lib/s3.ts` — these were planned for the structured intake + photo upload model that has been dropped.
 
 ## Environments
 
 - **Production:** this EC2 instance, `puresoftrestoration.com`.
-- **Local dev:** developer machine; SES sends to verified addresses only; uploads go to a dev S3 bucket.
+- **Local dev:** developer machine; SES sends only to verified addresses while the AWS account is still in sandbox.
 - **Preview/staging:** none planned for v1 — adopted later if PR-based previews become valuable.
 
 ## Security posture
@@ -154,7 +139,7 @@ Reserved for Phase 2: `app/api/`, `app/claim/`, `content/` (MDX), `db/` (schema 
 - HSTS enabled.
 - No public DB exposure.
 - Secrets in `/etc/puresoft.env`, mode 600, owned by `puresoft` user.
-- IAM role attached to the EC2 instance grants only the SES and S3 permissions actually used — no long-lived AWS keys on the server.
+- IAM role attached to the EC2 instance grants only the SES permissions actually used (`ses:SendEmail` / `ses:SendRawEmail` on the verified domain identity, conditioned on `ses:FromAddress = noreply@puresoftrestoration.com`) — no long-lived AWS keys on the server.
 - UFW firewall + fail2ban on SSH.
 - Daily EBS snapshots via AWS Backup.
 

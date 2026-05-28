@@ -4,15 +4,15 @@
 
 These run in parallel with Phase 1, but **must complete before launch**. Detail: `handoff/NEXT_STEPS.md` and `docs/aws/SETUP_RESULTS.md`.
 
-1. Allocate Elastic IP and associate with this EC2 instance
-2. Add DNS `A` (apex) and `CNAME` (`www`) records at the registrar *(GoDaddy — exact records in `docs/aws/dns-records-needed.md`)*
-3. Verify `puresoftrestoration.com` domain in AWS SES (DKIM CNAMEs)
-4. Submit AWS SES production-access request (sandbox by default)
-5. Confirm Security Group: inbound 22 (your IP), 80, 443 only
-6. Provision Cloudflare Turnstile site keys
-7. Verify `admin@puresoftrestoration.com` and `arifadmani@gmail.com` as SES email identities (interim, for testing while SES is still sandboxed)
-8. Create S3 bucket `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com`)
-9. Replace the policies on `ec2-puresoft-app-role` with the least-privilege inline policy in `docs/aws/SETUP_RESULTS.md` § 7
+1. Allocate Elastic IP and associate with this EC2 instance *(done 2026-05-28 — `18.225.78.200`)*
+2. Add DNS `A` (apex) and `CNAME` (`www`) records at the registrar *(done 2026-05-28 — GoDaddy)*
+3. Verify `puresoftrestoration.com` domain in AWS SES (three DKIM CNAMEs published, SPF, DMARC) *(done 2026-05-28)*
+4. Submit AWS SES production-access request (sandbox by default) *(submitted 2026-05-28 — awaiting AWS review)*
+5. Confirm Security Group: inbound 22 (your IP), 80, 443 only *(done)*
+6. Provision Cloudflare Turnstile site keys *(done 2026-05-28)*
+7. Verify `admin@puresoftrestoration.com` as a SES email identity *(done; interim while sandbox is in effect)*
+8. ~~Create S3 bucket `puresoft-claim-uploads-prod`~~ — **canceled.** No photo upload in scope (see DECISIONS § "Phase 2 rescope").
+9. Replace the policies on `ec2-puresoft-app-role` with the SES-only least-privilege inline policy *(done 2026-05-28; S3 statements were dropped along with bucket creation)*
 
 ## Phase 1 — Site scaffold & deploy
 
@@ -75,20 +75,20 @@ Outstanding for Phase 3 polish (separately tracked):
 - [x] Validation: `npm install` clean, `npm run lint` 0 errors / 0 warnings, `npm run build` 14 routes prerender as static, postbuild stages assets
 - [x] Smoke test: all routes HTTP 200; CSS bundle (47 KB), woff2 fonts, and JS chunks all reach the wire
 
-## Phase 2 — Claim intake form
+## Phase 2 — Intake assist (optional, rescoped 2026-05-28)
 
-- PostgreSQL via Docker Compose, persisted volume, scheduled backups
-- `claim_submissions` table with chain-of-custody-ready schema:
-  - Claim reference (generated), submitted_at
-  - Adjuster info: name, email, phone, firm, role (adjuster / IA / public adjuster / carrier / contents company / property manager / homeowner)
-  - Claim info: claim number, carrier, date of loss, peril type (fire / smoke / water / mold / CAT / other)
-  - Property info: address, contact on site, access notes
-  - Contents description, urgency, additional notes
-  - Uploaded photo references (S3 keys)
-- Server action flow: validate (Zod) → write row → upload photos to S3 → SES notification to `admin@puresoftrestoration.com` → confirmation page with claim reference
-- Cloudflare Turnstile on the form
-- S3 bucket: private, server-side-encrypted, lifecycle rule for long-term retention
-- Adjuster-facing confirmation page: claim reference + what happens next + 24h SLA expectation
+The structured online intake form, claim-submissions database, S3 photo upload, and Postgres-backed chain-of-custody seed have all been dropped — adjusters and claimants contact us directly by phone or email. See DECISIONS § "Phase 2 rescope (2026-05-28)" for the reasoning.
+
+What remains optional in Phase 2:
+
+- A lightweight contact form on `/contact` (5–6 fields: name, email, phone, claim number, brief description) that triggers a single SES email to `admin@puresoftrestoration.com`. Cloudflare Turnstile protects it. No DB. No file uploads. Plain server action.
+- Adjuster-facing confirmation page after submission ("Got it. We'll be in touch within one business hour.").
+
+Not building unless and until the intake model changes:
+
+- PostgreSQL / `claim_submissions` table
+- S3 bucket + presigned URLs + photo upload UI
+- Zod-validated structured intake with chain-of-custody seed
 
 ## Phase 3 — Content polish & SEO
 

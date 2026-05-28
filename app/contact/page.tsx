@@ -21,20 +21,18 @@ export default function ContactPage() {
           Route a soft contents loss to our intake team.
         </h1>
         <p className="mt-6 max-w-3xl text-base leading-7 text-ink-300 md:text-lg">
-          The full intake form — claim and carrier fields, loss type, property
-          details, contents description, and photo upload — goes live with
-          Phase 2 of the build. While that is in flight, route active claims
-          to the channels below and we will respond inside one business hour
-          during business hours.
+          Reach our intake team directly by phone or email. We confirm receipt
+          and provide a claim reference inside one business hour during
+          business hours.
         </p>
       </Section>
 
       <Section tone="paper">
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-7">
-            <Eyebrow>How to reach intake right now</Eyebrow>
+            <Eyebrow>How to reach intake</Eyebrow>
             <SectionHeading className="text-2xl md:text-3xl">
-              Two channels until the full form is live.
+              Two channels into our claims desk.
             </SectionHeading>
 
             <div className="mt-8 grid gap-4">
@@ -74,8 +72,8 @@ export default function ContactPage() {
                     </a>
                     <p className="mt-1 text-sm text-ink-600">
                       Send claim number, carrier, loss type, property address,
-                      contact details, and any photos. We confirm receipt and a
-                      claim reference inside one business hour.
+                      and contact details. We confirm receipt and a claim
+                      reference inside one business hour.
                     </p>
                   </div>
                 </CardBody>
@@ -100,14 +98,14 @@ export default function ContactPage() {
 
           <aside className="md:col-span-5">
             <div className="rounded-sm border border-ink-900/10 bg-paper-shadow p-6">
-              <Eyebrow>Coming with Phase 2</Eyebrow>
+              <Eyebrow>What to send</Eyebrow>
               <SectionHeading className="mt-3 text-xl md:text-2xl">
-                Structured intake with photo upload.
+                Information that speeds intake.
               </SectionHeading>
               <ul className="mt-5 space-y-3 text-sm text-ink-700">
                 <li className="flex gap-2">
                   <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Adjuster, carrier, and claim-number fields
+                  Adjuster, carrier, and claim number
                 </li>
                 <li className="flex gap-2">
                   <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
@@ -119,20 +117,17 @@ export default function ContactPage() {
                 </li>
                 <li className="flex gap-2">
                   <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Contents description and urgency
+                  Brief contents description and urgency
                 </li>
                 <li className="flex gap-2">
                   <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Photo upload to a secured intake bucket
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1 inline-block h-1.5 w-1.5 flex-none rounded-full bg-ink-900" />
-                  Claim reference + chain-of-custody seed
+                  Best callback number and email
                 </li>
               </ul>
               <p className="mt-5 text-xs text-ink-500">
-                Structured fields are chain-of-custody-ready from the first
-                submission — the schema does not change when the portal ships.
+                Once we have these, we assign a claim reference, confirm
+                pickup, and seed chain-of-custody documentation from the first
+                touch.
               </p>
               <div className="mt-6">
                 <Button href="/insurance-professionals" variant="ghost" size="md">

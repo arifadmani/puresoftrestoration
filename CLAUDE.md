@@ -61,17 +61,23 @@ Preferred visual identity:
 
 ## Technical direction
 
-Recommended stack:
+Recommended stack (as deployed 2026-05-28):
 
-- Next.js 15
+- Next.js 16
 - TypeScript
-- Tailwind CSS
-- shadcn/ui
-- PostgreSQL
-- AWS SES
-- AWS S3
-- Caddy reverse proxy
-- systemd deployment
+- Tailwind CSS v4
+- shadcn/ui-style primitives (hand-crafted)
+- AWS SES (transactional email)
+- Caddy 2 reverse proxy
+- systemd deployment on EC2 (Ubuntu 24.04)
+
+Intentionally not in scope today:
+
+- Structured online claim-intake form (intake routes through phone + email)
+- AWS S3 (no photo upload — adjusters/claimants do not submit photos)
+- PostgreSQL (no claim-submissions table needed without a structured form)
+
+These may return later if the intake model changes; for now they are out of the build.
 
 ## Important operational principles
 

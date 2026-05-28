@@ -391,3 +391,31 @@ The GoDaddy DNS console rolls up its domain-forwarding/parking feature into a si
 
 Going forward: when reconciling our DNS instructions against what the user sees in the GoDaddy console, expect a single "Parked" entry to be the source of any pair of parking IPs in `dig` output.
 
+
+---
+
+## Phase 2 rescope — drop structured intake, photos, S3, Postgres (2026-05-28)
+
+**Reverses** the day-one decisions to build a structured claim-intake form (`Phase 2` in `docs/ROADMAP.md`), to keep claim-photo uploads in scope, to provision `puresoft-claim-uploads-prod`, and to run PostgreSQL from day one (§ "Database" above).
+
+The actual business workflow is: adjusters and property owners find Pure Soft Restoration via the website, then communicate **directly via phone or email**. They do not submit photos to us through a web form, they do not fill structured intake fields online, and the intake desk handles claim-reference creation and chain-of-custody seeding inside the parent business's existing operational stack (Medinah Dry Cleaners — see memory note).
+
+Consequence of building what the website doesn't need:
+
+- An S3 bucket holding zero claim photos (because no one uploads them online).
+- A Postgres `claim_submissions` table holding zero rows (because no one submits a form).
+- Pre-signed PUT URLs, Zod schemas, chain-of-custody seed logic, claim-reference generators, confirmation pages, a Phase 2 IAM policy with `s3:PutObject` permissions — all maintained, all touching nothing.
+- An IAM blast radius that includes S3 write access for no real reason.
+
+Decision:
+
+- **Cancel S3.** No bucket, no S3 SDK dependency, no `lib/s3.ts`. IAM policy on `ec2-puresoft-app-role` carries only the SES statement.
+- **Cancel structured online intake.** `/contact` renders `tel:` + `mailto:` channels. No `<form>`, no server action, no DB write.
+- **Defer PostgreSQL** until something actually needs it (analytics, CRM, customer list). Removed from `.env.example` and `docs/ARCHITECTURE.md`.
+- **Keep Cloudflare Turnstile keys provisioned** — cheap insurance if a lightweight contact form is added later; doesn't break anything by sitting unused.
+- **Keep SES + DKIM + SPF + DMARC + production-access request** — `admin@puresoftrestoration.com` notifications still flow through SES; the smoke test from the EC2 role on 2026-05-28 confirmed end-to-end delivery.
+
+If the intake model ever changes — e.g., we want a claims portal for repeat carrier customers, or a CAT-event self-service channel — the decisions reversed here can be revisited. They are not architecturally cheap to add back (Postgres bring-up + bucket + IAM widening + schema design + form code), but none of them is blocked by anything we're shipping today.
+
+Files updated in the same commit to match: `app/contact/page.tsx` (drop "Phase 2" aside), `app/soft-contents-restoration/page.tsx` (drop "upload contents photos"), `.env.example` (drop S3 + DATABASE_URL), `README.md`, `CLAUDE.md` (stack), `docs/ROADMAP.md` (Phase 0 #8, Phase 2 rewrite), `docs/ARCHITECTURE.md` (topology, components, data flow, reserved layout, security).
+
