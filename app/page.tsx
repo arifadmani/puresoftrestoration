@@ -254,10 +254,10 @@ export default function HomePage() {
               <span className="rvr__tag">Replace — the default</span>
               <p className="rvr__big" style={{ color: "var(--color-ink-3)" }}>Write&nbsp;off</p>
               <ul className="rvr__list">
-                <li><span className="mk" style={{ color: "var(--color-ink-4)" }}>×</span> Full replacement cost on every flagged item, at today&apos;s prices.</li>
-                <li><span className="mk" style={{ color: "var(--color-ink-4)" }}>×</span> Recoverable goods discarded for lack of a salvage pathway.</li>
-                <li><span className="mk" style={{ color: "var(--color-ink-4)" }}>×</span> Sentimental and one-of-a-kind items lost permanently.</li>
-                <li><span className="mk" style={{ color: "var(--color-ink-4)" }}>×</span> Disputes over valuation, condition and scope.</li>
+                <li><span className="mk" style={{ color: "var(--color-ink-3)" }}>×</span> Full replacement cost on every flagged item, at today&apos;s prices.</li>
+                <li><span className="mk" style={{ color: "var(--color-ink-3)" }}>×</span> Recoverable goods discarded for lack of a salvage pathway.</li>
+                <li><span className="mk" style={{ color: "var(--color-ink-3)" }}>×</span> Sentimental and one-of-a-kind items lost permanently.</li>
+                <li><span className="mk" style={{ color: "var(--color-ink-3)" }}>×</span> Disputes over valuation, condition and scope.</li>
               </ul>
             </div>
           </div>

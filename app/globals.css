@@ -107,7 +107,12 @@
   font-size: 11.5px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-ink-4);
+  /*
+   * ink-3 on paper hits ~5:1 contrast; ink-4 was ~3.3:1 and failed AA for
+   * small text. .band-dark .kicker (below) keeps the muted ink-4 because
+   * on a dark background that contrast inverts and ink-4 reads fine.
+   */
+  color: var(--color-ink-3);
 }
 
 @utility idx {
@@ -645,7 +650,8 @@ html.js-ready .reveal.in {
 }
 .seal__txt { font-size: 12px; line-height: 1.3; }
 .seal__txt b { display: block; font-weight: 700; font-size: 13px; }
-.seal__txt span { color: var(--color-ink-4); }
+/* ink-3 (~5:1 on paper) instead of ink-4 (~3.3:1) — small text below seal mark. */
+.seal__txt span { color: var(--color-ink-3); }
 
 /* ---------- Contact section ---------- */
 .contact__grid {
