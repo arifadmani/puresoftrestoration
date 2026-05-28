@@ -62,18 +62,20 @@ Once the Elastic IP is assigned:
 - Confirm a real mailbox exists for `admin@puresoftrestoration.com` (Google Workspace recommended).
 - This is where all claim notifications will land.
 
-### Status checklist
-- [ ] Elastic IP allocated & associated
-- [ ] DNS `A` + `CNAME` records added
-- [ ] SES domain verified (DKIM CNAMEs added)
-- [ ] SES production access requested
+### Status checklist (updated 2026-05-28 after server-side bootstrap run)
+
+- [ ] Elastic IP allocated & associated *(instance is on ephemeral `18.225.211.99` — stop/start will lose the IP)*
+- [ ] DNS `A` + `CNAME` records added *(currently still pointing at GoDaddy parking — see `docs/aws/dns-records-needed.md`)*
+- [ ] SES domain verified (DKIM CNAMEs added) *(identity does not exist yet)*
+- [ ] SES production access requested *(longest lead time — start this first)*
 - [ ] SES production access granted
 - [ ] Interim email identities verified
 - [ ] Security group rules confirmed
-- [ ] S3 bucket created with CORS + encryption
-- [ ] IAM role created and attached to EC2
+- [ ] S3 bucket created with CORS + encryption *(bucket `puresoft-claim-uploads-prod` does not exist; account has 0 buckets)*
+- [x] IAM role attached to EC2 *(role `ec2-puresoft-app-role` is attached)*
+- [ ] IAM role granted the least-privilege runtime policy *(role currently only has `s3:ListAllMyBuckets`; recommended policy is in `docs/aws/SETUP_RESULTS.md` § 7)*
 - [ ] Turnstile keys obtained
-- [ ] `admin@puresoftrestoration.com` mailbox live and monitored
+- [x] `admin@puresoftrestoration.com` mailbox live and monitored *(Google Workspace MX confirmed)*
 
 ---
 
@@ -84,13 +86,16 @@ Once the Elastic IP is assigned:
 ### Infrastructure
 - [x] Install Claude Code on Ubuntu AWS server
 - [x] Configure GitHub repo connection locally
-- [x] Configure Node.js runtime (v22.22.3)
+- [x] Configure Node.js runtime (v22.22.3 in nvm + v22.22.2 system-wide at `/usr/bin/node` from NodeSource)
 - [x] Author Caddy reverse-proxy config (`deployment/Caddyfile.example`)
 - [x] Author systemd unit (`deployment/puresoft.service.example`)
 - [x] Author env template (`.env.example`) with SES, S3, Turnstile, DB keys
-- [ ] Install Caddy on the server and copy `deployment/Caddyfile.example` to `/etc/caddy/Caddyfile`
-- [ ] Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`
-- [ ] Install systemd unit and enable the service (after first release deploy)
+- [x] Install AWS CLI v2 on the server (`/usr/local/bin/aws`)
+- [x] **Install Caddy on the server and copy `deployment/Caddyfile.example` to `/etc/caddy/Caddyfile`** *(2026-05-28 — Caddy 2.11.3 active; redirects :80 → :443; ACME will provision certs the moment DNS resolves to this instance)*
+- [x] **Create `puresoft` system user, `/var/www/puresoft/`, `/etc/puresoft.env`** *(2026-05-28 — env file is placeholders only, mode 0600, owned by puresoft:puresoft)*
+- [x] **Install systemd unit and enable the service** *(2026-05-28 — `puresoft.service` active, `next-server (v16.2.6)` on 127.0.0.1:3000; required removing `MemoryDenyWriteExecute=true` from the unit because it crashes V8's JIT — see `docs/DECISIONS.md`)*
+- [x] **Deploy first release bundle** *(2026-05-28 — `/var/www/puresoft/releases/20260528162123`, symlinked from `/var/www/puresoft/current`)*
+- [ ] Fill `/etc/puresoft.env` with real values (still placeholders; do this after SES + Turnstile are configured, then `sudo systemctl restart puresoft`)
 - [ ] Wire AWS SES integration (Phase 2)
 - [ ] Wire AWS S3 integration (Phase 2)
 - [ ] CI/CD deployment workflow (Phase 4)
@@ -125,14 +130,30 @@ Once the Elastic IP is assigned:
 - [x] Who-We-Work-With cards expanded to cover all six audiences (Independent adjusters · Public adjusters · Carriers · Contents companies · Restoration contractors · Property managers), with a mono "alongside" line beneath the cards
 - [x] `deploy/` renamed to `deployment/` with `.example` suffixes on templates; all references updated
 
-### Exact next action for the user
-Three independent tracks, ordered by urgency:
+### Exact next action for the user (refreshed 2026-05-28)
 
-1. **Open the AWS console and start the SES production-access request** (#4 above). It has the longest lead time (~24h); nothing else is gated by it but launch is. Do this first.
-2. **Allocate an Elastic IP and update DNS** (#1, #2) — pointed at this instance. Once DNS resolves to the EIP, Caddy will provision Let's Encrypt automatically the first time it starts after the systemd service is enabled.
-3. **Decide on the seven non-home pages**: leave them in their current token-migrated state (Phase 1 visual minimum) or schedule a Phase 3 section-by-section redesign pass to bring them up to homepage fidelity. The current state is launch-acceptable for v1.
+Server-side bootstrap is **done** (see `docs/aws/SETUP_RESULTS.md`). The site is live on the EC2 box at `http://127.0.0.1:3000` and Caddy is wired and waiting for DNS. The remaining work is all in the AWS Console + GoDaddy. Three independent tracks, ordered by urgency:
 
-Once #1 and #2 are in motion, run the host-setup recipe in `deployment/README.md` (Caddy install · `puresoft` user · `/etc/puresoft.env` · systemd unit · first release rsync). That puts the site on `https://puresoftrestoration.com`.
+1. **Start the SES production-access request** (#4 above). Longest lead time (~24h). Until granted, SES will only send to verified email identities, which blocks live claim notifications. Start this first.
+2. **Allocate an Elastic IP and update DNS at GoDaddy** (#1, #2). Records are documented exactly in `docs/aws/dns-records-needed.md`. Once DNS resolves to the EIP, Caddy will provision Let's Encrypt automatically on the first request to the domain — no further server-side work needed.
+3. **Create the S3 bucket and update the IAM role with the least-privilege policy** (#6, #7 in `docs/aws/SETUP_RESULTS.md`). Not blocking the marketing site going live, but blocks Phase 2 (claim intake with photo uploads).
+
+Sub-steps for the user that the bootstrap could *not* do from the instance role:
+
+- Create SES identity `puresoftrestoration.com` and grab the three DKIM CNAMEs (paste them into GoDaddy per `docs/aws/dns-records-needed.md`).
+- Verify `admin@puresoftrestoration.com` and `arifadmani@gmail.com` as interim SES email identities so the intake form can be tested before production access lands.
+- Create the S3 bucket `puresoft-claim-uploads-prod` (region `us-east-2`, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com`).
+- Attach the inline policy from `docs/aws/SETUP_RESULTS.md` § 7 to `ec2-puresoft-app-role`.
+- Confirm the Security Group on `i-02f5706e777ef2130` is 22 (your IP) / 80 / 443 only.
+- Get Cloudflare Turnstile site + secret keys.
+- Fill the real values into `/etc/puresoft.env` and `sudo systemctl restart puresoft`.
+
+After DNS resolves and Caddy has a cert, verify with:
+
+```bash
+curl -I https://puresoftrestoration.com/
+sudo journalctl -u caddy -n 50 --no-pager
+```
 
 ### Intake architecture
 - Photo uploads to S3

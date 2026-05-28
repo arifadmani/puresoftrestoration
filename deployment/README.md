@@ -2,10 +2,12 @@
 
 These files configure how the Pure Soft Restoration site runs on the AWS EC2 host. The full architecture is in `../docs/ARCHITECTURE.md`.
 
+> **First bootstrap completed 2026-05-28.** The recipe below has been executed on this EC2 instance once; the live audit trail (what ran, what was already true, what needs the AWS Console) is in `../docs/aws/SETUP_RESULTS.md`. The AWS-Console-side DNS records (apex + www + SES DKIM + SPF + DMARC) are catalogued exactly in `../docs/aws/dns-records-needed.md`.
+
 ## Files
 
-- **`Caddyfile`** — Caddy 2 reverse-proxy config. Provisions Let's Encrypt TLS for the apex and www, redirects www → apex, applies security headers, caches static assets, and reverse-proxies `:443` → `127.0.0.1:3000`.
-- **`systemd/puresoft.service`** — systemd unit that runs the Next.js standalone build as the `puresoft` system user.
+- **`Caddyfile.example`** — Caddy 2 reverse-proxy config. Provisions Let's Encrypt TLS for the apex and www, redirects www → apex, applies security headers, caches static assets, and reverse-proxies `:443` → `127.0.0.1:3000`. Install to `/etc/caddy/Caddyfile`.
+- **`puresoft.service.example`** — systemd unit that runs the Next.js standalone build as the `puresoft` system user. Install to `/etc/systemd/system/puresoft.service`. **Do not re-add `MemoryDenyWriteExecute=true`** — it crashes V8 (see `../docs/DECISIONS.md`).
 
 ## First-time host setup
 
@@ -29,7 +31,8 @@ sudo chmod 600 /etc/puresoft.env
 
 # 4. Caddy config
 sudo cp /path/to/repo/deployment/Caddyfile.example /etc/caddy/Caddyfile
-sudo systemctl reload caddy
+sudo chown -R caddy:caddy /var/log/caddy   # required — Caddy's reload will reject the config otherwise
+sudo systemctl restart caddy               # use restart, not reload, on the first config swap
 
 # 5. systemd unit (after first release is in place)
 sudo cp /path/to/repo/deployment/puresoft.service.example /etc/systemd/system/puresoft.service

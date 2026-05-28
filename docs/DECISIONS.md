@@ -325,6 +325,38 @@ The production deploy recipe in `deployment/README.md` already used `rsync` to p
 
 ---
 
+## AWS bootstrap + first live deploy (2026-05-28)
+
+**Decision:** the AWS-side bootstrap and the first systemd-managed deploy of the standalone build were executed on the EC2 instance. The full audit trail is in `docs/aws/SETUP_RESULTS.md`. Two decisions in this run are durable enough to belong here:
+
+### `MemoryDenyWriteExecute` removed from the systemd unit
+
+`deployment/puresoft.service.example` previously set `MemoryDenyWriteExecute=true`. On first start, this crashed Node immediately with a V8 fatal:
+
+```
+# Fatal error in , line 0
+# Check failed: 12 == (*__errno_location ()).
+```
+
+errno 12 is `ENOMEM`, returned by `mprotect()` when a sandbox forbids `PROT_EXEC | PROT_WRITE` pages — exactly what V8's baseline JIT must allocate to compile bytecode. This is not specific to our build; it's a structural incompatibility between systemd's `MemoryDenyWriteExecute` and any V8-based runtime (Node, Deno, Bun, Chromium). The flag was removed and replaced with a comment in the unit explaining why it must stay removed.
+
+All other systemd hardening flags on the unit are retained: `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=strict`, `ProtectHome`, `ProtectKernel{Tunables,Modules}`, `ProtectControlGroups`, `RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6`, `RestrictNamespaces`, `LockPersonality`.
+
+### Least-privilege IAM, not blanket "FullAccess"
+
+The runtime IAM policy for `ec2-puresoft-app-role` is scoped to:
+
+- `ses:SendEmail` / `ses:SendRawEmail` on three specific identity ARNs, conditioned on `ses:FromAddress = noreply@puresoftrestoration.com`
+- `s3:PutObject` / `s3:GetObject` / `s3:AbortMultipartUpload` on `arn:aws:s3:::puresoft-claim-uploads-prod/claims/*`
+- `s3:ListBucket` on the bucket itself, conditioned to the `claims/*` prefix
+- Nothing else — explicitly **no** `*FullAccess` AWS-managed policies, no `iam:*`, no `ec2:*`
+
+Reasoning: the app runtime never has a legitimate need to mutate AWS account state, change IAM, or read other buckets. The `ses:FromAddress` condition pins the sender so even a compromised process can't impersonate other mailboxes on the verified domain. The S3 prefix condition pins the app to its own upload area inside the bucket.
+
+The exact policy JSON lives in `docs/aws/SETUP_RESULTS.md` § 7 so it can be copy-pasted into the AWS Console.
+
+---
+
 ## Phase 1.6 polish + deployment-prep amendments (2026-05-19)
 
 **No reversals of prior decisions.** Two structural notes:

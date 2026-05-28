@@ -2,15 +2,17 @@
 
 ## Phase 0 — AWS prerequisites (user-side, has real lead time)
 
-These run in parallel with Phase 1, but **must complete before launch**. Detail: `handoff/NEXT_STEPS.md`.
+These run in parallel with Phase 1, but **must complete before launch**. Detail: `handoff/NEXT_STEPS.md` and `docs/aws/SETUP_RESULTS.md`.
 
 1. Allocate Elastic IP and associate with this EC2 instance
-2. Add DNS `A` (apex) and `CNAME` (`www`) records at the registrar
+2. Add DNS `A` (apex) and `CNAME` (`www`) records at the registrar *(GoDaddy — exact records in `docs/aws/dns-records-needed.md`)*
 3. Verify `puresoftrestoration.com` domain in AWS SES (DKIM CNAMEs)
 4. Submit AWS SES production-access request (sandbox by default)
 5. Confirm Security Group: inbound 22 (your IP), 80, 443 only
 6. Provision Cloudflare Turnstile site keys
 7. Verify `admin@puresoftrestoration.com` and `arifadmani@gmail.com` as SES email identities (interim, for testing while SES is still sandboxed)
+8. Create S3 bucket `puresoft-claim-uploads-prod` (us-east-2, all public access blocked, SSE-S3, CORS for `https://puresoftrestoration.com`)
+9. Replace the policies on `ec2-puresoft-app-role` with the least-privilege inline policy in `docs/aws/SETUP_RESULTS.md` § 7
 
 ## Phase 1 — Site scaffold & deploy
 
@@ -27,8 +29,8 @@ These run in parallel with Phase 1, but **must complete before launch**. Detail:
 - [x] `next.config.ts` set to `output: "standalone"` for systemd deployment
 - [x] `deployment/Caddyfile.example`, `deployment/puresoft.service.example`, `deployment/README.md` (first-time setup + deploy recipe), `.env.example`
 - [x] `npm run build` passes; smoke-tested the standalone server locally (all 14 routes return 200)
-- [ ] Caddy reverse proxy + systemd service deployed on this EC2 box (blocked on Elastic IP + DNS)
-- [ ] HTTPS live on `puresoftrestoration.com` and `www` (blocked on DNS)
+- [x] Caddy reverse proxy + systemd service deployed on this EC2 box *(2026-05-28 — see `docs/aws/SETUP_RESULTS.md`; HTTP `:80` returns 308 → HTTPS as configured; HTTPS waits on DNS)*
+- [ ] HTTPS live on `puresoftrestoration.com` and `www` (blocked on DNS — see `docs/aws/dns-records-needed.md`)
 
 Real phone numbers and street address still need to be plugged into `lib/site.ts` (currently placeholders).
 

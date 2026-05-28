@@ -46,6 +46,7 @@ This document describes the technical architecture of the Pure Soft Restoration 
 - **Environment:** loaded from `/etc/puresoft.env` (chmod 600, owned by `puresoft` user).
 - **Restart policy:** `Restart=on-failure`, `RestartSec=2`.
 - **Logging:** stdout/stderr → journald → `journalctl -u puresoft`.
+- **Sandbox notable exclusion:** `MemoryDenyWriteExecute` is intentionally **not** set. V8's JIT needs to allocate W+X pages, and enabling that flag crashes Node at startup with `Check failed: 12 == errno` (ENOMEM on `mprotect`). All other systemd hardening flags (`NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=strict`, `ProtectHome`, `ProtectKernel*`, `ProtectControlGroups`, `RestrictAddressFamilies`, `RestrictNamespaces`, `LockPersonality`) remain on. See `docs/DECISIONS.md`.
 
 ### PostgreSQL
 - **Deployment:** Docker Compose at `deployment/docker-compose.yml`.

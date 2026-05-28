@@ -48,7 +48,10 @@ ProtectControlGroups=true
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 RestrictNamespaces=true
 LockPersonality=true
-MemoryDenyWriteExecute=true
+# MemoryDenyWriteExecute is intentionally NOT set — V8's JIT must
+# allocate W+X pages, and enabling this sandbox flag crashes the
+# Node process at startup with "Check failed: 12 == errno" (ENOMEM
+# on mprotect). See docs/DECISIONS.md for the full note.
 
 # Modest resource limits.
 LimitNOFILE=65536
