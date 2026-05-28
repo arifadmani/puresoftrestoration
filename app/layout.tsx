@@ -18,6 +18,13 @@ export default function RootLayout({
       lang="en"
       className={`${sans.variable} ${serifDisplay.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js-ready')",
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <JsonLd data={localBusinessSchema()} />
         <Header />

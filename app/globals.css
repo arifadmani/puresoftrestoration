@@ -282,19 +282,24 @@
   box-shadow: 0 0 0 3px var(--color-ox-soft);
 }
 
-/* ---------- Reveal animation ---------- */
-.reveal {
+/* ---------- Reveal animation ----------
+   Default: visible. Only hidden when html.js-ready is set (set by an inline
+   script in <head>). If JS fails to load for any reason, .reveal sections
+   still render — they just don't animate in. Critical: this prevents the
+   intake form (and any other .reveal section) from being permanently
+   invisible because IntersectionObserver didn't fire. */
+html.js-ready .reveal {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.reveal.in {
+html.js-ready .reveal.in {
   opacity: 1;
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  html.js-ready .reveal {
     opacity: 1;
     transform: none;
     transition: none;
