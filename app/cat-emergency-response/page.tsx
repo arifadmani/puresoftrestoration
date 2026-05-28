@@ -7,17 +7,31 @@ import { site } from "@/lib/site";
 export const metadata = buildMetadata({
   title: "Large Loss & CAT Response",
   description:
-    "Catastrophe-scale soft-contents restoration in North Texas. Surge capacity, mutual-aid agreements, unbroken chain of custody at event scale.",
+    "Soft-contents catastrophe response in North Texas. Pure Soft mobilizes for on-site packout on direct-adjuster engagements and partners with contents companies on routed work — per-garment inventory at intake, insurance-approved invoicing, hand-delivered home return.",
   path: "/cat-emergency-response",
 });
 
+// Round 2 — capabilities rewritten to match the canonical service model.
+// Scrubbed claims (kept here in commentary so the change is auditable):
+//   "Rapid mobilization" / "Crew dispatched within hours" — no pre-positioned
+//     dispatch crews exist; replaced with the actual on-site capability tied
+//     to direct-adjuster mode.
+//   "Climate-controlled facility ... segregated biohazard wing" — Round-3
+//     question; specifics unconfirmed.
+//   "Surge capacity to absorb large multi-property events" — capacity claim
+//     unconfirmed; replaced with the actual operating model.
+//   "Mutual-aid network / vendor agreements" — not part of the service model.
+//   "Unbroken custody / every item tracked individually" — the actual model
+//     is per-garment inventory at intake; reframed accordingly.
+//   "Carrier coordination ... one reporting standard" — replaced with the
+//     real differentiator (insurance-approved invoicing at intake).
 const capabilities = [
-  { n: "01", h: "Rapid mobilization", p: "Crew and sealed transit dispatched within hours of carrier instruction." },
-  { n: "02", h: "Climate-controlled facility", p: "Segregated by loss class, with a separate biohazard wing." },
-  { n: "03", h: "Surge capacity", p: "Throughput to absorb large multi-property events without delay." },
-  { n: "04", h: "Mutual-aid network", p: "Agreements with adjacent vendors extend reach beyond the metroplex." },
-  { n: "05", h: "Unbroken custody", p: "Every item tracked individually, even at event scale." },
-  { n: "06", h: "Carrier coordination", p: "One point of contact and one reporting standard across the event." },
+  { n: "01", h: "On-site packout", p: "When adjusters or carriers engage us directly, we mobilize for on-site soft-contents packout — no contents-company middleman required." },
+  { n: "02", h: "Receive-and-process", p: "When a contents company runs the packout, we receive the soft contents from them and take it from there." },
+  { n: "03", h: "Per-garment inventory", p: "Every garment is logged line-by-line at intake — the inventory backs the carrier-formatted invoice." },
+  { n: "04", h: "Insurance-approved invoicing", p: "An insurance-approved invoice goes back to the contents company or adjuster immediately at intake. The administrative load comes off your file." },
+  { n: "05", h: "Cleaned and stored", p: "We clean only after the invoice is paid, then poly-bag and store items until the policyholder's home is ready for return." },
+  { n: "06", h: "Home delivery", p: "Cleaned items are hand-delivered to the policyholder's home in poly bags — presented like fresh dry cleaning. No warehouse stop." },
 ];
 
 export default function CatResponsePage() {
@@ -27,7 +41,7 @@ export default function CatResponsePage() {
         data={serviceSchema({
           name: "Catastrophe (CAT) Soft-Contents Response",
           description:
-            "Catastrophe-scale soft-contents restoration response in North Texas — surge capacity, mutual-aid agreements, chain of custody at event scale.",
+            "Soft-contents catastrophe response in North Texas. Pure Soft Restoration mobilizes on-site for direct-adjuster engagements and partners with contents companies on routed work — per-garment inventory at intake, insurance-approved invoicing, hand-delivered return.",
           slug: "/cat-emergency-response",
         })}
       />
@@ -58,24 +72,19 @@ export default function CatResponsePage() {
 
       <section className="section shell reveal">
         <div className="cat__grid" style={{ alignItems: "stretch" }}>
-          <div className="ph" data-label="Coverage schematic — DFW metroplex, 60-min response radius from Irving" style={{ minHeight: "440px" }} />
+          <div className="ph" data-label="Coverage map — DFW metroplex and the broader North Texas region" style={{ minHeight: "440px" }} />
           <div>
             <p className="eyebrow">North Texas Coverage</p>
             <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)", margin: "14px 0 18px" }}>
-              Pre-positioned across<br />the metroplex.
+              Two ways soft contents<br />reach our floor.
             </h2>
             <p className="body-copy" style={{ fontSize: "16px" }}>
-              {/*
-                The current sentence frames Pure Soft as operating from a
-                facility with crews staged for on-site dispatch — the
-                opposite of the actual service model (CANONICAL_FACTS
-                Round 1 #6). This entire CAT page is flagged for a copy
-                rewrite. For now the address reference is stripped so the
-                page compiles; the broader rewrite is Round 2 / 3.
-              */}
-              We accept rush textile work from partner contents companies
-              across North Texas, with a 24-hour turnaround on rush orders
-              from receipt.
+              When adjusters or carriers engage us directly, we mobilize for
+              on-site soft-contents packout. When the loss routes through a
+              contents company, they handle the packout and deliver the soft
+              contents to us — and we take it from there with per-garment
+              inventory, insurance-approved invoicing, cleaning, storage, and
+              home-delivery back to the policyholder.
             </p>
             <div className="cat__counties" style={{ marginTop: "24px" }}>
               {site.serviceArea.map((c) => (
@@ -97,8 +106,9 @@ export default function CatResponsePage() {
               <h2 className="cat__display">Scale, on the<br />worst day.</h2>
             </div>
             <p className="lede" style={{ color: "var(--color-ink-4)" }}>
-              Surge capacity, mutual-aid agreements and a single chain of accountability
-              — the operational backbone behind a calm response.
+              The soft-contents half of a catastrophe loss is the easiest to
+              mishandle and the costliest to write off. We focus the textile
+              specialty so the rest of the loss can move.
             </p>
           </div>
           <ul className="cat__list" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "48px" }}>

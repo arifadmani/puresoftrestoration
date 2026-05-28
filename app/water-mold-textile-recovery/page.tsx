@@ -42,7 +42,8 @@ export default function WaterMoldPage() {
           <p className="lede">
             On water and mold losses, the gap between salvageable and total loss is
             measured in hours. Our intake is built for speed — and for the
-            chain-of-custody the file will need later.
+            per-garment inventory and insurance-approved invoice the file will
+            need later.
           </p>
         </div>
       </section>
@@ -86,9 +87,11 @@ export default function WaterMoldPage() {
                 Segregated. <em>Always.</em>
               </h2>
               <p className="body-copy" style={{ color: "var(--color-ink-4)", fontSize: "16.5px" }}>
-                Mold-impacted and biohazard textiles route to a separate wing — never
-                co-located with clean intake. OSHA-rated workflow, IICRC textile
-                protocols, sealed transit from on-site pickup through return.
+                Mold-impacted and biohazard textiles run through dedicated
+                workflows separate from clean intake — IICRC-certified
+                handling from pickup through return, with the same
+                per-garment inventory and insurance-approved invoicing every
+                lot receives.
               </p>
             </div>
             <div className="ph" data-label="Climate-controlled drying chamber — humidity-managed environment" style={{ minHeight: "380px" }} />

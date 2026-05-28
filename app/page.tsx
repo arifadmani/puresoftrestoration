@@ -13,7 +13,7 @@ const serveCards = [
   {
     idx: "A/01",
     name: "Independent Adjusters",
-    body: "Defensible, item-level documentation built for claim review: per-item photography, salvage scoring, and a clean chain-of-custody log that holds up under scrutiny.",
+    body: "Per-garment inventory at intake and an insurance-approved invoice that drops straight into your claim file — so the administrative burden of carrier-formatted intake paperwork never lands on your desk.",
     cta: "How we support your file",
   },
   {
@@ -82,55 +82,43 @@ const trustCols = [
     ],
   },
   {
-    h: "Service Posture",
+    h: "What We Do Differently",
     /*
-     * Process Standards previously asserted "IICRC textile protocols",
-     * "OSHA-compliant handling", "Sealed, tracked transit", "Segregated
-     * biohazard workflow", "Independent quality review" — none of which were
-     * confirmed in CANONICAL_FACTS Round 1. Replaced with Round-1-confirmed
-     * facts about the service model.
+     * Per CANONICAL_FACTS Round 2 — the canonical differentiator.
+     * Per-garment inventory + insurance-approved invoicing at intake is
+     * what removes the contents company's admin burden and the adjuster's
+     * paperwork delay.
      */
     items: [
-      "Rush textile intake",
-      "24-hour turnaround on rush orders",
-      "Partner with contents companies on-site",
-      "Specialty textile equipment",
-      "Vendor relationships across textiles",
+      "Per-garment inventory at intake",
+      "Insurance-approved invoicing immediately",
+      "Payment-first processing model",
+      "On-site packout when adjusters engage direct",
+      "Hand-delivered home return in poly bags",
     ],
   },
   {
     h: "Coverage",
-    /*
-     * Reporting Standards previously asserted "Per-item photographic record",
-     * "Salvage score, 0–100", "Chain-of-custody log", "Single audit-grade
-     * report", "Carrier-ready formatting" — all Round-2-pending. Replaced
-     * with Round-1-confirmed geographic facts.
-     */
     items: [
       "DFW metroplex",
       "Two-hour radius from DFW",
       "16 counties with completed work",
-      "Insurance adjusters, carriers, contractors",
-      "Contents companies and property managers",
+      "On-site packout (direct-adjuster mode)",
+      "Receive-and-process (contents-company mode)",
     ],
   },
   {
     h: "Credentials",
     /*
-     * Per CANONICAL_FACTS Round 1 — every specific credential claim here is
-     * Round-2-pending. The placeholder list previously read:
-     *   "IICRC-certified firm" — pending Round 2 confirmation
-     *   "Licensed & insured" — pending Round 2 confirmation
-     *   "Approved vendor, 40+ carriers" — pending Round 2 confirmation
-     *   `North Texas, since ${site.estYear}` — false; brand began 2025
-     *   "Mutual-aid network" — pending Round 2 confirmation
-     * Until those are confirmed, the column shows only Round-1-confirmed facts.
+     * Per CANONICAL_FACTS Round 2 — confirmed claims only.
+     * Specific IICRC cert types/numbers still pending owner provision; the
+     * general "IICRC-certified" line is confirmed.
      */
     items: [
-      "North Texas operations",
+      "IICRC-certified",
+      "Fully insured for soft-contents work",
+      `Work on ${site.carriersWorked.length} carrier programs`,
       `${site.experienceYears} years of textile expertise`,
-      "Service-area business",
-      "Insurance-focused practice",
     ],
   },
 ];
@@ -145,29 +133,37 @@ export default function HomePage() {
         <div className="hero__grid">
           <div>
             <p className="eyebrow">
-              Textile &amp; Soft-Contents Restoration · North Texas
+              Soft-Contents Restoration for Adjusters · North Texas
             </p>
             <h1 className="display hero__display" style={{ marginTop: "22px" }}>
               When a loss touches textiles, the claim comes to <em>us.</em>
             </h1>
             <p className="body-copy" style={{ marginTop: "30px", fontSize: "18px" }}>
-              {site.description}
+              Pure Soft Restoration is the textile and soft-contents specialist
+              behind some of North Texas&apos;s hardest claim work. {site.experienceYears}{" "}
+              years of textile expertise. Per-garment inventory and an
+              insurance-approved invoice at intake — so the administrative work
+              never lands on your file.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", marginTop: "34px" }}>
               <Link href="/contact" className="btn btn--primary">
-                Submit a loss <span className="arr">→</span>
+                Send a soft-contents claim <span className="arr">→</span>
               </Link>
               <Link href="/insurance-professionals" className="btn btn--ghost">
-                For Adjusters &amp; Contractors <span className="arr">→</span>
+                For Adjusters &amp; Carriers <span className="arr">→</span>
               </Link>
             </div>
             {/*
-              The hero credentials strip previously asserted "IICRC-certified
-              textile technicians", "Serving the DFW metroplex since 2009", and
-              "Approved vendor for 40+ carriers" — none of which were
-              confirmed by the owner in CANONICAL_FACTS Round 1. Strip removed
-              until Round 2 confirms specific credentials.
+              Hero credential strip — Round 2 confirmed. Sources:
+              - IICRC-certified  → CANONICAL_FACTS Round 2 (general; specifics pending)
+              - Fully insured    → CANONICAL_FACTS Round 2 (standard restoration coverage)
+              - Carriers worked  → CANONICAL_FACTS Round 2 (8 named carriers)
             */}
+            <div className="hero__cred">
+              <span><b>IICRC-certified</b></span>
+              <span><b>Fully insured</b> for soft-contents restoration</span>
+              <span>Work touching <b>{site.carriersWorked.length}</b> national &amp; Texas carriers</span>
+            </div>
           </div>
           <div className="hero__media">
             <div className="ph" data-label="Documentary — lot-tagged textile racks, conservation floor" />
@@ -344,16 +340,17 @@ export default function HomePage() {
           <div style={{ padding: "44px 40px", background: "var(--color-bone-bright)" }}>
             <p className="eyebrow">A record, not a receipt</p>
             <h3 className="display" style={{ fontSize: "34px", margin: "14px 0 16px" }}>
-              Documentation, not paperwork.
+              An insurance-approved<br />invoice. From the moment we<br />have the lot.
             </h3>
             <p className="body-copy" style={{ fontSize: "15.5px" }}>
-              Every lot closes with a single report — per-item photographs, cleaning
-              protocol, salvage scores and signatures bound together. Carriers and
-              adjusters receive an auditable record that stands up to litigation review,
-              not a stack of loose tickets.
+              Every lot opens with per-garment intake and a carrier-formatted
+              invoice that lands with the contents company or adjuster
+              immediately. The administrative burden of preparing
+              insurance-grade intake paperwork doesn&apos;t fall on the file —
+              it lives with us, where the textile specialty already is.
             </p>
             <Link className="tlink" href="/insurance-professionals" style={{ marginTop: "22px" }}>
-              See the reporting standard <span className="arr">→</span>
+              See what the invoice carries <span className="arr">→</span>
             </Link>
           </div>
           <div
@@ -374,9 +371,12 @@ export default function HomePage() {
                 When the region<br />goes <em>CAT,</em> we&apos;re<br />already moving.
               </h2>
               <p className="body-copy" style={{ color: "var(--color-ink-4)", fontSize: "16.5px" }}>
-                House fires, severe smoke, large water events and multi-property
-                commercial losses are where soft-contents recovery is won or lost. Pure
-                Soft is built to absorb scale without breaking custody on a single lot.
+                On large losses, soft contents are the easiest line item to
+                write off and the hardest to recover well. When adjusters or
+                carriers engage us directly, we mobilize for on-site
+                soft-contents packout. When the loss routes through a contents
+                company, we take the soft contents from them and handle the
+                textile specialty end-to-end.
               </p>
               <div className="cat__counties">
                 {site.serviceArea.map((c) => (
@@ -434,12 +434,37 @@ export default function HomePage() {
           ))}
         </div>
 
+        {/*
+          Seal row — Round 2 confirmed. The previous version asserted "OSHA
+          Compliant · Biohazard handling" and "40+ Approved Carriers · Direct
+          vendor status" — neither was confirmed. Replaced with Round-2-
+          confirmed seals: IICRC-certified, Fully insured, and the carrier
+          count tied to the named-carrier line below.
+        */}
         <div className="seal-row">
-          <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>IICRC Certified</b><span>Textile &amp; odor control</span></span></div>
-          <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>OSHA Compliant</b><span>Biohazard handling</span></span></div>
-          <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>Licensed &amp; Insured</b><span>State of Texas</span></span></div>
-          <div className="seal"><span className="seal__mark">40+</span><span className="seal__txt"><b>Approved Carriers</b><span>Direct vendor status</span></span></div>
+          <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>IICRC Certified</b><span>Soft-contents restoration</span></span></div>
+          <div className="seal"><span className="seal__mark">✓</span><span className="seal__txt"><b>Fully Insured</b><span>Restoration coverage</span></span></div>
+          <div className="seal"><span className="seal__mark">{site.carriersWorked.length}</span><span className="seal__txt"><b>Carrier Programs</b><span>National + Texas regional</span></span></div>
+          <div className="seal"><span className="seal__mark">{site.experienceYears}</span><span className="seal__txt"><b>Years Of Expertise</b><span>Textiles &amp; soft contents</span></span></div>
         </div>
+
+        <p
+          className="small"
+          style={{
+            marginTop: "28px",
+            color: "var(--color-ink-3)",
+            fontSize: "14px",
+            lineHeight: 1.6,
+            maxWidth: "76ch",
+          }}
+        >
+          <span className="kicker" style={{ display: "block", marginBottom: "8px" }}>
+            Carrier programs Pure Soft has touched
+          </span>
+          We&apos;ve completed soft-contents work on claims from{" "}
+          {site.carriersWorked.slice(0, -1).join(", ")} and {site.carriersWorked.slice(-1)}{" "}
+          — directly and in partnership with contents companies on those programs.
+        </p>
       </section>
 
       {/* ===== SECTION 8 · CONTACT ===== */}
@@ -455,9 +480,10 @@ export default function HomePage() {
                 A direct line.<br />No portal required.
               </h2>
               <p className="body-copy" style={{ color: "var(--color-ink-4)", marginTop: "24px", fontSize: "16.5px" }}>
-                Submit a loss or email us directly. We are available 24 hours
-                for rush textile intake from contents companies, adjusters,
-                carriers and contractors across North Texas.
+                Adjusters and carriers — engage us directly and we mobilize for
+                on-site packout. Contents companies — send the textiles, we
+                handle the inventory, the insurance-approved invoicing, and the
+                home-delivery back.
               </p>
               <div className="contact__methods">
                 <div className="contact__method" style={{ borderColor: "rgba(246,242,233,0.14)" }}>

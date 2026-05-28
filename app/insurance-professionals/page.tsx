@@ -6,7 +6,7 @@ import { serviceSchema } from "@/lib/schema";
 export const metadata = buildMetadata({
   title: "For Insurance Professionals",
   description:
-    "Pure Soft Restoration partners with adjusters, carriers and contractors on soft-contents claims — defensible documentation, chain of custody, salvage-first reporting.",
+    "Pure Soft Restoration partners with adjusters and carriers on soft-contents claims — per-garment inventory at intake, insurance-approved invoicing immediately, and the textile specialty handled end-to-end through home delivery.",
   path: "/insurance-professionals",
 });
 
@@ -20,16 +20,19 @@ const pillars = [
 ];
 
 const reportingItems = [
-  { n: "i.", h: "Per-item photographic record", p: "Before and after, in consistent lighting and crop." },
-  { n: "ii.", h: "Salvage score, 0–100", p: "A defensible salvageability rating for every flagged item." },
-  { n: "iii.", h: "Chain-of-custody log", p: "Stage timestamps and signatures, intake to return." },
-  { n: "iv.", h: "Compliance citations", p: "IICRC and OSHA protocols referenced per workflow." },
+  // Round 2 — replaces previously-claimed reporting standards. The actual
+  // deliverable model is per-garment inventory + insurance-approved invoice
+  // at intake; the items below describe what that invoice carries.
+  { n: "i.", h: "Per-garment inventory", p: "Each item logged line-by-line at intake: garment, condition, loss class." },
+  { n: "ii.", h: "Insurance-approved invoice", p: "Sent to the contents company or adjuster immediately at intake — carrier-formatted, ready to drop into the file." },
+  { n: "iii.", h: "Cleaning protocol noted", p: "Each cleaning method recorded per garment so the path through restoration is traceable." },
+  { n: "iv.", h: "Release document on request", p: "A work-completed / release document is available at return, formatted to your admin process." },
 ];
 
 const engageWays = [
-  { n: "01", name: "Per-claim referral", desc: "Send us a single loss. We handle intake, restoration and reporting, then hand the file back." },
-  { n: "02", name: "Approved vendor", desc: "List Pure Soft as your soft-goods vendor for direct dispatch on every qualifying loss." },
-  { n: "03", name: "Standing agreement", desc: "Portfolio and CAT coverage with pre-negotiated terms and priority mobilization." },
+  { n: "01", name: "Direct adjuster engagement", desc: "Adjusters or carriers engage us directly. We mobilize for on-site soft-contents packout and carry the file from packout through home-delivery." },
+  { n: "02", name: "Through your contents-company partner", desc: "When you already have a contents company on the loss, they route the soft contents to us. We absorb the textile specialty and the carrier-formatted intake invoicing." },
+  { n: "03", name: "Standing agreement", desc: "Portfolio or program coverage with pre-negotiated terms — useful for carriers writing significant North Texas business." },
 ];
 
 export default function InsuranceProfessionalsPage() {
@@ -39,7 +42,7 @@ export default function InsuranceProfessionalsPage() {
         data={serviceSchema({
           name: "Soft-Contents Restoration for Insurance Carriers",
           description:
-            "Soft-contents textile restoration for insurance adjusters, carriers, and contractors. Defensible documentation, chain of custody, salvage-first reporting.",
+            "Soft-contents textile restoration for insurance adjusters, carriers, and contractors. Per-garment inventory at intake, insurance-approved invoicing, on-site packout on direct-adjuster engagements.",
           slug: "/insurance-professionals",
         })}
       />

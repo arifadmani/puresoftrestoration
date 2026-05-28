@@ -58,10 +58,28 @@ export function localBusinessSchema() {
       },
     ],
     /**
-     * `hasCredential` intentionally omitted until Round 2 confirms specific
-     * certifications. Adding unverified credentials here would echo into
-     * Google Knowledge Panels.
+     * Round 2 — credentials confirmed in principle.
+     * - IICRC certification confirmed (specific cert numbers/types still
+     *   pending owner provision; a general entry is appropriate now).
+     * - Fully insured for restoration work — published as a separate
+     *   `EducationalOccupationalCredential` style entry rather than a
+     *   schema.org/credential subtype because no widely-supported "insured
+     *   for X work" schema exists.
      */
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: "IICRC-certified",
+        recognizedBy: {
+          "@type": "Organization",
+          name: "Institute of Inspection, Cleaning and Restoration Certification (IICRC)",
+        },
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: "Fully insured for soft-contents restoration work",
+      },
+    ],
   };
 }
 

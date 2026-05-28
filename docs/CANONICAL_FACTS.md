@@ -78,32 +78,92 @@ The About page **does not name** any principals, founders, or operators. No pers
 
 ---
 
-## Round 2 — Certifications, Vendor Relationships, Insurance Status (pending)
+## Round 2 — Certifications, Vendor Relationships, Service Model (confirmed 2026-05-28)
 
-The following claims currently exist on the site but were never explicitly confirmed by the owner. They are **scrubbed from canonical sources** (header, footer, hero credential strip, seal row, JSON-LD `hasCredential`, OG image footer) in Round 1's edit pass, and **left in place inside body copy** of various pages (homepage Industry Trust section, About page, service pages) pending Round 2.
+### Credentials
 
-| Claim currently on the site | Source location(s) | Round 2 disposition |
-| --- | --- | --- |
-| "IICRC-certified" / "IICRC-certified firm" | header credential, hero strip, seal row, footer, About, homepage Trust column, JSON-LD `hasCredential` | Pending owner confirmation in Round 2 |
-| "OSHA-compliant" / "OSHA-rated workflow" | hero strip, About, water-mold page, homepage Trust column | Pending Round 2 |
-| "Licensed & insured in Texas" | seal row, OG image, footer | Pending Round 2 |
-| "Approved vendor for 40+ carriers" | hero strip, seal row, About, homepage Trust column | Pending Round 2 — likely false for a one-year-old brand |
-| "Audit-grade reporting" / "Carrier-audited reporting" | homepage Process narrative, insurance-pros page | Pending Round 2 |
-| "Per-item photographic record" / "Salvage score, 0–100" | homepage Process narrative, Reporting Standards column, insurance-pros page | Pending Round 2 |
-| "Chain of custody" framing throughout | homepage Process rail, insurance-pros, soft-contents pages | Pending Round 2 |
-| "Mutual-aid network" / "6 vendor agreements" / "4-state range" | CAT page, homepage CAT section | Pending Round 2 |
-| "Same-day pickup standard across the DFW metroplex" | soft-contents-restoration page | Pending Round 2 |
+- **IICRC certification:** ✅ Confirmed in principle. "IICRC-certified" can be used as a general credential claim. **Specific cert numbers / cert types still pending** — when the owner provides them they enter JSON-LD `hasCredential` as `EducationalOccupationalCredential` items with the credential `name`.
+- **OSHA:** ❌ No specific OSHA training credentials. Drop every OSHA claim from the site (homepage, About, water-mold page, OG image, JSON-LD).
+- **Insurance:** ✅ Fully insured for soft-contents restoration work — standard restoration-vendor coverage (general liability, workers' comp, auto liability). The site can carry a tight `"Fully insured for soft-contents restoration work"` line; no enumeration of policy types or amounts.
+- **Texas business filings:** No additional verifiable licenses beyond the DBA registration. Don't claim "Licensed in Texas" unless the IICRC general claim is paired with the fully-insured claim — both together are the right trust-strip line.
+
+### Carriers — completed work touched
+
+Eight national / regional carriers whose claim work Pure Soft has processed (directly or in partnership with contents companies):
+
+1. State Farm
+2. Allstate
+3. USAA
+4. Farmers Insurance
+5. Liberty Mutual
+6. Travelers
+7. Texas Farm Bureau
+8. AAA Texas
+
+Public surface choice: **show all eight names** in the trust section. Canonical copy line:
+
+> *We've completed soft-contents work on claims from State Farm, Allstate, USAA, Farmers, Liberty Mutual, Travelers, Texas Farm Bureau, and AAA Texas — directly and in partnership with contents companies on those programs.*
+
+(No carrier logos — text-only, since we don't have licensing rights to the marks.)
+
+### Service model — two operating modes (both real, both publishable)
+
+| Mode | Routing | On-site packout? | Pure Soft's role |
+| --- | --- | --- | --- |
+| **Direct adjuster** (growth target) | Public or carrier adjuster engages Pure Soft directly | **Yes — Pure Soft mobilizes for on-site packout.** | Full lifecycle: on-site packout → per-garment inventory → insurance-approved invoice → clean → store → home-delivery |
+| **Through contents company** (current dominant channel) | Adjuster routes to a generic contents company; the contents company farms soft contents out to Pure Soft | No — the contents company handles on-site packout. | Receive items from contents-company packout → per-garment inventory → insurance-approved invoice → clean → store → home-delivery |
+
+The site must surface both modes. Adjuster-direct is the marketing emphasis; the contents-company path remains a real partner channel and stays on the site.
+
+### Inventory + invoicing + payment + return
+
+- **Inventory granularity:** Per-garment, line-by-line. Each item gets its own entry at intake (e.g., `1× men's wool overcoat, charcoal, condition: heavy soot`).
+- **Invoicing format:** Insurance-approved invoice sent to the partner (contents company or adjuster) **immediately at intake**. This relieves the contents company of the administrative burden of preparing carrier-formatted intake paperwork themselves — and is Pure Soft's primary differentiator versus generic soft-contents processing.
+- **Payment model:** Payment-first. Cleaning begins *after* the invoice is paid.
+- **Storage:** Cleaned items poly-bagged and stored until the policyholder's home is ready for contents to return.
+- **Return / delivery:** Pure Soft hand-delivers items in the poly bags directly to the policyholder's home, presented like fresh dry-cleaning.
+- **End-of-job document:** Flexible. The intake inventory + insurance-approved invoice is the baseline formal paperwork. A separate work-completed / release document can be added on request — Pure Soft adapts to the contents company / adjuster's admin process.
+
+### Strategic positioning (canonical fact)
+
+- **Primary marketing audience:** insurance adjusters (public + carrier).
+- **Historical / current dominant channel:** contents companies.
+- **Goal:** shift the lead mix toward direct-adjuster engagement — better margin per claim, larger overall work volume available there.
+- **Site implication:** adjuster-first language in the hero, header CTA priority, and primary nav. Contents companies stay on the site as a real partner channel but stop being the centered audience.
+
+### Scrubbed permanently (forbidden — no Round 3 revisit)
+
+| Claim | Why scrubbed |
+| --- | --- |
+| "Approved vendor for 40+ carriers" | False; the real number is 8 and that's already publicly listed by name above |
+| "Audit-grade reporting" / "Carrier-audited reporting" | Not the real deliverable — the canonical deliverable is the insurance-approved invoice + per-garment inventory |
+| "Per-item photographic record" / "Salvage score, 0–100" | Not part of the actual process |
+| "Chain-of-custody log" | Not part of the actual process — replaced canonically by the inventory + invoicing model |
+| "Mutual-aid network" / "6 vendor agreements" / "4-state range" | Not part of the actual service model |
+| "Same-day pickup standard across DFW" | Not a real SLA |
+| "60-minute response radius from Irving" | False — no pre-positioned crews exist |
+| "Crews pre-positioned across the metroplex" | False — same |
+| "Mobilization within hours" / "rapid mobilization" | False as a specific operational SLA. (The general capability "Pure Soft can mobilize for on-site packout on direct-adjuster engagements" stays.) |
+| Any "Insurance-focused since 2009" framing | False — DBA began 2025 |
+| OSHA framing of any kind | No specific OSHA credentials held |
+
+### Still pending (light follow-ups, not blocking Round 2 edit)
+
+- **Specific IICRC cert numbers / types.** Owner will send when available; entering them in `lib/schema.ts` `hasCredential` is a one-line update.
+- **Twilio phone number.** Pending provisioning; when it lands, populate `site.contact.responseLineLabel/Tel` and the header phone block.
 
 ---
 
-## Round 3+ — Service capabilities, equipment, reporting standards (not started)
+---
+
+## Round 3+ — Equipment specifics + facility claims + capacity (not started)
 
 Pending. Will dig into:
-- Specific equipment / "specialty machines" mentioned in the About blurb — what they are, what they're certified for
-- Cleaning protocols (smoke, water, mold) — what's actually verifiable
-- Reporting deliverables to carriers — what the actual end-of-job report looks like
-- SLA commitments beyond the confirmed 24-hour rush turnaround
-- Capacity claims (lot volume, surge capacity)
+- Specific equipment / "specialty machines" mentioned in the About blurb — what they are, what they can do
+- Cleaning protocols (smoke, water, mold) — what's actually verifiable per loss type
+- "Climate-controlled facility" claims (currently scrubbed; need real specifics)
+- Capacity claims (lot volume, throughput)
+- Storage duration limits / pricing (if any)
 
 ---
 
@@ -128,3 +188,4 @@ Edits in this round touch only the files above. Page-body copy on service pages 
 
 - **2026-05-28** — Round 1 completed. Canonical edit pass applied to the eight source-of-truth files above. Commit: `Start canonical content truth audit`.
 - Incorrect memory linking the parent business to "Medinah Dry Cleaners" deleted; replaced with a `do-not-speculate` note. The parent / operating entity remains undisclosed by user choice.
+- **2026-05-28** — Round 2 completed. Confirmed: IICRC certification (specifics pending), fully insured, eight named carriers, two-mode service flow (direct-adjuster + through-contents-company), per-garment inventory + insurance-approved invoicing at intake as the canonical deliverable model, payment-first processing, home-delivery return, adjuster-first marketing posture. Commit: `Canonical content truth audit — Round 2`.

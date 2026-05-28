@@ -101,23 +101,89 @@ export const site = {
   ],
   /**
    * Per Round 1 #6: confirmed publishable.
-   * - office hours: not separately published; the team is available around
-   *   the clock for rush textile intake from partner contents companies.
+   * - intakeWindow: the team is available around the clock for rush textile
+   *   intake from partner contents companies AND direct-adjuster engagements.
    * - rushTurnaround: an explicit service-level claim ("24-hour turnaround
    *   on rush orders") — confirmed by the owner.
-   * Forbidden until Round 2 confirms otherwise: any framing implying ON-SITE
-   * response (60-min radius, dispatched crews, mobilization, etc).
    */
   availability: {
     intakeWindow: "Available 24 hours for rush textile intake",
     rushTurnaround: "24-hour turnaround on rush orders",
   },
-  /**
-   * The Round-1 standard service-area headline. Surfaced verbatim in copy
-   * that needs to summarize geographic reach.
-   */
   serviceAreaHeadline:
     "Serving North Texas — DFW metroplex and the broader region, typically within a two-hour radius. Recent work spans Dallas, Fort Worth, Plano, Frisco, McKinney, Denton, Arlington, Tyler, Waco, Sherman, Wichita Falls, and beyond.",
+  /**
+   * Round 2 — confirmed credentials.
+   * `iicrcCertified`: true in general; specific cert types/numbers still
+   * pending owner provision. Until then, JSON-LD hasCredential surfaces
+   * only a general entry.
+   * `fullyInsured`: confirmed (standard restoration-vendor coverage:
+   * general liability + workers' comp + auto liability). Do not enumerate.
+   */
+  credentials: {
+    iicrcCertified: true,
+    fullyInsured: true,
+  },
+  /**
+   * Round 2 — eight national / regional carriers whose claim work Pure Soft
+   * has processed (directly or in partnership with contents companies).
+   * Surfaceable publicly by name; carrier logos are NOT used because we
+   * do not have licensing rights to the marks.
+   */
+  carriersWorked: [
+    "State Farm",
+    "Allstate",
+    "USAA",
+    "Farmers",
+    "Liberty Mutual",
+    "Travelers",
+    "Texas Farm Bureau",
+    "AAA Texas",
+  ],
+  /**
+   * Round 2 — service model. Two operating modes, both real, both publishable.
+   * direct-adjuster is the marketing emphasis; through-contents-company is
+   * the current dominant lead channel.
+   */
+  serviceModes: {
+    directAdjuster: {
+      label: "Direct adjuster engagement",
+      packout: true,
+      onSiteCapable: true,
+      summary:
+        "When public adjusters and carrier adjusters engage Pure Soft directly, we mobilize for on-site packout, then carry the soft contents through inventory, insurance-approved invoicing, cleaning, storage, and home-delivery back to the policyholder.",
+    },
+    throughContentsCompany: {
+      label: "Through-contents-company engagement",
+      packout: false,
+      onSiteCapable: false,
+      summary:
+        "When a generic contents company runs the packout, we receive the soft contents from them and handle the textile specialty: per-garment inventory at intake, insurance-approved invoicing back to the contents company, cleaning, storage, and home-delivery.",
+    },
+  },
+  /**
+   * Round 2 — the canonical deliverable model.
+   * "Insurance-approved invoicing immediately at intake" is the primary
+   * differentiator the site should lead with.
+   */
+  processModel: {
+    inventoryGranularity: "per-garment",
+    invoicingFormat: "insurance-approved invoice issued immediately at intake",
+    paymentModel: "payment-first (cleaning begins after the invoice is paid)",
+    storageModel: "poly-bagged storage until the policyholder's home is ready for return",
+    returnModel: "hand-delivered to the policyholder's home, presented like fresh dry-cleaning",
+    endOfJobDocument:
+      "Flexible — the intake inventory + insurance-approved invoice is the baseline; a separate work-completed / release document is provided on request to match the partner's admin process.",
+  },
+  /**
+   * Round 2 — strategic positioning. Drives audience hierarchy in copy.
+   */
+  marketing: {
+    primaryAudience: "insurance adjusters",
+    secondaryAudience: "contents companies, restoration contractors",
+    currentDominantChannel: "contents companies",
+    growthChannel: "direct-adjuster engagements",
+  },
 } as const;
 
 export type Site = typeof site;

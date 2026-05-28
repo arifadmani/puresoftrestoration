@@ -73,19 +73,19 @@ export default function AboutPage() {
           </div>
           <div className="trust" style={{ borderColor: "rgba(246,242,233,0.14)" }}>
             <div className="trust__col" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
-              <h4 style={{ color: "var(--color-ox-hi)" }}>Background</h4>
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Credentials</h4>
               {/*
-                "Certifications" column previously asserted "IICRC-certified
-                firm", "OSHA-compliant biohazard handling", "Licensed & insured
-                in Texas", "Approved vendor — 40+ carriers" — all unconfirmed
-                and on the forbidden-claim list in CANONICAL_FACTS Round 1.
-                Replaced with confirmed background facts.
+                CANONICAL_FACTS Round 2 — IICRC-certified (specifics pending)
+                and fully insured for soft-contents restoration work. OSHA-
+                related claims are permanently scrubbed (no specific OSHA
+                training credentials held). 40+ carriers replaced with the
+                eight confirmed carriers in the Background column.
               */}
               <ul>
+                <li style={{ color: "var(--color-bone-deep)" }}>IICRC-certified</li>
+                <li style={{ color: "var(--color-bone-deep)" }}>Fully insured for restoration work</li>
                 <li style={{ color: "var(--color-bone-deep)" }}>{site.experienceYears} years textile expertise</li>
                 <li style={{ color: "var(--color-bone-deep)" }}>Insurance-focused practice</li>
-                <li style={{ color: "var(--color-bone-deep)" }}>High-end retail experience</li>
-                <li style={{ color: "var(--color-bone-deep)" }}>Commercial-job experience</li>
               </ul>
             </div>
             <div className="trust__col" style={{ borderRightColor: "rgba(246,242,233,0.14)" }}>
@@ -112,12 +112,86 @@ export default function AboutPage() {
               </ul>
             </div>
             <div className="trust__col">
-              <h4 style={{ color: "var(--color-ox-hi)" }}>Availability</h4>
+              <h4 style={{ color: "var(--color-ox-hi)" }}>Carrier Programs</h4>
+              {/*
+                CANONICAL_FACTS Round 2 — the eight carriers Pure Soft has
+                completed work on, directly and in partnership with contents
+                companies.
+              */}
               <ul>
-                <li style={{ color: "var(--color-bone-deep)" }}>{site.availability.intakeWindow}</li>
-                <li style={{ color: "var(--color-bone-deep)" }}>{site.availability.rushTurnaround}</li>
+                {site.carriersWorked.map((c) => (
+                  <li key={c} style={{ color: "var(--color-bone-deep)" }}>{c}</li>
+                ))}
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== HOW WE WORK — two service modes ===== */}
+      <section className="section shell reveal" style={{ paddingBlock: "104px" }}>
+        <div className="shead">
+          <div>
+            <div className="shead__num">
+              <span className="idx">03</span>
+              <span className="kicker">How We Work</span>
+            </div>
+            <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)" }}>
+              Two engagement modes.<br />Same standard.
+            </h2>
+          </div>
+          <p className="lede">
+            Soft-contents recovery routes to Pure Soft two ways. The work is the
+            same; the lead origin and on-site posture differ.
+          </p>
+        </div>
+
+        <div className="proc" style={{ gridTemplateColumns: "1fr 1fr", borderTopColor: "var(--color-ink)" }}>
+          <div className="proc__step">
+            <span className="proc__num">{site.serviceModes.directAdjuster.label.slice(0, 1)}/01</span>
+            <h3 className="proc__name">{site.serviceModes.directAdjuster.label}</h3>
+            <p className="proc__desc">{site.serviceModes.directAdjuster.summary}</p>
+          </div>
+          <div className="proc__step">
+            <span className="proc__num">{site.serviceModes.throughContentsCompany.label.slice(0, 1)}/02</span>
+            <h3 className="proc__name">{site.serviceModes.throughContentsCompany.label}</h3>
+            <p className="proc__desc">{site.serviceModes.throughContentsCompany.summary}</p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: "48px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 0,
+            border: "1px solid var(--color-bone-rule)",
+          }}
+        >
+          <div style={{ padding: "36px 32px", background: "var(--color-bone-bright)" }}>
+            <p className="eyebrow">The Differentiator</p>
+            <h3 className="display" style={{ fontSize: "28px", margin: "10px 0 14px" }}>
+              Insurance-approved invoicing<br />the moment we receive the lot.
+            </h3>
+            <p className="body-copy" style={{ fontSize: "15.5px" }}>
+              Most contents companies absorb the administrative load of
+              carrier-formatted intake paperwork themselves. We take it off
+              their plate: per-garment inventory at intake, an
+              insurance-approved invoice issued immediately, and a partner who
+              already speaks the carrier&apos;s file format.
+            </p>
+          </div>
+          <div style={{ padding: "36px 32px" }}>
+            <p className="eyebrow">The Return</p>
+            <h3 className="display" style={{ fontSize: "28px", margin: "10px 0 14px" }}>
+              Hand-delivered, dry-cleaner clean,<br />to the policyholder.
+            </h3>
+            <p className="body-copy" style={{ fontSize: "15.5px" }}>
+              Items are cleaned only after the invoice is paid, poly-bagged,
+              stored until the home is ready, then hand-delivered to the
+              policyholder&apos;s home — presented like fresh dry cleaning. No
+              warehouse stop, no third hand-off.
+            </p>
           </div>
         </div>
       </section>
@@ -127,8 +201,9 @@ export default function AboutPage() {
           Working a claim<br />with textiles in scope?
         </h2>
         <p className="body-copy" style={{ marginTop: "20px", marginInline: "auto" }}>
-          We work with adjusters, carriers, contractors and contents companies across
-          North Texas. Reach out to set up a referral or standing agreement.
+          Adjusters and carriers: come direct and we mobilize on-site. Contents
+          companies: send us the soft contents and we take the administrative
+          burden off your file.
         </p>
         <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
           <Link href="/contact" className="btn btn--primary">

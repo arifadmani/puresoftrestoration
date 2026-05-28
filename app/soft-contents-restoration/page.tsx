@@ -26,7 +26,7 @@ const protocols = [
   { idx: "01", name: "Fiber & condition triage", body: "Composition identified, contamination class determined, salvage probability scored per item." },
   { idx: "02", name: "Loss-matched cleaning", body: "Smoke, soot, water, or biohazard — each routed to its certified protocol, never blended." },
   { idx: "03", name: "Finish & restoration", body: "Pressing, deodorization, structural repair where required. Returned to pre-loss condition." },
-  { idx: "04", name: "Carrier-grade documentation", body: "Per-item photographs, salvage scores, and chain-of-custody log bound into a single report." },
+  { idx: "04", name: "Carrier-grade invoicing", body: "Per-garment inventory and an insurance-approved invoice issued at intake — carrier-formatted, immediately auditable, ready to drop into your file." },
 ];
 
 export default function SoftContentsPage() {

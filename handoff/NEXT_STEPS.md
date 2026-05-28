@@ -19,7 +19,7 @@
 | SES domain identity `puresoftrestoration.com` | ✅ verified (DKIM Successful, 2026-05-28) |
 | SES email identity `admin@puresoftrestoration.com` | ✅ verified (interim, useful while sandbox is in effect) |
 | SES production access | ⏳ submitted 2026-05-28, awaiting AWS review (~24h) |
-| **Canonical content truth audit** | ✅ Round 1 (Core Business Facts) complete 2026-05-28 — see `docs/CANONICAL_FACTS.md`. Round 2 (Certifications + Vendor Relationships + Reporting Standards) pending. |
+| **Canonical content truth audit** | ✅ Round 1 + Round 2 complete 2026-05-28 — see `docs/CANONICAL_FACTS.md`. Round 3 (equipment specifics, facility claims, storage policies, capacity) pending. |
 | SES end-to-end smoke test | ✅ EC2 role → SES → `admin@` inbox confirmed delivered 2026-05-28 |
 | IAM `ec2-puresoft-app-role` runtime policy | ✅ `puresoft-app-runtime` inline policy attached — `ses:SendEmail`/`SendRawEmail` on `identity/*` with `ses:FromAddress` pinned to `noreply@puresoftrestoration.com` |
 | Cloudflare Turnstile keys | ✅ provisioned and stored in `/etc/puresoft.env` (currently unused — no active form) |
