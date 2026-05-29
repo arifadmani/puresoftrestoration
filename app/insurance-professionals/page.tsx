@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { PlaceholderImage } from "@/components/placeholder-image";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
@@ -101,7 +102,11 @@ export default function InsuranceProfessionalsPage() {
               </ul>
             </div>
             <div className="cat__media">
-              <div className="ph" data-label="Sample lot report — cover sheet, item schedule, before/after plates" />
+              <PlaceholderImage
+                kind="sample-report"
+                caption="Sample lot deliverable · carrier-formatted"
+                sizes="(max-width: 1080px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { PlaceholderImage } from "@/components/placeholder-image";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
@@ -80,7 +81,13 @@ export default function FireSmokePage() {
       <section className="section band-dark reveal" style={{ paddingBlock: "104px" }}>
         <div className="shell">
           <div className="cat__grid" style={{ alignItems: "center" }}>
-            <div className="ph" data-label="ESPORTA wash floor — fiber-safe wash cycles for smoke-impacted textiles" style={{ minHeight: "380px" }} />
+            <div style={{ position: "relative", minHeight: "380px" }}>
+              <PlaceholderImage
+                kind="wash-equipment"
+                caption="Wash floor · fiber-safe cycles for smoke-impacted textiles"
+                sizes="(max-width: 1080px) 100vw, 50vw"
+              />
+            </div>
             <div>
               <p className="eyebrow">Equipment &amp; Verification</p>
               <h2 className="cat__display" style={{ margin: "18px 0 24px" }}>

@@ -1,7 +1,21 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { PlaceholderImage } from "@/components/placeholder-image";
+import type { PlaceholderImageKind } from "@/lib/placeholder-images";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
+
+const SOFT_CONTENTS_CARD_KINDS: Record<string, PlaceholderImageKind> = {
+  "Luxury garments": "luxury-garments",
+  "Everyday clothing": "everyday-clothing",
+  Linens: "linens",
+  Bedding: "bedding",
+  Drapery: "drapery",
+  Uniforms: "uniforms",
+  "Stuffed animals": "plush",
+  "Heirloom textiles": "heirloom",
+  "Commercial textiles": "commercial-stack",
+};
 
 export const metadata = buildMetadata({
   title: "Soft Contents Restoration",
@@ -77,7 +91,13 @@ export default function SoftContentsPage() {
         <div className="restore-grid">
           {categories.map((c) => (
             <article key={c.name} className="rcard">
-              <div className="ph" data-label={c.name} />
+              <div style={{ position: "relative", aspectRatio: "4 / 3" }}>
+                <PlaceholderImage
+                  kind={SOFT_CONTENTS_CARD_KINDS[c.name] ?? "commercial-stack"}
+                  caption={c.name}
+                  sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw"
+                />
+              </div>
               <div>
                 <p className="rcard__tag">{c.tag}</p>
                 <p className="rcard__name">{c.name}</p>

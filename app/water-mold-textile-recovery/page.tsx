@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { PlaceholderImage } from "@/components/placeholder-image";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
@@ -94,7 +95,13 @@ export default function WaterMoldPage() {
                 lot receives.
               </p>
             </div>
-            <div className="ph" data-label="Climate-controlled drying chamber — humidity-managed environment" style={{ minHeight: "380px" }} />
+            <div style={{ position: "relative", minHeight: "380px" }}>
+              <PlaceholderImage
+                kind="warehouse-storage"
+                caption="Climate-managed processing space"
+                sizes="(max-width: 1080px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>

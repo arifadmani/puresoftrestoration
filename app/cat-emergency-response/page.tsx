@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { PlaceholderImage } from "@/components/placeholder-image";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
@@ -72,7 +73,13 @@ export default function CatResponsePage() {
 
       <section className="section shell reveal">
         <div className="cat__grid" style={{ alignItems: "stretch" }}>
-          <div className="ph" data-label="Coverage map — DFW metroplex and the broader North Texas region" style={{ minHeight: "440px" }} />
+          <div style={{ position: "relative", minHeight: "440px" }}>
+            <PlaceholderImage
+              kind="coverage-map"
+              caption="DFW metroplex · two-hour radius"
+              sizes="(max-width: 1080px) 100vw, 50vw"
+            />
+          </div>
           <div>
             <p className="eyebrow">North Texas Coverage</p>
             <h2 className="display" style={{ fontSize: "clamp(30px,3.6vw,46px)", margin: "14px 0 18px" }}>

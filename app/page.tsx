@@ -1,7 +1,20 @@
 import Link from "next/link";
 import { IntakeForm } from "@/components/intake-form";
+import { PlaceholderImage } from "@/components/placeholder-image";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
+
+const RESTORE_CARD_KINDS = {
+  "Luxury garments": "luxury-garments",
+  "Everyday clothing": "everyday-clothing",
+  Linens: "linens",
+  Bedding: "bedding",
+  Drapery: "drapery",
+  Uniforms: "uniforms",
+  "Stuffed animals": "plush",
+  "Heirloom textiles": "heirloom",
+  "Commercial textiles": "commercial-stack",
+} as const;
 
 export const metadata = buildMetadata({
   title: "Textile & Soft-Contents Restoration",
@@ -166,7 +179,12 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero__media">
-            <div className="ph" data-label="Documentary — lot-tagged textile racks, conservation floor" />
+            <PlaceholderImage
+              kind="hero-textile-rack"
+              caption="Lot-tagged textile racks · intake floor"
+              priority
+              sizes="(max-width: 1080px) 100vw, 50vw"
+            />
           </div>
         </div>
       </section>
@@ -286,7 +304,13 @@ export default function HomePage() {
         <div className="restore-grid">
           {restoreCards.map((r) => (
             <article key={r.name} className="rcard">
-              <div className="ph" data-label={r.label} />
+              <div style={{ position: "relative", aspectRatio: "4 / 3" }}>
+                <PlaceholderImage
+                  kind={RESTORE_CARD_KINDS[r.name as keyof typeof RESTORE_CARD_KINDS]}
+                  caption={r.label}
+                  sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw"
+                />
+              </div>
               <div>
                 <p className="rcard__tag">{r.tag}</p>
                 <p className="rcard__name">{r.name}</p>
@@ -353,11 +377,13 @@ export default function HomePage() {
               See what the invoice carries <span className="arr">→</span>
             </Link>
           </div>
-          <div
-            className="ph"
-            data-label="Manifest exhibit — signed lot report, before / after plates"
-            style={{ minHeight: "320px" }}
-          />
+          <div style={{ position: "relative", minHeight: "320px" }}>
+            <PlaceholderImage
+              kind="manifest-document"
+              caption="Sample lot manifest · per-garment intake"
+              sizes="(max-width: 1080px) 100vw, 50vw"
+            />
+          </div>
         </div>
       </section>
 
