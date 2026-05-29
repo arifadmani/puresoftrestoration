@@ -181,7 +181,6 @@ export default function HomePage() {
           <div className="hero__media">
             <PlaceholderImage
               kind="hero-textile-rack"
-              caption="Lot-tagged textile racks · intake floor"
               priority
               sizes="(max-width: 1080px) 100vw, 50vw"
             />
@@ -307,7 +306,6 @@ export default function HomePage() {
               <div style={{ position: "relative", aspectRatio: "4 / 3" }}>
                 <PlaceholderImage
                   kind={RESTORE_CARD_KINDS[r.name as keyof typeof RESTORE_CARD_KINDS]}
-                  caption={r.label}
                   sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw"
                 />
               </div>
@@ -380,7 +378,6 @@ export default function HomePage() {
           <div style={{ position: "relative", minHeight: "320px" }}>
             <PlaceholderImage
               kind="manifest-document"
-              caption="Sample lot manifest · per-garment intake"
               sizes="(max-width: 1080px) 100vw, 50vw"
             />
           </div>

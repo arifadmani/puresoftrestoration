@@ -94,7 +94,6 @@ export default function SoftContentsPage() {
               <div style={{ position: "relative", aspectRatio: "4 / 3" }}>
                 <PlaceholderImage
                   kind={SOFT_CONTENTS_CARD_KINDS[c.name] ?? "commercial-stack"}
-                  caption={c.name}
                   sizes="(max-width: 680px) 100vw, (max-width: 1080px) 50vw, 33vw"
                 />
               </div>

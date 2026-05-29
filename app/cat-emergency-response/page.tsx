@@ -76,7 +76,6 @@ export default function CatResponsePage() {
           <div style={{ position: "relative", minHeight: "440px" }}>
             <PlaceholderImage
               kind="coverage-map"
-              caption="DFW metroplex · two-hour radius"
               sizes="(max-width: 1080px) 100vw, 50vw"
             />
           </div>

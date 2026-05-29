@@ -84,7 +84,6 @@ export default function FireSmokePage() {
             <div style={{ position: "relative", minHeight: "380px" }}>
               <PlaceholderImage
                 kind="wash-equipment"
-                caption="Wash floor · fiber-safe cycles for smoke-impacted textiles"
                 sizes="(max-width: 1080px) 100vw, 50vw"
               />
             </div>

@@ -98,7 +98,6 @@ export default function WaterMoldPage() {
             <div style={{ position: "relative", minHeight: "380px" }}>
               <PlaceholderImage
                 kind="warehouse-storage"
-                caption="Climate-managed processing space"
                 sizes="(max-width: 1080px) 100vw, 50vw"
               />
             </div>

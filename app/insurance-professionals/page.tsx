@@ -104,7 +104,6 @@ export default function InsuranceProfessionalsPage() {
             <div className="cat__media">
               <PlaceholderImage
                 kind="sample-report"
-                caption="Sample lot deliverable · carrier-formatted"
                 sizes="(max-width: 1080px) 100vw, 50vw"
               />
             </div>
