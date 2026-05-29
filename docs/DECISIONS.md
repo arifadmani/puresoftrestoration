@@ -398,7 +398,7 @@ Going forward: when reconciling our DNS instructions against what the user sees 
 
 **Reverses** the day-one decisions to build a structured claim-intake form (`Phase 2` in `docs/ROADMAP.md`), to keep claim-photo uploads in scope, to provision `puresoft-claim-uploads-prod`, and to run PostgreSQL from day one (§ "Database" above).
 
-The actual business workflow is: adjusters and property owners find Pure Soft Restoration via the website, then communicate **directly via phone or email**. They do not submit photos to us through a web form, they do not fill structured intake fields online, and the intake desk handles claim-reference creation and chain-of-custody seeding inside the parent business's existing operational stack (Medinah Dry Cleaners — see memory note).
+The actual business workflow is: adjusters and property owners find Pure Soft Restoration via the website, then communicate **directly via phone or email**. They do not submit photos to us through a web form, they do not fill structured intake fields online, and the intake desk handles claim-reference creation and chain-of-custody seeding inside the operator's existing operational stack. (Earlier revisions of this section incorrectly named a specific parent business as the operating entity behind the DBA — that was a misinference based on an unrelated context clue, and has since been removed. The parent / operating entity for Pure Soft Restoration is intentionally undisclosed and is not to be named in code, docs, or marketing.)
 
 Consequence of building what the website doesn't need:
 
@@ -419,3 +419,63 @@ If the intake model ever changes — e.g., we want a claims portal for repeat ca
 
 Files updated in the same commit to match: `app/contact/page.tsx` (drop "Phase 2" aside), `app/soft-contents-restoration/page.tsx` (drop "upload contents photos"), `.env.example` (drop S3 + DATABASE_URL), `README.md`, `CLAUDE.md` (stack), `docs/ROADMAP.md` (Phase 0 #8, Phase 2 rewrite), `docs/ARCHITECTURE.md` (topology, components, data flow, reserved layout, security).
 
+
+---
+
+## Canonical content truth audit — protocol adopted (2026-05-28)
+
+Adopted `docs/CANONICAL_FACTS.md` as the binding source-of-truth for every public-facing factual claim on the site. The protocol:
+
+1. **Rounds** — each round covers one topic area (Core Business Facts, Certifications & Vendor Relationships, Service Capabilities, etc.). Each round interviews the owner with a numbered question list, produces a confirmed-facts summary for explicit approval, then drives a canonical-source edit pass.
+2. **Forbidden claims** — language that may not appear anywhere on the site without explicit owner confirmation: *certified, approved, verified, audit-grade, carrier-approved, standard, same-day, 24/7*. Any unconfirmed instance is scrubbed; confirmed instances are restored with precise wording.
+3. **Source-of-truth wiring** — Round-confirmed facts live in `lib/site.ts` (single typed object), `lib/schema.ts` (LocalBusiness + Service JSON-LD), `lib/seo.ts` (per-page metadata helper), `components/header.tsx`, `components/footer.tsx`, `app/contact/page.tsx`, `app/page.tsx` (hero + trust + contact sections), `app/opengraph-image.tsx`. Page-body copy on service pages is updated in a follow-on copy round after fact collection finishes.
+4. **Bias toward scrubbing.** If a claim is currently on the site and the owner cannot confirm it in the audit, it is removed — not "left for later." The site never carries unverified credibility claims.
+
+### Round 1 — Core Business Facts (closed 2026-05-28)
+
+Confirmed: DBA-only entity name (no LLC tag), parent business intentionally undisclosed, no public street address, no anchor city, no public phone (Twilio number pending), single public email `admin@puresoftrestoration.com`, DBA founded 2025 backed by 20+ years of textile expertise, 16 confirmed North Texas service counties, anonymous About page. Forbidden phrases scrubbed: "since 2009", "60-minute response radius", "crews pre-positioned", etc.
+
+### Round 2 — Certifications + Vendor Relationships + Service Model (closed 2026-05-28)
+
+Confirmed: IICRC-certified in general (specific cert types/numbers still pending owner provision), fully insured for restoration work, OSHA dropped entirely. Eight named carriers whose claim work Pure Soft has processed (State Farm, Allstate, USAA, Farmers, Liberty Mutual, Travelers, Texas Farm Bureau, AAA Texas) — surfaced explicitly in copy.
+
+Two operating modes, both real, both publishable:
+- **Direct-adjuster** (growth target): Pure Soft mobilizes for on-site soft-contents packout, then carries the lot through to home-delivery.
+- **Through-contents-company** (current dominant lead channel): contents company runs the on-site packout and routes soft contents to Pure Soft for textile-specialty work.
+
+The canonical deliverable model is **per-garment line-by-line inventory + insurance-approved invoice at intake**. Payment-first processing. Poly-bagged storage until the home is ready. Hand-delivered home return. Marketing primary audience: insurance adjusters (better margin, more work). Forbidden phrases permanently scrubbed: "audit-grade reporting", "chain-of-custody log", "salvage score 0–100", "mutual-aid network", "approved vendor for 40+ carriers", "same-day pickup", any framing that implies pre-positioned dispatch crews.
+
+### Round 3+ (pending)
+
+Equipment specifics ("specialty machines"), facility claims, storage policies, capacity claims. Not started.
+
+---
+
+## Stock-photo placeholders — Pexels via next/image (2026-05-28)
+
+The site previously rendered every documentary-photo spot as a hatched `.ph` cross-hatch placeholder with a caption label. Pivoted to hand-picked real photos via `next/image`.
+
+**Approach:**
+- `lib/placeholder-images.ts` — typed `PlaceholderImageKind` union + a single map from kind → `{ src, alt }`. One source of truth; one URL swap per kind when real documentary photography is ready.
+- `components/placeholder-image.tsx` — wraps `next/image` with `fill` + responsive `sizes`. Optional caption overlay (now off by default per owner request).
+- `next.config.ts` — `images.remotePatterns` allows `images.pexels.com/**`.
+
+**Source chosen: Pexels (not Unsplash).**
+
+Tried Unsplash first; their search results return "slug IDs" like `ouuy9qMPwZE` that are *page* identifiers, not CDN paths. The CDN path for `https://images.unsplash.com/photo-{id}` requires the underlying numeric-style ID (e.g., `1564019472231-4586c552dc27`) which the search HTML doesn't expose directly. Resolving each slug to its CDN path would have required N additional fetches against each photo's individual page.
+
+Pexels' URL pattern is fully predictable: `https://images.pexels.com/photos/{ID}/pexels-photo-{ID}.jpeg?auto=compress&cs=tinysrgb&w={W}`. Search results expose the IDs directly, every URL verified 200 before deploy, and the photos returned via Next.js's `/_next/image` optimization endpoint (caching, format conversion, srcset) without further configuration.
+
+**Standing rule:** when sourcing remote images via `next/image`, prefer a CDN with predictable URL patterns over one that requires per-photo resolution. Pexels and Cloudinary fit; Unsplash (without their API + auth) doesn't.
+
+---
+
+## `.reveal` entrance animation — SPA navigation re-run required (2026-05-29)
+
+A `.reveal` opacity-fade-in animation pattern hit the same root-cause failure twice in two days:
+
+1. **First failure (2026-05-28):** unconditional `opacity: 0` default + JS-fallback `.in` flip meant a content-blocker / JS-failure path left every `.reveal` section permanently invisible. **Fix:** scoped the `opacity: 0` rule to `html.js-ready .reveal`, where `js-ready` is set by an inline `<script>` in `<head>`. If JS doesn't run, content stays visible by default.
+
+2. **Second failure (2026-05-28, mobile SPA navigation):** the same animation worked on full-page load but broke on internal Next.js Link clicks. The `<Reveal />` component lives in the root layout, which does not unmount on client-side navigation. With an empty `useEffect` dependency array the IntersectionObserver setup ran once and never again — so the next page's `.reveal` sections rendered with the `opacity: 0` default and stayed invisible until the user hit refresh. **Fix:** depend the `useEffect` on `usePathname()` from `next/navigation`. Initial-load runs the IntersectionObserver fade-in; every SPA-navigation re-run immediately marks every `.reveal` element `.in` (no entrance animation on internal nav, which would feel jarring anyway).
+
+**Generalised rule, recorded both for memory and code review:** any imperative DOM setup in a root-layout `useEffect` must depend on `usePathname()` (or be replaced by a per-page declarative pattern). Empty dependency arrays in root-level components are a SPA-navigation anti-pattern — same trap applies to scroll listeners, analytics page-view fires, theme injection, focus management, etc.

@@ -1,6 +1,6 @@
 # Next Steps
 
-## At-a-glance status (last updated 2026-05-28 19:30 UTC)
+## At-a-glance status (last updated 2026-05-29 00:30 UTC)
 
 | Layer | State |
 | --- | --- |
@@ -20,6 +20,10 @@
 | SES email identity `admin@puresoftrestoration.com` | ✅ verified (interim, useful while sandbox is in effect) |
 | SES production access | ⏳ submitted 2026-05-28, awaiting AWS review (~24h) |
 | **Canonical content truth audit** | ✅ Round 1 + Round 2 complete 2026-05-28 — see `docs/CANONICAL_FACTS.md`. Round 3 (equipment specifics, facility claims, storage policies, capacity) pending. |
+| Conservation House UI design | ✅ deployed 2026-05-28 — `components/header.tsx`, `components/footer.tsx`, fonts (Newsreader + Hanken Grotesk), bone/oxblood tokens, eight Conservation sections live on the homepage |
+| Intake form (Zod + Turnstile + SES) | ✅ live on `/contact` and homepage Section 8 — end-to-end test on 2026-05-28 delivered to `admin@` inbox |
+| Stock-photo placeholders | ✅ deployed 2026-05-29 — 15 hand-picked Pexels photos via `next/image` (one per `PlaceholderImageKind`); single-source map at `lib/placeholder-images.ts` for one-line swap when real documentary photography is sourced |
+| Visual polish (mobile/SPA-nav fixes) | ✅ 2026-05-28 / 29 — fixed invisible Write-off column text (band-dark default leaking through bone-bright col), bumped `.kicker` + `.seal__txt` to ink-3 for AA contrast on paper, made `.reveal` opt-in via `html.js-ready` head script, re-runs IntersectionObserver on `usePathname()` change so SPA navigation no longer shows blank sections under the hero |
 | SES end-to-end smoke test | ✅ EC2 role → SES → `admin@` inbox confirmed delivered 2026-05-28 |
 | IAM `ec2-puresoft-app-role` runtime policy | ✅ `puresoft-app-runtime` inline policy attached — `ses:SendEmail`/`SendRawEmail` on `identity/*` with `ses:FromAddress` pinned to `noreply@puresoftrestoration.com` |
 | Cloudflare Turnstile keys | ✅ provisioned and stored in `/etc/puresoft.env` (currently unused — no active form) |
@@ -32,14 +36,16 @@
 
 ### What's next
 
-1. **Run Round 2 of the canonical content truth audit** — Certifications, Vendor Relationships, and Reporting Standards. The Round-1 edit pass scrubbed every forbidden claim (IICRC-certified, OSHA-compliant, "Approved vendor for 40+ carriers", audit-grade, carrier-ready, "since 2009", "same-day pickup", 24/7) from the live site so nothing unverified is on the wire today. Round 2 will revisit each scrubbed claim with the owner and either restore it with the truthful version or remove the surrounding section entirely. Page bodies on `/cat-emergency-response`, the homepage CAT section, and the service pages still have on-site-response framing that contradicts the confirmed service model (the team processes textiles received from contents companies; it does not dispatch on-site response). That copy rewrite is a follow-on round after Round 2 fact-collection.
-2. **Wait on AWS SES production-access response** (~24h). When AWS replies:
+1. **Wait on AWS SES production-access response** (~24h SLA, submitted 2026-05-28). When AWS replies:
    - **Approved** — sandbox is lifted, the site can email any recipient. No env or code change required.
    - **Approved with reduced quota** — fine for launch; can request increases later.
    - **Follow-up questions** — paste their question here and we'll draft the response. Common asks: confirm bounce/complaint handling, confirm no marketing use, confirm sender domain.
-2. **Optional: tighten DMARC** to add `rua=mailto:admin@puresoftrestoration.com; ruf=mailto:admin@puresoftrestoration.com; fo=1` so we receive aggregate reports on outbound DKIM/SPF passes. Edit the existing `_dmarc` TXT record at GoDaddy. Not urgent.
-3. **Optional: prune UFW** to drop the world-open `3000/tcp` and `8000/tcp` rules (left over from earlier debugging — app binds to `127.0.0.1` so they don't expose anything, but they're noise in the rule list).
-4. **Homepage UI revamp** — queued as Task #10. The current "Operating Theatre" design reads as a SaaS dashboard (live ops panel with lot codes, throughput bars, mono fonts, geometric maps); we want it to read as a specialty textile-restoration services firm with insurance-pro positioning. Detailed proposal in chat history; user has not yet greenlit execution.
+2. **Provision the Twilio response-line phone number** and plug it into `lib/site.ts` (`contact.responseLineLabel` + `contact.responseLineTel`) — one commit restores the phone link in the header and the `tel:` anchors site-wide. Currently all phone references render absent per CANONICAL_FACTS Round 1 #5.
+3. **Send specific IICRC cert types / numbers** to the audit log. Round 2 confirmed "IICRC-certified" as a general claim; the specific cert items (e.g., S100, S300, S500) and any cert numbers enter `lib/schema.ts` `hasCredential` as a one-line update each.
+4. **Round 3 of the canonical content truth audit** — equipment specifics ("specialty machines"), facility claims, storage policies, capacity claims. Same protocol as Rounds 1 + 2 (numbered interview → confirmed-facts summary → owner approval → canonical edit pass).
+5. **Replace Pexels stock placeholders with real documentary photography** once the team is able to shoot on-floor. Every placeholder is keyed in `lib/placeholder-images.ts` — one `src:` swap per `PlaceholderImageKind` propagates everywhere that kind is used. No code changes required.
+6. **Optional: tighten DMARC** to add `rua=mailto:admin@puresoftrestoration.com; ruf=mailto:admin@puresoftrestoration.com; fo=1` so we receive aggregate reports on outbound DKIM/SPF passes. Edit the existing `_dmarc` TXT record at GoDaddy. Not urgent.
+7. **Optional: prune UFW** to drop the world-open `3000/tcp` and `8000/tcp` rules (left over from earlier debugging — app binds to `127.0.0.1` so they don't expose anything, but they're noise in the rule list).
 
 ---
 
