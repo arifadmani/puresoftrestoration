@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GenerateLeadEvent } from "@/components/conversion-event";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
@@ -12,6 +13,7 @@ export const metadata = buildMetadata({
 export default function SubmittedPage() {
   return (
     <section className="section shell reveal in" style={{ paddingTop: "120px" }}>
+      <GenerateLeadEvent />
       <div style={{ maxWidth: "720px", marginInline: "auto", textAlign: "center" }}>
         <p className="eyebrow">Submission received</p>
         <h1 className="display" style={{ fontSize: "clamp(40px,5vw,72px)", marginTop: "18px" }}>
