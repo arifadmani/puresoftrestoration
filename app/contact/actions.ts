@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { sendIntakeNotification } from "@/lib/ses";
+import { persistLead } from "@/lib/leads";
 import { verifyTurnstile } from "@/lib/turnstile";
 
 const IntakeSchema = z.object({
@@ -59,19 +60,17 @@ export async function submitIntake(
   }
 
   const fields = parsed.data;
-  const turnstileToken = String(
-    formData.get("cf-turnstile-response") ?? ""
-  );
+  const hdrs = await headers();
+  const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");
+
+  const remoteIp =
+    hdrs.get("cf-connecting-ip") ??
+    hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    null;
 
   // Turnstile verification only enforced if a server-side secret is configured.
   if (process.env.TURNSTILE_SECRET_KEY) {
-    const hdrs = await headers();
-    const remoteip =
-      hdrs.get("cf-connecting-ip") ??
-      hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      null;
-
-    const verify = await verifyTurnstile(turnstileToken, remoteip);
+    const verify = await verifyTurnstile(turnstileToken, remoteIp);
     if (!verify.ok) {
       return {
         ok: false,
@@ -81,14 +80,35 @@ export async function submitIntake(
     }
   }
 
+  // Attempt the email notification, then durably record the lead regardless of
+  // the delivery outcome — so a submission is never lost to an SES hiccup, a
+  // bounce, or a spam-foldered notification. The disk record is the source of
+  // truth; email is the convenience layer on top of it.
+  const submittedAt = new Date().toISOString();
+  const userAgent = hdrs.get("user-agent");
+  let emailStatus: "sent" | "failed" = "sent";
+  let messageId: string | undefined;
+
   try {
-    await sendIntakeNotification(fields);
+    messageId = await sendIntakeNotification(fields);
   } catch (err) {
     console.error("[intake] SES send failed", err);
+    emailStatus = "failed";
+  }
+
+  await persistLead(fields, {
+    submittedAt,
+    remoteIp,
+    userAgent,
+    emailStatus,
+    messageId,
+  });
+
+  if (emailStatus === "failed") {
     return {
       ok: false,
       formError:
-        "Submission accepted, but we hit a temporary delivery error. Please call the response line.",
+        "We've received your details, but our email confirmation hit a temporary snag. Your submission is safely on file and we'll follow up — or call the response line to reach us right away.",
     };
   }
 
